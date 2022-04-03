@@ -1,8 +1,8 @@
 #include <iostream>
 using namespace std;
 
-int aux,n;
-
+int aux,n;//perrito
+int xd;
 int main(){
     cout << "Cuantos elementos desea ingresar: ";
     cin >> n;
