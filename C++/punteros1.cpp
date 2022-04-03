@@ -3,7 +3,7 @@ using namespace std;
 int main(){
     int x;
     x=4;
-    cout << "Valor o contenido de x: " << x << endl;
+    cout << "VALOR o contenido de x: " << x << endl;
     cout << "Direccion de memoria de x: "<< &x << endl;
     int *p;
     cout << "Se ha creado el puntero p" << endl;
@@ -12,10 +12,10 @@ int main(){
     cout << "Direccion de memoria de p: " << &p << endl;
     p = &x;
     cout << "Nuevo contenido de p = " << p << endl;
-    cout << "Observe que puntero p ahora señala " << endl;
+    cout << "Observe que puntero p ahora senala " << endl;
     cout << "a la direccion donde se encuentra la variable x"<< endl;
     *p = 7;
     cout << "acceso a contenido de x usando puntero p: " << *p << endl;
-    
+    int perro;
     return 0;
 }

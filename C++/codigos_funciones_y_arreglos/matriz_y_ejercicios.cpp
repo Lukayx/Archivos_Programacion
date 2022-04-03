@@ -15,9 +15,7 @@ int main(){
     cout << "Ingrese un valor entero m: ";
     cin >> m;
     cout <<endl;
-    
-    string perro;
-    
+
     //MATRIZ A
     int **A = crearMatriz(A,n,c);
     cout << "MATRIZ A (" << n << "x" << c << "): " <<endl;
