@@ -71,7 +71,7 @@ int moda(vector<int> &v){
 // TAREA--> convertir a recursivo
 vector<int> fibonacci(int n){
 	vector<int> v(n);
-	
+	cout << v(0);
 	
 	return v;
 }
