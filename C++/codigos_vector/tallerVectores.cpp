@@ -30,8 +30,8 @@ int main(int argc, char **argv){
 	cout << "La moda de v es " << moda(v) << endl;
 
 	vector<int> fib = fibonacci(n);
-	cout << "Fibonacci(n): " << moda(v) << endl;
-	imprimeVector(fib);
+	cout << "Fibonacci(n): " << fib << endl;
+	/*imprimeVector(fib);*/
 
 	cout << "Programa terminado exitosamente !!" << endl;
 	return EXIT_SUCCESS;
@@ -71,7 +71,9 @@ int moda(vector<int> &v){
 // TAREA--> convertir a recursivo
 vector<int> fibonacci(int n){
 	vector<int> v(n);
-	cout << v(0);
+	v[0]=45;
+	cout << v[0] << endl;
+	
 	
 	return v;
 }
