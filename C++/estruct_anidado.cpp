@@ -20,9 +20,6 @@ struct B {
 A a = {10,0,0};
 B b = {99, {'F','G'}, 77 , {1,2,3}};
 
-
-
-
 int main(){
     //cout << "a = " << a.i << " " << a.j << " " << a.k << endl;
     //cout << "b = " << b.x << " " << b.y.c << " " << b.y.d << " " << b.z << " " << b.w.i << " " << b.w.j << " " << b.w.k endl;
