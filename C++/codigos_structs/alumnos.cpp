@@ -26,8 +26,8 @@ const char ellas[N_NOM][10] = {"Maria", "Claudia", "Josefina", "Paola", "Linda"}
 const char apel[N_APEL][10] = {"Torres", "Flores", "Campos", "Acosta", "Aguirre", "Molina", "Silva", "Rojas", "Rios", "Castillo"};
 
 struct {
-   char id;
-   char nombre[20];
+    char id;
+    char nombre[20];
 } const Carrera[N_CAR] = {{'B', "Bachillerato"},{'I', "Ingenieria"},{'M', "Magister"}};
 
 struct Alum{
@@ -106,4 +106,3 @@ void countFamily(Alum *Alumno, int n, char lastname[10]){
 void misAlumnos(Alum *Alumno, int n, Alum *Al_Carr, int &len){
 
 }
-
