@@ -80,7 +80,6 @@ int moda(vector<int> &v){
 int moda2(vector<int> &v){
 	map<int, int> cuenta;
 	int mo = v[0], maxrep = 1;
-
 	for(int i: v){
 		if(cuenta.find(i) != cuenta.end()){
 			if(++cuenta[i] > maxrep){
