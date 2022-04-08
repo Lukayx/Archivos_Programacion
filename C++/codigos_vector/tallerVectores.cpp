@@ -13,7 +13,7 @@ int moda2(vector<int> &v);
 vector<int> fibonacci(int n);
 int sumaVector(const vector<int> &v);
 float avgVector(const vector<int> &v);
-
+void fibonacciRecursivo(vector<int> &v,int n);
 
 int main(int argc, char **argv){
 	int n, minV, maxV; 
@@ -31,8 +31,13 @@ int main(int argc, char **argv){
 
 	cout << "La moda de v es " << moda2(v) << endl;
 
+	vector<int> fib = fibonacci(n);
+	cout << "Fibonacci(n):" << endl;
 	/*imprimeVector(fib);*/
 
+	fibonacciRecursivo(v,n);
+	cout << "FibonacciRecursivo(n): " << endl;
+	imprimeVector(v);
 	cout << "Programa terminado exitosamente !!" << endl;
 	return EXIT_SUCCESS;
 }
@@ -98,11 +103,19 @@ int moda2(vector<int> &v){
 // TAREA--> convertir a recursivo
 vector<int> fibonacci(int n){
 	vector<int> v(n);
-	v[0]=45;
-	cout << v[0] << endl;
-	
-	
+	v[0]=0;
+	if(n > 1){
+		v[1] = 1;
+	}
+	for(int i = 2; i < n; i++){
+		v[i] = v[i-1] + v[i-2];
+	}
 	return v;
+}
+void fibonacciRecursivo(vector<int> &v,int n){
+	if(n > 0){
+		n < 2? v[n] = n : v[n-1] + v[n-2];
+	}
 }
 
 // calculala suma de los elementos de v y la retorna
