@@ -106,4 +106,3 @@ void countFamily(Alum *Alumno, int n, char lastname[10]){
 void misAlumnos(Alum *Alumno, int n, Alum *Al_Carr, int &len){
 
 }
-
