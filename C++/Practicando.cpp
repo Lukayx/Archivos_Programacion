@@ -2,6 +2,7 @@
 #include <string> 
 using namespace std;
 // compile string
+
 class Player{
     private: //Atributos
         float level = 1;

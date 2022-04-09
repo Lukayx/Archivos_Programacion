@@ -25,19 +25,18 @@ int main(int argc, char **argv){
 	cout << "Ingrese valor del mayor numero permitodo en v, min:";	
 	cin >> maxV;
 	
-	cout << "Creamos y llenamos un vector de largo "<<n<<" y luego lo imprimimos" << endl;
+	cout << "Creamos y llenamos un vector de largo "<< n <<" y luego lo imprimimos" << endl;
 	vector<int> v = llenaVector(n, minV, maxV);
 	imprimeVector(v);
-
 	cout << "La moda de v es " << moda2(v) << endl;
-
 	vector<int> fib = fibonacci(n);
 	cout << "Fibonacci(n):" << endl;
 	/*imprimeVector(fib);*/
-
 	fibonacciRecursivo(v,n);
 	cout << "FibonacciRecursivo(n): " << endl;
 	imprimeVector(v);
+	cout << "La suma es: " << sumaVector(v) << endl;
+	cout << "El promedio es: " << avgVector(v) << endl;
 	cout << "Programa terminado exitosamente !!" << endl;
 	return EXIT_SUCCESS;
 }
@@ -68,7 +67,7 @@ void imprimeVector(const vector<int> &v){
 int moda(vector<int> &v){
 	int mo = v[0], maxrep = 1, c = 1;
 	for(unsigned int i=0; i<v.size(); i++){
-		for(int j = i+1;j<v.size();j++){ //elije un numero y despues recorre de ese numero hacia delante; el contador comienza en uno (cuenta el numero elejido)
+		for(unsigned int j = i+1;j<v.size();j++){ //elije un numero y despues recorre de ese numero hacia delante; el contador comienza en uno (cuenta el numero elejido)
 			if(v[i] == v[j]){
 				c++;
 			}
@@ -82,10 +81,10 @@ int moda(vector<int> &v){
 	return mo;
 }
 
-int moda2(vector<int> &v){
-	map<int, int> cuenta;
+int moda2(vector<int> &v){ //CUENTA ES UN DICCIONARIO {78 , 1} IZQUIERDA INDICE - DERECHA = CONTADOR DEL INDICE (NUM)
+	map<int, int> cuenta; // los <> son los 'PARENTESIS' de los diccionarios
 	int mo = v[0], maxrep = 1;
-	for(int i: v){
+	for(int i : v){ //ESTO ES IGUAL A UN FOR I IN VECTOR (TOMA VALORES EN VEZ DE INDICES)
 		if(cuenta.find(i) != cuenta.end()){
 			if(++cuenta[i] > maxrep){
 				mo = i;
@@ -109,9 +108,10 @@ vector<int> fibonacci(int n){
 	for(int i = 2; i < n; i++){
 		v[i] = v[i-1] + v[i-2];
 	}
-	return v;
+	return v; 
 }
-void fibonacciRecursivo(vector<int> &v,int n){
+
+void fibonacciRecursivo(vector<int> &v,int n){  
 	if(n > 0){
 		n < 2? v[n] = n : v[n-1] + v[n-2];
 	}
@@ -119,11 +119,13 @@ void fibonacciRecursivo(vector<int> &v,int n){
 
 // calculala suma de los elementos de v y la retorna
 int sumaVector(const vector<int> &v){
-	return 0;
-}
+	int suma = 0; 
+	for(int i : v){ suma+=i; }
+		return suma;
+	}
 
 //calcula el promedio de v y lo retorna
 float avgVector(const vector<int> &v){
-	return 0;
+	int totalSuma = sumaVector(v);
+	return totalSuma/v.size();
 }
-
