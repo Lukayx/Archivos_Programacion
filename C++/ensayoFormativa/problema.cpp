@@ -26,10 +26,12 @@ int main(){
 }
 
 void genPoints(float X[N], float Y[N]){
+	float decimal;
 	for(int i = 0; i<REP; i++){
-		X[i] = Q - rand()%((Q*2)+1);
-		Y[i] = Q - rand()%((Q*2)+1);
-		if(X[i] == -50 or Y[i] == -50) cout << "perro";
+		decimal = Q*-10 + rand()%((Q*20)+1);
+		X[i] = decimal/10;
+		decimal = Q*-10 + rand()%((Q*20)+1);
+		Y[i] = decimal/10;
 	}
 }
 
