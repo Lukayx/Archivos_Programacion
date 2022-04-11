@@ -15,13 +15,22 @@ float porcentajeDiferencia(float X[N], float Y[N]);
 void centroide(float X[N], float Y[N]);
 
 int main(){
-	
+	float X[N];
+	float Y[N];
+	genPoints(X,Y);
+	for(int i=0;i<N;i++) {
+		cout << "Punto (" << X[i] << "," << Y[i] << ")" << endl;
+	}
 
 	return EXIT_SUCCESS;
 }
 
 void genPoints(float X[N], float Y[N]){
-
+	for(int i = 0; i<REP; i++){
+		X[i] = Q - rand()%((Q*2)+1);
+		Y[i] = Q - rand()%((Q*2)+1);
+		if(X[i] == -50 or Y[i] == -50) cout << "perro";
+	}
 }
 
 
