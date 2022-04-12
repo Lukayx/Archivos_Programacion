@@ -15,10 +15,9 @@ int main(int argc, char **argv){
 		cout << "Error. Debe ejecutarse como ./formativa n" << endl;
 		exit(EXIT_FAILURE);
 	}
-	int n,lim1,lim2;
+	int n=atoi(argv[1]),lim1,lim2;
 	float *T,*B,*M,*A; 
-	cout << "Ingrese el largo del array: ";
-	cin >> n;
+	cout << "Ingrese el largo del array: " << n << endl;
 	if(n < 10){ exit(EXIT_FAILURE); }
 	do{
 		cout << "Ingrese el primer limite: ";
@@ -68,7 +67,7 @@ void clasificaDatos(float *T, float *B, float *M, float *A, int n,  int  lim1, i
 		} else {
 			A[a]=T[i];
 			a++;
-		
+		}
 	}
 	cout << "temperaturas bajas: " << endl;
 	for(int i=0;i<b;i++){
