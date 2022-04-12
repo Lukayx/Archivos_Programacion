@@ -16,16 +16,15 @@ void insertionSort(int &A,int n){
     }
 }
 int main(){
-    int *lista[];
     int n;
     cout << "Ingrese el tamaño de la lista: ";
     cin >> n;
-    lista = new int[n];
+    int *lista[] = new int[n];
     for(int i = 0; i<n;i++){
         lista[i] = rand()%100;
     }
     insertionSort(lista,n);
-    forfor(int j = 0;j<n ;j++){
+    for(int j = 0;j<n ;j++){
         cout << " " << lista[j];
     }
     return 0;

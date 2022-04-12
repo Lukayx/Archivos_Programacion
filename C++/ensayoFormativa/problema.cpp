@@ -23,7 +23,7 @@ int main(){
 	genPoints(X,Y);
 	n = porcentajeDiferencia(X,Y);
 	for(unsigned int i=0;i<N;i++) {
-		cout << "Punto "<< i+1 <<" (" << X[i] << "," << Y[i] << ")" << endl;
+		cout << "Punto "<< i+1 <<" (" << X[i] << " , " << Y[i] << ")" << endl;
 	}
 	cout << "El porcentaje de diferencia es: "<< n << endl;
 	return EXIT_SUCCESS;
