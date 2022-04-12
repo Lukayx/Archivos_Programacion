@@ -17,18 +17,20 @@ void centroide(float X[N], float Y[N]);
 
 int main(){
 	srand(time(NULL));
-	float X[N];
-	float Y[N];
+	float *X = new float[N];
+	float *Y = new float[N];
+	float n;
 	genPoints(X,Y);
-	for(int i=0;i<N;i++) {
-		cout << "Punto (" << X[i] << "," << Y[i] << ")" << endl;
+	n = porcentajeDiferencia(X,Y);
+	for(unsigned int i=0;i<N;i++) {
+		cout << "Punto "<< i+1 <<" (" << X[i] << "," << Y[i] << ")" << endl;
 	}
-	cout << "El porcentaje de diferencia es: "<< porcentajeDiferencia(X,Y) << endl;
+	cout << "El porcentaje de diferencia es: "<< n << endl;
 	return EXIT_SUCCESS;
 }
 
 void genPoints(float X[N], float Y[N]){
-	for(int i = 0; i<N; i++){
+	for(unsigned int i = 0; i<N; i++){
 		X[i] = (Q*-10) + rand()%((Q*20)+1);
 		X[i]/=10;
 		Y[i] = (Q*-10) + rand()%((Q*20)+1);
@@ -37,14 +39,16 @@ void genPoints(float X[N], float Y[N]){
 }
 
 float porcentajeDiferencia(float X[N], float Y[N]){
-	float e,m,porDiff;
+	float e,m,porDiff=0.0;
 	int u,v;
-	for(int i=0;i<REP;i++){
+	for(unsigned int i=0;i<REP;i++){
 		u = rand()%N;
-		v = rand()%N;
+		do{
+			v = rand()%N;
+		}while(v==u);
 		e = euclideanDistance(X,Y,u,v);
 		m = manhattanDistance(X,Y,u,v);
-		porDiff = porDiff + (m-e)/e;
+		porDiff +=(m-e)/e;
 	}
 	return porDiff;
 }
