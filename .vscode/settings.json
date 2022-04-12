@@ -1,4 +1,10 @@
 {
+<<<<<<< HEAD
+    "C_Cpp.errorSquiggles": "Disabled",
+    "files.associations": {
+        "new": "cpp"
+    }
+=======
   "C_Cpp.errorSquiggles": "Disabled",
   "files.associations": {
     "vector": "cpp",
@@ -33,4 +39,5 @@
     "**/.vscode",
     "**/.vscode/**"
   ]
+>>>>>>> ac11ca052b69cf2187cbc4d6a8999da5aa2af64e
 }

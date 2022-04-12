@@ -2,6 +2,7 @@
 #include <string.h>
 #include <cstdlib>
 #include <math.h>
+#include <time.h>
 using namespace std;	// uso del espacio de nombre std
 
 #define N 30		// cantidad de puntos a crear
@@ -10,42 +11,52 @@ using namespace std;	// uso del espacio de nombre std
 
 void genPoints(float X[N], float Y[N]);
 float euclideanDistance(float X[N], float Y[N], int u, int v);
-int manhattanDistance(float X[N], float Y[N], int u, int v);
+float manhattanDistance(float X[N], float Y[N], int u, int v);
 float porcentajeDiferencia(float X[N], float Y[N]);
 void centroide(float X[N], float Y[N]);
 
 int main(){
+	srand(time(NULL));
 	float X[N];
 	float Y[N];
 	genPoints(X,Y);
 	for(int i=0;i<N;i++) {
 		cout << "Punto (" << X[i] << "," << Y[i] << ")" << endl;
 	}
-
+	cout << "El porcentaje de diferencia es: "<< porcentajeDiferencia(X,Y) << endl;
 	return EXIT_SUCCESS;
 }
 
 void genPoints(float X[N], float Y[N]){
-	float decimal;
-	for(int i = 0; i<REP; i++){
-		decimal = Q*-10 + rand()%((Q*20)+1);
-		X[i] = decimal/10;
-		decimal = Q*-10 + rand()%((Q*20)+1);
-		Y[i] = decimal/10;
+	for(int i = 0; i<N; i++){
+		X[i] = (Q*-10) + rand()%((Q*20)+1);
+		X[i]/=10;
+		Y[i] = (Q*-10) + rand()%((Q*20)+1);
+		Y[i]/=10;
 	}
 }
 
-
 float porcentajeDiferencia(float X[N], float Y[N]){
-	return 0;
+	float e,m,porDiff;
+	int u,v;
+	for(int i=0;i<REP;i++){
+		u = rand()%N;
+		v = rand()%N;
+		e = euclideanDistance(X,Y,u,v);
+		m = manhattanDistance(X,Y,u,v);
+		porDiff = porDiff + (m-e)/e;
+	}
+	return porDiff;
 }
 
 float euclideanDistance(float X[N], float Y[N], int u, int v){
-	return 0;
+	float n = sqrt(pow(X[u]-X[v],2)+pow(Y[u]-Y[v],2)); 
+	return n;
 }
 
-int manhattanDistance(float X[N], float Y[N], int u, int v){
-	return 0;
+float manhattanDistance(float X[N], float Y[N], int u, int v){
+	float n = abs(X[u]-X[v])+abs(Y[u]-Y[v]);
+	return n;
 }
 
 /*
