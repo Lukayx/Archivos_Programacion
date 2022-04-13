@@ -19,13 +19,11 @@ int main(){
 	srand(time(NULL));
 	float *X = new float[N];
 	float *Y = new float[N];
-	float n;
 	genPoints(X,Y);
-	n = porcentajeDiferencia(X,Y);
 	for(unsigned int i=0;i<N;i++) {
 		cout << "Punto "<< i+1 <<" (" << X[i] << " , " << Y[i] << ")" << endl;
 	}
-	cout << "El porcentaje de diferencia es: "<< n << endl;
+	cout << "El porcentaje de diferencia es: "<< porcentajeDiferencia(X,Y) << endl;
 	return EXIT_SUCCESS;
 }
 
