@@ -52,17 +52,16 @@ void rellena_y_ordena(int *L, int n){
 }
 
 void mixSort(int *A, int *B, int na,int nb, int *X){
-    
     int i=0,j=0,k=0,u,v;
     for (int h = 0; h < na+nb; h++){
         u = A[i];
         v = B[j];
         if(u<v){
             X[k]=u;
-            if(i < na) i++;
+            if(i != na-1) i++;
         }else{
             X[k]=v;
-            if(j<nb) j++;
+            if(j != nb-1) j++;
         } 
         k++;
     }
