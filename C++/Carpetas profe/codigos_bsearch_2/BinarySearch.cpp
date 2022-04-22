@@ -161,11 +161,9 @@ int recursiveBinarySearch(vector<int> &v, int x, int l, int r){
 	if(l<=r){
 		if(x==v[m])
 			return m;
-		else {
 			if(x<v[m])
 				return recursiveBinarySearch(v,x,l,m-1);
-			else
-				return recursiveBinarySearch(v,x,m+1,r);
+			return recursiveBinarySearch(v,x,m+1,r);
 		}
 	}
 	return -1;
