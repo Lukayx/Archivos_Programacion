@@ -2,48 +2,34 @@
 
 using namespace std;
 
-
 void barajar(int *A, int n);
 void imprimeCiclos(int *A, int n);
 void imprimeArreglo(int *A, int n);
-
 
 int main(int argc, char **argv){
     if(argc != 2){
         cout << "Debe ejecutarse como ./E7 n" << endl;
         return EXIT_FAILURE;
     }
-
     int n;
-
     n = atoi(argv[1]);
-
     int *A = new int [n];
-
     // Generacion del arreglo (no se especifica metodo alguno, luego usamos el mas sencillo)
     for(int i = 0; i < n; i++)
         A[i] = i;
-
     // Creamos una permutacion aleatoria barajando el arreglo (E7) (metodo de complejidad O(n))
     barajar(A, n);
     imprimeArreglo(A, n);
     cout << endl;
-
     // E8
     imprimeCiclos(A, n);
-
-
     return EXIT_SUCCESS;
 }
-
-
 
 void barajar(int *A, int n){
     for(int i = 0; i < n; i++)
         swap(A[i], A[rand()%n]); // Intercambiamos elementos aleatoriamente
 }
-
-
 
 void imprimeCiclos(int *A, int n){
     /*
@@ -51,12 +37,10 @@ void imprimeCiclos(int *A, int n){
         Esto para seguir la regla de imprimir el primer numero del ciclo dos veces.
     */
     int k;
-
     // Arreglo que indica si un elemento de A ya fue recorrido
     bool *B = new bool [n];
     for(int i = 0; i < n; i++)
         B[i] = false;
-
     for(int i = 0; i < n; i++){
         if(B[i]) // Saltamos si el numero ya esta en algun ciclo (tema de eficiencia)
             continue;
@@ -71,8 +55,6 @@ void imprimeCiclos(int *A, int n){
         B[i] = true; // trivial 
     }
 }
-
-
 
 void imprimeArreglo(int *A, int n){
     for(int i = 0; i < n; i++)

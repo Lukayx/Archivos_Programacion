@@ -13,14 +13,10 @@ int main(){
     cout << "Ingrese entero m: ";
     cin >> m;
     cout << endl;
-
     int **A = creaMatriz(n, m);
     listarDigitos(A, n, m);
-
     return EXIT_SUCCESS;
 }
-
-
 
 int **creaMatriz(int n, int m){
     int **M = new int *[n]; // puntero a puntero a entero que apunta hacia un arreglo de punteros a enteros
@@ -31,7 +27,6 @@ int **creaMatriz(int n, int m){
     }
     return M;
 }
-
 
 void listarDigitos(int **M, int m, int n){
     for(int i = 0; i < m; i++){
