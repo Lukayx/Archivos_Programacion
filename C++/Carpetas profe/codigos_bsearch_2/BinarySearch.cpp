@@ -161,12 +161,30 @@ int recursiveBinarySearch(vector<int> &v, int x, int l, int r){
 	if(l<=r){
 		if(x==v[m])
 			return m;
-			if(x<v[m])
-				return recursiveBinarySearch(v,x,l,m-1);
-			return recursiveBinarySearch(v,x,m+1,r);
-		}
+		if(x<v[m])
+			return recursiveBinarySearch(v,x,l,m-1);
+		return recursiveBinarySearch(v,x,m+1,r);
 	}
 	return -1;
+}
+
+int particion(vector<int> &v, int l, int r){
+	for (int i = l+1; i < r; i++){
+		if(v[i]<v[l]){
+			swap(v[i],v[l]);
+			l=i;
+		}
+	}
+	return l;
+}
+
+void quickSort(vector<int> &v, int l, int r){
+	int m;
+	if(l<=r){
+		m = particion(v,l,r);
+		quickSort(v,l,m-1);
+		quickSort(v,m+1,r);
+	}
 }
 
 void testBusqueda(vector<int> v){
