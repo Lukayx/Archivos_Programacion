@@ -7,6 +7,29 @@ struct Nodo{
     Nodo *p;
 };
 
+void insertarListaPrincipio(Nodo *&lista, int n);
+void recorreListaNodos(Nodo *&lista);
+
+int main(int argc, char** argv){
+    Nodo *lista = NULL;
+
+    int dato;
+    cout << "Ingrese un dato: ";
+    cin >> dato;
+    insertarListaPrincipio(lista,dato);
+
+    cout << "Ingrese un dato: ";
+    cin >> dato;
+    insertarListaPrincipio(lista,dato);
+
+    cout << "Ingrese un dato: ";
+    cin >> dato;
+    insertarListaPrincipio(lista,dato);
+
+    recorreListaNodos(lista);
+    return 0;
+}
+
 void insertarListaPrincipio(Nodo *&lista, int n){
     Nodo *nuevo_nodo = new Nodo();
     nuevo_nodo->dato = n;
@@ -26,22 +49,13 @@ void insertarListaPrincipio(Nodo *&lista, int n){
     nuevo_nodo->p = aux1;
 
     cout << "\tElemento insertado a la lista correctamente" << endl;
-} 
+}
 
-int main(int argc, char** argv){
-    Nodo *lista = NULL;
-
-    int dato;
-    cout << "Ingrese un dato: ";
-    cin >> dato;
-    insertarListaPrincipio(lista,dato);
-
-    cout << "Ingrese un dato: ";
-    cin >> dato;
-    insertarListaPrincipio(lista,dato);
-
-    cout << "Ingrese un dato: ";
-    cin >> dato;
-    insertarListaPrincipio(lista,dato);
-    return 0;
+void recorreListaNodos(Nodo *&lista){
+    Nodo *aux1 = lista;
+    int i = 0;
+    while(aux1!=NULL){
+        cout << "Elemento " << ++i << ": " << aux1->dato << endl;
+        aux1 = aux1->p;
+    }
 }
