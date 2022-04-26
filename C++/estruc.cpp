@@ -13,8 +13,7 @@ int main(){
     Persona p1;
     cout << "Ingrese el nombre completo: ";
     cin.get(p1.nombre, 50);
-    cout << "Ingrese la edad: ";
-    cin >> p1.edad;
+    p1->edad = 18;
     cout << "Ingrese el sueldo: ";
     cin >> p1.sueldo;
     //ESCRIBIRÁ EN PANTALLA LOS DATOS GUARDADOS
