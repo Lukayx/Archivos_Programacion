@@ -34,7 +34,7 @@ int main(){
         arreglo[i] = rand()%100;
 		cout << arreglo[i] << " ";
     }
-	cout <<endl;
+	cout <<endl;	
     quickSort(arreglo,0,n);
     for (int i = 0; i < n; i++){
         cout << arreglo[i] << " ";
