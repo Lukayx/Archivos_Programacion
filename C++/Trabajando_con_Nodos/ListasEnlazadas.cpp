@@ -10,18 +10,17 @@ struct Nodo{
 void insertarListaPrincipio(Nodo *&lista, int n);
 void recorreListaNodos(Nodo *&lista);
 void insertaLista(Nodo *&lista, int n);
+Nodo creaLista(Nodo *&lista, int n);
 
 int main(int argc, char** argv){
     Nodo *lista = NULL;
 
-    int dato;
-    cout << "Ingrese un dato: ";
-    cin >> dato;
-    insertaLista(lista,dato);
-
-    cout << "Ingrese un dato: ";
-    cin >> dato;
-    insertaLista(lista,dato);
+    int dato,n;
+    do
+    {
+        cout << "¿Cuantos datos quiere almacenar en su lista?";
+        cin >>  n;
+    } while (n>0 && n<20);  
 
     cout << "Ingrese un dato: ";
     cin >> dato;
@@ -75,3 +74,14 @@ void recorreListaNodos(Nodo *&lista){
         aux1 = aux1->p;
     }
 }
+
+Nodo creaLista(Nodo *&lista, int n){
+    Nodo *X = NULL;
+    int dato;
+    for (int i = 0; i < n; i++){
+        cout << "Ingrese un dato: ";
+        cin >> dato;
+        insertaLista(X,dato);
+    }
+    return X;
+}  
