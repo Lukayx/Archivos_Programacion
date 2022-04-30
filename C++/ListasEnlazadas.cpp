@@ -64,7 +64,7 @@ void insertaLista(Nodo *&lista, int n){
         nuevo_nodo->p=NULL;
         puntero->p=nuevo_nodo;
     }
-    
+    cout << "\tElemento insertado a la lista correctamente" << endl;
 }
 
 void recorreListaNodos(Nodo *&lista){
