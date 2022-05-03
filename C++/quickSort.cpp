@@ -7,7 +7,7 @@ using namespace std;
 int particion(vector<int> &v, int l, int r){
 	int pv = v[l],p=l;
 	for (int i = l+1; i <= r; i++){
-		if(v[i]<pv){
+		if(v[i]<=pv){
 			p++;
 			swap(v[p],v[i]);
 		}
@@ -35,7 +35,7 @@ int main(){
 		cout << arreglo[i] << " ";
     }
 	cout <<endl;	
-    quickSort(arreglo,0,n);
+    quickSort(arreglo,0,n-1);
     for (int i = 0; i < n; i++){
         cout << arreglo[i] << " ";
     }   
