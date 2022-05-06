@@ -5,9 +5,10 @@
 #include <random>
 #include <algorithm> 	// para que podamos usar el argoritmo de ordenamiento sort()
 #include <vector>
+#include <time.h>
 using namespace std;
 
-#define PRINT 0
+#define PRINT 1
 #define TEST 1
 #define MAX 100
 int REPET = 10;
@@ -20,6 +21,7 @@ void testBusqueda(vector<int> v);
 
 int main(int argc, char **argv){
 	int i;
+	srand(time(NULL));
 	if(argc != 2){
 		cout << "Error. Debe ejecutarse como ./binarySearch n" << endl;
 		exit(EXIT_FAILURE);
@@ -179,9 +181,8 @@ int particion(vector<int> &v, int l, int r){
 }
 
 void quickSort(vector<int> &v, int l, int r){
-	int m;
 	if(l<=r){
-		m = particion(v,l,r);
+		int m = particion(v,l,r);
 		quickSort(v,l,m-1);
 		quickSort(v,m+1,r);
 	}
