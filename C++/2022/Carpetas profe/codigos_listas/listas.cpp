@@ -173,6 +173,7 @@ float mediaList(nodo *l){
 		sum += p->val;
 		p = p->next; 
 	}
+
 	return 0;
 }
 
