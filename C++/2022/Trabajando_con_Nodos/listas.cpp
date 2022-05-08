@@ -11,8 +11,9 @@ struct nodeList {
 typedef struct nodeList nodo;
 
 void appendToListL(nodo **l, int num); // note que hay doble *
-void printList(nodo *l); // aca solo hay un *
 void appendToListR(nodo **l, int num);
+void insertList(nodo **l, int num);
+void printList(nodo *l); // aca solo hay un *
 
 int main(int argc, char **argv){
     nodo *miLista = NULL;
@@ -34,16 +35,23 @@ void appendToListL(nodo **l, int num){
 void appendToListR(nodo **l, int num){
     nodo *nuevo_nodo = new nodo();
     nuevo_nodo->val = num;
-    nodo *puntero = *l;
+    nuevo_nodo->next = NULL;
     if(*l == NULL){
         *l = nuevo_nodo;
     }else{
+        nodo *puntero = *l;
         while(puntero->next != NULL){
             puntero = puntero->next;
         }
         puntero->next = nuevo_nodo;
     }
-    nuevo_nodo->next = NULL;
+}
+
+void insertList(nodo **l, int num){
+    nodo *nuevo_nodo = new nodo();
+    nuevo_nodo->val = num;
+
+    
 }
 
 void printList(nodo *list){
