@@ -13,8 +13,10 @@ int main(){
         while(getline(archivo,line)){
             for(char c : line) T.push_back(c);
         }
+        cout << "El largo del vector T es: " << T.size();
+        
         archivo.close();
-        cout << "Ingrese su patron: ";
+        cout << " \nIngrese su patron: ";
         getline(cin,patron);
         vector<char> P(0);
         for(char c : patron) P.push_back(c);
@@ -30,12 +32,12 @@ int main(){
 
 void buscaPatron(vector<char> T, vector<char> P, vector<int> &indices){
     int j,N_T = T.size(), N_P = P.size();
-    for (unsigned int i = 0; i < N_T-N_P; i++){
-        j = 0;
-        while(j < N_P && P[j]==T[i+j]){
-            j++;
+    for (unsigned int i = 0; i < N_T-N_P; i++){ //O(N)
+        j = 0; //O(N)
+        while(j < N_P && P[j]==T[i+j]){ //O(N^2)
+            j++;//O(N^2)
         }
-        if(j==N_P){
+        if(j==N_P){ //O(N)
             indices.push_back(i);
         }
     }    
