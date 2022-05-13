@@ -57,24 +57,44 @@ Queue::~Queue() {
 
 // inserta un elemento al final(back) de la cola en tiempo O(n): la recorre desde el front al rear y lo pone al final --> O(1)
 void Queue::enqueue(int elem) {
-			
+	nodoQ *nuevo = new nodoQ;
+	nuevo->val = elem;
+	nuevo->next = NULL;
+	
+	if (F == nullptr)
+		F = L = nuevo;
+	else{
+		L->next = nuevo;
+		L = nuevo;
+	}	
+	nItems++;		
 }
 // Elimina el elemento que esta al frente de la cola y retorna su valo, en tiempo O(1)
 
 void Queue::dequeue(){
+	if(nItems==0){
+		cout << "Cola vacía - No es posible eliminar !!" << endl;
+		return;
+	}
 		
+	nodoQ *q = F;
+	F = q->next;
+	delete q;
+	nItems--;
 }
 
 // retorna el elemento que esta al frente de la cola, toma O(1)
 int Queue::front(){
-	
-	return 0;
+	if(nItems==0)
+		return -1;
+	return F->val;
 }
 
-// retorna el elemento que esta al frente de la cola, toma O(1)
+// retorna el elemento que esta al ultimo de la cola, toma O(1)
 int Queue::last(){
-	
-	return 0;
+	if(nItems==0)
+		return -1;
+	return L->val;
 }
 
 // retorna la cantidad de elementos que hay en la cola, en O(1) time
@@ -98,6 +118,7 @@ void Queue::display(){
 	cout << endl;
 }
 
+/*
 int main(int argc, char **argv){
 	Queue q1;
 
@@ -131,6 +152,7 @@ int main(int argc, char **argv){
 	cout << endl << "Hacemos 2 dequeues más... " << endl;
 	q1.dequeue();
 	q1.dequeue();
+	q1.dequeue();
 	q1.display();
 	cout << "Tamaño de la cola = " << q1.size() << endl;
 	cout << "front = " << q1.front() << endl;
@@ -140,3 +162,4 @@ int main(int argc, char **argv){
 
 	return EXIT_SUCCESS;
 }
+*/
