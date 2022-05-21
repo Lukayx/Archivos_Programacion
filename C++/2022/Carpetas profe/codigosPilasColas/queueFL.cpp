@@ -47,7 +47,6 @@ Queue::Queue(int num){
 // destructor de la clase, libera la memoria de todos los nodoQ
 Queue::~Queue() {
 	nodoQ *p;
-
 	while(F != nullptr){
 		p = F;
 		F = F->next;
@@ -57,24 +56,42 @@ Queue::~Queue() {
 
 // inserta un elemento al final(back) de la cola en tiempo O(n): la recorre desde el front al rear y lo pone al final --> O(1)
 void Queue::enqueue(int elem) {
-			
+	nodoQ *nuevo = new nodoQ;
+	nuevo->next = NULL;
+	nuevo->val = elem;
+	if(F == nullptr)
+		F = L = nuevo;
+	else{
+		L->next = nuevo;
+		L = nuevo;
+	}
+	nItems++;
 }
 // Elimina el elemento que esta al frente de la cola y retorna su valo, en tiempo O(1)
 
 void Queue::dequeue(){
-		
+	if(nItems == 0){
+		cout << "Cola vacía - No hay nada que Eliminar" << endl;
+		return;
+	}
+	nodoQ *q = F;
+	F = F->next;
+	delete q;
+	nItems--;
 }
 
 // retorna el elemento que esta al frente de la cola, toma O(1)
 int Queue::front(){
-	
-	return 0;
+	if(nItems == 0)
+		return -1;
+	return F->val;
 }
 
 // retorna el elemento que esta al frente de la cola, toma O(1)
 int Queue::last(){
-	
-	return 0;
+	if(nItems == 0)
+		return -1;
+	return L->val;
 }
 
 // retorna la cantidad de elementos que hay en la cola, en O(1) time

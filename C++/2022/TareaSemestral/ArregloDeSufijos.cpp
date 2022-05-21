@@ -14,11 +14,15 @@ int main(){
             for(char c : line) aux.push_back(c);
         }
         archivo.close();
-        vector<vector<char>> T(aux.size());
-        T[0] = aux;
-        for(int i = 1; i < aux.size(); i++){
-            aux.erase(aux.begin());
+        int aux_n = aux.size();
+        vector<vector<char>> T(aux_n);
+        for(int i = 0; i < aux_n; i++){
             T[i] = aux;
+            for(char c : T[i]){
+                cout << c;
+            }
+            cout << "   " << i << endl;
+            aux.erase(aux.begin());
         }
         cout << "El largo del vector T es: " << T.size();
         cout << " \nIngrese su patron: ";
@@ -26,12 +30,7 @@ int main(){
         vector<char> P(0);
         for(char c : patron) P.push_back(c);
         vector<int> indices(0);
-        for(int i = 0; i < T.size()+1; i++){
-            for(char c : T[i]){
-                cout << c;
-            }
-            cout << endl  << i << endl;
-        }
+        
         // buscaPatron(T,P,indices);
         //cout << "El largo del vector es: " << indices.size();
         return EXIT_SUCCESS;

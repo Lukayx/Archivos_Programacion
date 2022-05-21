@@ -22,17 +22,17 @@ private:
 
 public:
 	StackArr();
-    	StackArr(int largo);
-    	~StackArr();
+    StackArr(int largo);
+	~StackArr();
 
 	void reSize(int newCap);
-    	int top();
+    int top();
 	int size();
-    	void push(int);
-    	void pop();
+    void push(int);
+    void pop();
     
-    	bool empty();
-    	void display();
+    bool empty();
+    void display();
 };
 
 // constructor de la clase, recive el largo inicial de la pila
@@ -78,8 +78,9 @@ void StackArr::reSize(int newCap){
 
 // retorna el elemento que está al tope de la pila o -1 si la pila está vacía
 int StackArr::top(){
-	
-	return 0;
+	if(item == -1)
+		return -1;
+	return S[item];
 }
 
 //           item 
@@ -94,7 +95,12 @@ int StackArr::size(){
 //                           item
 // S = x x x x x x x x x x x  x....................cap
 void StackArr::push(int elem) {
-	
+	if(item+1 == cap){
+		cout << "CAPACIDAD MAXIMA, debe hacer resize si quiere agregar mas elementos"
+		return;
+	}
+	item++;
+	S[item] = elem;
 }
 
 // Retorna el valor del elemento que esta al frente de la pila y lo elimina (simulamos eliminar en el arreglo, no liberamos memoria)
