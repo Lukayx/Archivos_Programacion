@@ -10,9 +10,15 @@ bool menorLex(vector<char> v_i, vector<char> pv);
 bool esPatron(vector<char> I, vector<char> P);
 
 int main(){
-    ifstream archivo("dna.50MB");
+    ifstream infile;
+    string path = __FILE__; //gets source code path, include file name
+    path = path.substr(0,1+path.find_last_of('\\')); //removes file name
+    path+= "dna.50MB"; //adds input file to path
+    infile.open(path);
+    ifstream archivo(path);
     if(archivo.is_open()){
         string line,patron;
+        printf(archivo.read());
         vector<char> aux(0);
         while(getline(archivo,line)){
             for(char c : line) aux.push_back(c);
@@ -20,15 +26,21 @@ int main(){
         archivo.close();
         int aux_n = aux.size();
         vector<vector<char>> V(aux_n);
-        for(int i = 0; i < aux_n; i++){
-            V[i] = aux;
-            aux.erase(aux.begin());
+        V[0] = aux;
+        for(int i = 1; i < aux_n; i++){
+            for(int j = i; j < aux_n; j++) V[i].push_back(aux[j]);
+            cout << i << " ";
         }
+        cout << endl;
         QuickSortLexicograficamente(V, 0, V.size()-1);
+        for(int i = 0; i < aux_n; i++){
+            for(char c : V[i]) cout << c;
+            cout << endl;
+        }
         cout << "Ingrese su patron: ";
         getline(cin,patron);
-        vector<char> P(0);
-        for(char c : patron) P.push_back(c);
+        vector<char> P(patron.size());
+        for(int i = 0; i < P.size(); i++) P[i] = patron.at(i); 
         vector<int> indices = buscaPatron(V,P);
         cout << "Se encontraron coincidencias en: " << endl;
         for(int i : indices){
