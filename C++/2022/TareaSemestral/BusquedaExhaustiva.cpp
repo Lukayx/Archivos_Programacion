@@ -6,7 +6,7 @@ using namespace std;
 void buscaPatron(vector<char> T, vector<char> P, vector<int> &indices);
 
 int main(){
-    ifstream archivo("dna.50MB");
+    ifstream archivo("test.txt");
     if(archivo.is_open()){
         string line,patron;
         vector<char> T(0);

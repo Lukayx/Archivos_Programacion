@@ -4,22 +4,19 @@
 using namespace std;
 
 int main(){
-    vector<int> v(0);
-    v.push_back(100);
-    v.push_back(200);
-    v.push_back(300);
-    v.push_back(400);
-    for(int i : v){
-        cout << i << endl;
+    vector<vector<char>> v(10);
+    string palabra = "0123456789";
+    for(int i = 0; i < palabra.size(); i++){
+        cout << "largo vector " << v[i].size(); 
+        for(int j = i; j < palabra.size(); j++){
+            v[i].push_back(palabra.at(j));
+        }
     }
-    cout << endl;
-    v.erase(v.begin());
-    for(int i : v){
-        cout << i << endl;
-    }
-    cout << endl;
-    v.erase(v.begin());
-    for(int i : v){
-        cout << i << endl;
+
+    for(int i = 0; i < palabra.size(); i++){
+        for(int j = 0; j < v[i].size(); j++){
+            cout << v[i][j];
+        }
+        cout << endl;
     }
 }

@@ -3,45 +3,35 @@
 #include <vector>
 using namespace std;
 
-vector<int> buscaPatron(vector<vector<char>> V, vector<char> P);
+void Busqueda_ArregloSufijos(vector<vector<char>> V, vector<char> P, vector<int> &indices);
 void QuickSortLexicograficamente(vector<vector<char>> &v, int l, int r);
 int particion(vector<vector<char>> &v, int l, int r);
 bool menorLex(vector<char> v_i, vector<char> pv);
 bool esPatron(vector<char> I, vector<char> P);
 
 int main(){
-    ifstream infile;
     string path = __FILE__; //gets source code path, include file name
     path = path.substr(0,1+path.find_last_of('\\')); //removes file name
-    path+= "dna.50MB"; //adds input file to path
-    infile.open(path);
+    path+= "test.txt"; //adds input file to path
     ifstream archivo(path);
     if(archivo.is_open()){
-        string line,patron;
-        printf(archivo.read());
-        vector<char> aux(0);
-        while(getline(archivo,line)){
-            for(char c : line) aux.push_back(c);
-        }
+        string line,text,patron;
+        while(getline(archivo,line)) text+=line; 
         archivo.close();
-        int aux_n = aux.size();
-        vector<vector<char>> V(aux_n);
-        V[0] = aux;
-        for(int i = 1; i < aux_n; i++){
-            for(int j = i; j < aux_n; j++) V[i].push_back(aux[j]);
-            cout << i << " ";
+        int largo = text.size();
+        vector<vector<char>> V(largo);
+        for(int i = 0; i < largo; i++){
+            for(int j = i; j < largo; j++) V[i].push_back(text.at(j));
         }
-        cout << endl;
+        //QUICKSORT
         QuickSortLexicograficamente(V, 0, V.size()-1);
-        for(int i = 0; i < aux_n; i++){
-            for(char c : V[i]) cout << c;
-            cout << endl;
-        }
         cout << "Ingrese su patron: ";
         getline(cin,patron);
-        vector<char> P(patron.size());
-        for(int i = 0; i < P.size(); i++) P[i] = patron.at(i); 
-        vector<int> indices = buscaPatron(V,P);
+        int p_n = patron.size();
+        vector<char> P(p_n);
+        for(int i = 0; i < p_n; i++) P[i] = patron.at(i); 
+        vector<int> indices (0); 
+        Busqueda_ArregloSufijos(V,P,indices);
         cout << "Se encontraron coincidencias en: " << endl;
         for(int i : indices){
             cout << "Indice: " << i << endl;
@@ -100,9 +90,9 @@ bool esPatron(vector<char> I, vector<char> P){
     return false;
 }
 
-vector<int> buscaPatron(vector<vector<char>> v, vector<char> P){
-    int l = 0, r = v.size()-1, m = r/2;
-    vector<int> indices(0);
+void Busqueda_ArregloSufijos(vector<vector<char>> v, vector<char> P, vector<int> &indices){
+    int l = 0, r = v.size()-1, m = r/2, n = v.size();
+    
     while(l<=r){
 		if(esPatron(v[m], P)){
 			if(m == 0 || !esPatron(v[m-1], P)){
@@ -116,13 +106,11 @@ vector<int> buscaPatron(vector<vector<char>> v, vector<char> P){
             l=m+1;
 		m=(l+r)/2;
 	}
-    // if(!esPatron(v[l], P)) return indices;  10 30
-    r = v.size()-1;
-    m = (l+r)/2;
+    r = n-1;
     int l_aux = l;
     while(l_aux<=r){
 		if(esPatron(v[m], P)){
-			if(m == v.size()-1 || !esPatron(v[m+1], P)){
+			if(m == n-1 || !esPatron(v[m+1], P)){
                 r = m;
                 break;  
             }
@@ -134,7 +122,6 @@ vector<int> buscaPatron(vector<vector<char>> v, vector<char> P){
 		m=(l_aux+r)/2;
 	}
     for(int j = r; j >= l; j--){
-        indices.push_back(v.size() - v[j].size());
+        indices.push_back(n - v[j].size());
     }
-    return indices;
 }
