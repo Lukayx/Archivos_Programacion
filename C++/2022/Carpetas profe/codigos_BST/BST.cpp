@@ -70,7 +70,7 @@ void BST::preorder(nodoBST *t, int *pos){
 
 /*  inorder: izq - ra�z - der
 pos = 1, 2, 3, 4, 5, 6, 7
-           50:4
+          50:4
          /     \
      30:2       70:6
     /   \      /    \
@@ -79,39 +79,74 @@ pos = 1, 2, 3, 4, 5, 6, 7
 
 // asigna los identificadores en inorder: I - R - D
 void BST::inorder(nodoBST *t, int *pos){
+	if(t != nullptr){
+		inorder(t->izq,pos);
+		t->pos = *pos;
+		(*pos)++;
+		inorder(t->der,pos);
+	}
 }
 
 void BST::printInorder(nodoBST *t){
+	if(t != nullptr){
+		printInorder(t->izq);
+		cout << t->key << endl; 
+		printInorder(t->der);
+	}
 }
 
 // busca recursivamente al nodo con clave num y lo devuelve
 nodoBST* BST::search(nodoBST *t, int num){
-
-return NULL;
+	if(t!=nullptr){
+		if(t->key == num) return t;
+		if(t->key < num) return search(t->der,num);
+		else return search(t->izq,num);
+	}
+	return NULL;
 }
 
 // busca, sin usar recursividad, al nodo con clave num y lo devuelve
 // TAREA
 nodoBST* BST::searchNR(nodoBST *t, int num){
-return NULL;
+	nodoBST *p = t;
+	while(p!=nullptr && p->key != num){
+		if(p->key < num) p = p->der;
+		else p = p->izq;
+	}
+	if(p!=nullptr) return p;
+	return NULL;
 }
 
 // asigna los identificadores en posorder: I - D - R
 void BST::postorder(nodoBST *t, int *pos){ 
+	if(t != nullptr){
+		postorder(t->izq,pos);
+		postorder(t->der,pos);
+		t->pos = *pos;
+		(*pos)++;
+	}
 }
 
 void BST::printPostorder(nodoBST *t){
+	if(t != nullptr){
+		printPostorder(t->izq);
+		printPostorder(t->der);
+		cout << t->key << endl;
+	}
 }
 
 // retorna el menor nodo del arbol t sin usar recursividad
 nodoBST* BST::getLowestNR(nodoBST *t){
-return NULL;
+	nodoBST *p = t;
+	if(p == nullptr) return NULL;
+	while(p->izq!=nullptr) p = p->izq;
+	return p;
 }
 
 // retorna el menor nodo del arbol t (CONDICI�N: t not NULL)
 nodoBST *BST::getLowest(nodoBST *t){
 
-return NULL;
+	return NULL;
 }
 
 bool BST::remove(nodoBST **t, int num){
@@ -127,7 +162,7 @@ return 0;
 // Recuerde que la altura de un �rbol vacio es -1
 // La altura de un �rbol con un nodo es 0
 int BST::highTree(nodoBST *t){
-return -1;
+	if(t==nullptr) return -1;
 }
 
 bool BST::isABalancedBST(nodoBST *t){
