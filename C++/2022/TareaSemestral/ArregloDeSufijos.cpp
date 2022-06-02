@@ -3,11 +3,12 @@
 #include <vector>
 using namespace std;
 
-void Busqueda_ArregloSufijos(vector<vector<char>> V, vector<char> P, vector<int> &indices);
-void QuickSortLexicograficamente(vector<vector<char>> &v, int l, int r);
-int particion(vector<vector<char>> &v, int l, int r);
-bool menorLex(vector<char> v_i, vector<char> pv);
-bool esPatron(vector<char> I, vector<char> P);
+void Busqueda_ArregloSufijos(vector<char> v, vector<int> inSuf, vector<char> P, vector<int> &indices);
+void QuickSortLexicograficamente(vector<char> v, vector<int> &inSuf, int l, int r);
+int particion(vector<char> v, vector<int> &inSuf, int l, int r);
+bool menorLexOrdenamiento(int v_i, int pv, vector<char> v);
+bool menorLex(vector<char> V1, vector<char> V2, int i_v1, int i_v2);
+bool esPatron(int v_i, vector<char> v, vector<char> P);
 
 int main(){
     string path = __FILE__; //gets source code path, include file name
@@ -16,22 +17,28 @@ int main(){
     ifstream archivo(path);
     if(archivo.is_open()){
         string line,text,patron;
-        while(getline(archivo,line)) text+=line; 
-        archivo.close();
-        int largo = text.size();
-        vector<vector<char>> V(largo);
-        for(int i = 0; i < largo; i++){
-            for(int j = i; j < largo; j++) V[i].push_back(text.at(j));
+        vector<char> V(0);
+        while(getline(archivo,line)) {
+            for(char c : line){
+                V.push_back(c);
+            }
         }
+        archivo.close();
+        int n = V.size();
+        vector<int> suf(n);
+        for(int i = 0; i < n; i++) {
+            suf[i] = i;
+        }
+            
         //QUICKSORT
-        QuickSortLexicograficamente(V, 0, V.size()-1);
+        QuickSortLexicograficamente(V,suf, 0, n-1);
         cout << "Ingrese su patron: ";
         getline(cin,patron);
         int p_n = patron.size();
         vector<char> P(p_n);
         for(int i = 0; i < p_n; i++) P[i] = patron.at(i); 
         vector<int> indices (0); 
-        Busqueda_ArregloSufijos(V,P,indices);
+        Busqueda_ArregloSufijos(V,suf,P,indices);
         cout << "Se encontraron coincidencias en: " << endl;
         for(int i : indices){
             cout << "Indice: " << i << endl;
@@ -43,64 +50,79 @@ int main(){
     }
 }
 
-bool menorLex(vector<char> v_i, vector<char> pv){
-    int n_i = v_i.size(), n_pv = pv.size(), i = 0;
-    while(i != n_i || i != n_pv){
-        if(v_i[i] < pv[i]){
+bool menorLexOrdenamiento(int v_i, int pv, vector<char> v){
+    int n = v.size(), i = 0;
+    while(i+v_i != n || i+pv != n){
+        if(v[i+v_i] < v[i+pv]){
             return true;
         }
-        if(v_i[i] > pv[i]){
+        if(v[i+v_i] > v[i+pv]){
             return false;
         }
         i++;
     }
-    if(n_i < n_pv){
+    if(i+v_i == n){
         return true;
     }
     return false;
 }
 
-int particion(vector<vector<char>> &v, int l, int r){
-    int p = l;
-    vector<char> pv = v[l];
+bool menorLex(vector<char> V1, vector<char> V2, int i_v1, int i_v2){
+    int n_i = V1.size(), n_V2 = V2.size(), i = 0;
+    while(i != n_i || i != n_V2){
+        if(V1[i] < V2[i]){
+            return true;
+        }
+        if(V1[i] > V2[i]){
+            return false;
+        }
+        i++;
+    }
+    if(n_i < n_V2){
+        return true;
+    }
+    return false;
+}
+
+int particion(vector<char> v, vector<int> &inSuf, int l, int r){
+    int p = l , pv = inSuf[l];
     for (int i = l+1; i <= r; i++){
-        if(menorLex(v[i],pv)){
+        if(menorLexOrdenamiento(inSuf[i],pv, v)){
             p++;
-            swap(v[p],v[i]);
+            swap(inSuf[p],inSuf[i]);
         }
     }
-    swap(v[l],v[p]);
+    swap(inSuf[l],inSuf[p]);
     return p;
 }
 
-void QuickSortLexicograficamente(vector<vector<char>> &v, int l, int r){
+void QuickSortLexicograficamente(vector<char> v, vector<int> &inSuf, int l, int r){
     if(l<r){
-        int m = particion(v, l, r);
-        QuickSortLexicograficamente(v, l, m-1);
-        QuickSortLexicograficamente(v, m+1, r);
+        int m = particion(v, inSuf, l, r);
+        QuickSortLexicograficamente(v,inSuf, l, m-1);
+        QuickSortLexicograficamente(v,inSuf, m+1, r);
     }
 }
 
-bool esPatron(vector<char> I, vector<char> P){
-    if(I.size() >= P.size()){
+bool esPatron(int v_i, vector<char> v, vector<char> P){
+    if(v.size()-v_i >= P.size()){
         int i = 0;
-        while(i < P.size() && P[i] == I[i]) i++;
+        while(i < P.size() && P[i] == v[v_i+i]) i++;
         if(i == P.size()) return true;
     }
     return false;
 }
 
-void Busqueda_ArregloSufijos(vector<vector<char>> v, vector<char> P, vector<int> &indices){
-    int l = 0, r = v.size()-1, m = r/2, n = v.size();
-    
+void Busqueda_ArregloSufijos(vector<char> v, vector<int> inSuf, vector<char> P, vector<int> &indices){
+    int l = 0, n = v.size(), r = n-1, m = r/2;
     while(l<=r){
-		if(esPatron(v[m], P)){
-			if(m == 0 || !esPatron(v[m-1], P)){
+		if(esPatron(inSuf[m], v, P)){
+			if(m == 0 || !esPatron(inSuf[m-1], v, P)){
                 l = m;
                 break;  
             }
         }		
-        if(menorLex(P, v[m]) || esPatron(v[m], P))
+        if(menorLex(P,v,0,inSuf[m]) || esPatron(inSuf[m], v, P))
             r=m-1;
         else
             l=m+1;
@@ -109,19 +131,19 @@ void Busqueda_ArregloSufijos(vector<vector<char>> v, vector<char> P, vector<int>
     r = n-1;
     int l_aux = l;
     while(l_aux<=r){
-		if(esPatron(v[m], P)){
-			if(m == n-1 || !esPatron(v[m+1], P)){
+		if(esPatron(inSuf[m], v, P)){
+			if(m == n-1 || !esPatron(inSuf[m+1], v, P)){
                 r = m;
                 break;  
             }
         }		
-        if(menorLex(v[m],P) || esPatron(v[m], P))
+        if(menorLex(v,P,inSuf[m],0) || esPatron(inSuf[m], v, P))
             l_aux=m+1;
         else
             r=m-1;
 		m=(l_aux+r)/2;
 	}
     for(int j = r; j >= l; j--){
-        indices.push_back(n - v[j].size());
+        indices.push_back(inSuf[j]);
     }
 }
