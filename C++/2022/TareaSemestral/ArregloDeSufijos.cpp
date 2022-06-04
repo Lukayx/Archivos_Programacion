@@ -7,13 +7,13 @@ void Busqueda_ArregloSufijos(vector<char> v, vector<int> inSuf, vector<char> P, 
 void QuickSortLexicograficamente(vector<char> v, vector<int> &inSuf, int l, int r);
 int particion(vector<char> v, vector<int> &inSuf, int l, int r);
 bool menorLexOrdenamiento(int v_i, int pv, vector<char> v);
-bool menorLex(vector<char> V1, vector<char> V2, int i_v1, int i_v2);
+bool menorLex(vector<char> P, vector<char> T, int t_i);
 bool esPatron(int v_i, vector<char> v, vector<char> P);
 
 int main(){
     string path = __FILE__; //gets source code path, include file name
     path = path.substr(0,1+path.find_last_of('\\')); //removes file name
-    path+= "test.txt"; //adds input file to path
+    path+= "3mil.solamente"; //adds input file to path
     ifstream archivo(path);
     if(archivo.is_open()){
         string line,text,patron;
@@ -29,7 +29,6 @@ int main(){
         for(int i = 0; i < n; i++) {
             suf[i] = i;
         }
-            
         //QUICKSORT
         QuickSortLexicograficamente(V,suf, 0, n-1);
         cout << "Ingrese su patron: ";
@@ -40,9 +39,8 @@ int main(){
         vector<int> indices (0); 
         Busqueda_ArregloSufijos(V,suf,P,indices);
         cout << "Se encontraron coincidencias en: " << endl;
-        for(int i : indices){
-            cout << "Indice: " << i << endl;
-        }
+        cout << indices.size() << endl;
+        //for(int i : indices) cout << "Indice: " << i << endl;
         return EXIT_SUCCESS;
     } else {
         cout << "No se puede abrir el archivo" << endl;
@@ -52,7 +50,7 @@ int main(){
 
 bool menorLexOrdenamiento(int v_i, int pv, vector<char> v){
     int n = v.size(), i = 0;
-    while(i+v_i != n || i+pv != n){
+    while(i+v_i != n && i+pv != n){
         if(v[i+v_i] < v[i+pv]){
             return true;
         }
@@ -67,18 +65,18 @@ bool menorLexOrdenamiento(int v_i, int pv, vector<char> v){
     return false;
 }
 
-bool menorLex(vector<char> V1, vector<char> V2, int i_v1, int i_v2){
-    int n_i = V1.size(), n_V2 = V2.size(), i = 0;
-    while(i != n_i || i != n_V2){
-        if(V1[i] < V2[i]){
+bool menorLex(vector<char> P, vector<char> T, int t_i){
+    int p_n = P.size(), t_n = T.size(), i = 0;
+    while(i != p_n && (i+t_i) != t_n){
+        if(P[i] < T[i+t_i]){
             return true;
         }
-        if(V1[i] > V2[i]){
+        if(P[i] > T[i+t_i]){
             return false;
         }
         i++;
     }
-    if(n_i < n_V2){
+    if(p_n < t_n){
         return true;
     }
     return false;
@@ -105,45 +103,46 @@ void QuickSortLexicograficamente(vector<char> v, vector<int> &inSuf, int l, int 
 }
 
 bool esPatron(int v_i, vector<char> v, vector<char> P){
-    if(v.size()-v_i >= P.size()){
+    int v_n = v.size(), p_n = P.size();
+    if(v_n-v_i >= p_n){
         int i = 0;
-        while(i < P.size() && P[i] == v[v_i+i]) i++;
-        if(i == P.size()) return true;
+        while(i < p_n && P[i] == v[v_i+i]) i++;
+        if(i == p_n) return true;
     }
     return false;
 }
 
 void Busqueda_ArregloSufijos(vector<char> v, vector<int> inSuf, vector<char> P, vector<int> &indices){
-    int l = 0, n = v.size(), r = n-1, m = r/2;
+    int l = 0, n = inSuf.size(), r = n-1, m = r/2;
     while(l<=r){
 		if(esPatron(inSuf[m], v, P)){
 			if(m == 0 || !esPatron(inSuf[m-1], v, P)){
                 l = m;
                 break;  
             }
-        }		
-        if(menorLex(P,v,0,inSuf[m]) || esPatron(inSuf[m], v, P))
             r=m-1;
-        else
+        }else if(menorLex(P,v,inSuf[m])){
+            r=m-1;
+        } else{
             l=m+1;
+        }
 		m=(l+r)/2;
 	}
+    if(r<l) return;
     r = n-1;
     int l_aux = l;
     while(l_aux<=r){
 		if(esPatron(inSuf[m], v, P)){
-			if(m == n-1 || !esPatron(inSuf[m+1], v, P)){
+			if(m >= n-1 || !esPatron(inSuf[m+1], v, P)){
                 r = m;
                 break;  
             }
-        }		
-        if(menorLex(v,P,inSuf[m],0) || esPatron(inSuf[m], v, P))
             l_aux=m+1;
-        else
+        } else
             r=m-1;
 		m=(l_aux+r)/2;
 	}
-    for(int j = r; j >= l; j--){
+    for(int j = l; j <= r; j++){
         indices.push_back(inSuf[j]);
     }
 }

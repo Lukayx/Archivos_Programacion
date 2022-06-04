@@ -6,7 +6,7 @@ using namespace std;
 void buscaPatron(vector<char> T, vector<char> P, vector<int> &indices);
 
 int main(){
-    ifstream archivo("englishCopy.50MB");
+    ifstream archivo("3mil.solamente");
     if(archivo.is_open()){
         string line,patron;
         vector<char> T(0);
@@ -21,9 +21,7 @@ int main(){
         vector<int> indices(0);
         buscaPatron(T,P,indices);
         cout << "Se encontraron coincidencias en: " << endl;
-        for(int i : indices){
-            cout << "Indice: " << i << endl;
-        }
+        //for(int i : indices) cout << "Indice: " << i << endl;
         return EXIT_SUCCESS;
     } else {
         cout << "No se puede abrir el archivo" << endl;
