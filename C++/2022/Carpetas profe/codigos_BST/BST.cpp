@@ -90,7 +90,7 @@ void BST::inorder(nodoBST *t, int *pos){
 void BST::printInorder(nodoBST *t){
 	if(t != nullptr){
 		printInorder(t->izq);
-		cout << t->key << endl; 
+		cout << "(" << t->key << ":" << t->pos << ") ";
 		printInorder(t->der);
 	}
 }
@@ -131,7 +131,7 @@ void BST::printPostorder(nodoBST *t){
 	if(t != nullptr){
 		printPostorder(t->izq);
 		printPostorder(t->der);
-		cout << t->key << endl;
+		cout << "(" << t->key << ":" << t->pos << ") ";
 	}
 }
 
@@ -162,7 +162,8 @@ return 0;
 // Recuerde que la altura de un �rbol vacio es -1
 // La altura de un �rbol con un nodo es 0
 int BST::highTree(nodoBST *t){
-	if(t==nullptr) return -1;
+	if(t == nullptr) return -1;
+	return 1+max(highTree(t->izq),highTree(t->der));
 }
 
 bool BST::isABalancedBST(nodoBST *t){

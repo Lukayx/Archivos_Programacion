@@ -3,6 +3,7 @@
 #include <vector>
 using namespace std;
 
+vector<int> leeArchivo(vector<char> &v, string path);
 void Busqueda_ArregloSufijos(vector<char> v, vector<int> inSuf, vector<char> P, vector<int> &indices);
 void QuickSortLexicograficamente(vector<char> v, vector<int> &inSuf, int l, int r);
 int particion(vector<char> v, vector<int> &inSuf, int l, int r);
@@ -11,42 +12,47 @@ bool menorLex(vector<char> V1, vector<char> V2, int i_v1, int i_v2);
 bool esPatron(int v_i, vector<char> v, vector<char> P);
 
 int main(){
+    //--------------------------CREACION ARREGLO CHAR Y DE SUFIJOS--------------------------------
     string path = __FILE__; //gets source code path, include file name
     path = path.substr(0,1+path.find_last_of('\\')); //removes file name
-    path+= "test.txt"; //adds input file to path
+    path+= "english.50MB"; //adds input file to path
+    vector<char> V(0);
+    vector<int> suf = leeArchivo(V, path);
+    int n = V.size();   
+    //--------------------------------------QUICKSORT--------------------------------------
+    QuickSortLexicograficamente(V,suf, 0, n-1);
+    //--------------------------------------BUSQUEDA--------------------------------------
+    string patron;
+    cout << "Ingrese su patron: ";
+    getline(cin,patron);
+    int p_n = patron.size();
+    vector<char> P(p_n);
+    for(int i = 0; i < p_n; i++) P[i] = patron.at(i); 
+    vector<int> indices (0); 
+    Busqueda_ArregloSufijos(V,suf,P,indices);
+    cout << "Se encontraron coincidencias en: " << endl;
+    for(int i : indices){
+        cout << "Indice: " << i << endl;
+    }
+    return EXIT_SUCCESS;
+}
+
+vector<int> leeArchivo(vector<char> &v, string path){
     ifstream archivo(path);
     if(archivo.is_open()){
-        string line,text,patron;
-        vector<char> V(0);
+        string line;
         while(getline(archivo,line)) {
-            for(char c : line){
-                V.push_back(c);
-            }
+            for(char c : line) v.push_back(c);
         }
         archivo.close();
-        int n = V.size();
-        vector<int> suf(n);
-        for(int i = 0; i < n; i++) {
-            suf[i] = i;
-        }
-            
-        //QUICKSORT
-        QuickSortLexicograficamente(V,suf, 0, n-1);
-        cout << "Ingrese su patron: ";
-        getline(cin,patron);
-        int p_n = patron.size();
-        vector<char> P(p_n);
-        for(int i = 0; i < p_n; i++) P[i] = patron.at(i); 
-        vector<int> indices (0); 
-        Busqueda_ArregloSufijos(V,suf,P,indices);
-        cout << "Se encontraron coincidencias en: " << endl;
-        for(int i : indices){
-            cout << "Indice: " << i << endl;
-        }
-        return EXIT_SUCCESS;
+        int n = v.size();
+        vector <int> suf(n);
+        for(int i = 0; i < n; i++) suf[i] = i;
+        return suf;
     } else {
         cout << "No se puede abrir el archivo" << endl;
-        return EXIT_FAILURE;
+        vector <int> suf(0);
+        return suf;
     }
 }
 

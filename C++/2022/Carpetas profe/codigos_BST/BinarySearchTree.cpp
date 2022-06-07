@@ -12,40 +12,27 @@ int main(int argc, char **argv) {
 
 	BST t;	// crea un BST vacío
 	int val;
+	for (int i = 0; i < 7; i++){
+		cout << "Digite el numero que quiere agregar al arbol: ";
+		cin >> val;
+		t.insert(&(t.root),val);
+	}
+	int pos = 1;
+	t.inorder(t.root,&pos);
+	//t.preorder(t.root,&pos);
+	//t.postorder(t.root,&pos);
+	cout << "In: ";
+	t.printInorder(t.root);
+	cout << "\nPre: ";
+	pos = 1;
+	t.printPreorder(t.root);
+	cout << "\nPos: ";
+	pos = 1;
+	t.printPostorder(t.root);
+	cout << endl;
+	cout << "La altura del arbol es: " << t.highTree(t.root) << endl;
 
-	val = 50;
-	if (t.insert(&(t.root), val))
-		cout << "clave " <<val<< " insertada" << endl;
-	else cout << "clave " <<val<< " No se pudo insertar" << endl;
-	val = 30;
-	if (t.insert(&(t.root), val))
-		cout << "clave " <<val<< " insertada" << endl;
-	else cout << "clave " <<val<< " No se pudo insertar" << endl;
-	val = 20;
-	if (t.insert(&(t.root), val))
-		cout << "clave " <<val<< " insertada" << endl;
-	else cout << "clave " <<val<< " No se pudo insertar" << endl;
-	val = 40;
-	if (t.insert(&(t.root), val))
-		cout << "clave " <<val<< " insertada" << endl;
-	else cout << "clave " <<val<< " No se pudo insertar" << endl;
-	val = 70;
-	if (t.insert(&(t.root), val))
-		cout << "clave " <<val<< " insertada" << endl;
-	else cout << "clave " <<val<< " No se pudo insertar" << endl;
-	val = 60;
-	if (t.insert(&(t.root), val))
-		cout << "clave " <<val<< " insertada" << endl;
-	else cout << "clave " <<val<< " No se pudo insertar" << endl;
-	val = 60;
-	if (t.insert(&(t.root), val))
-		cout << "clave " <<val<< " insertada" << endl;
-	else cout << "clave " <<val<< " No se pudo insertar" << endl;
-	val = 80;
-	if (t.insert(&(t.root), val))
-		cout << "clave " <<val<< " insertada" << endl;
-	else cout << "clave " <<val<< " No se pudo insertar" << endl;
-	
+
 	cout << "sizeBST = " << t.sizeBST(t.root) << endl;
 
 	

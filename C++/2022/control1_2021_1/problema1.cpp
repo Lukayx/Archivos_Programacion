@@ -50,16 +50,15 @@ int main(int argc, char **argv){
 		cont++;
 		aux = aux->next;
 	}
-	int num;
-	while(num != 0){
-		cout << "Ingrese valor a buscar, x: ";
-		cin >> num;
-		if(buscaEntero(L,M,n,k,x);){
-			cout << 
-		}
-	}
 	printList(L);
 	printMuestras(M,n/k);
+	int num;
+	while(true){
+		cout << "Ingrese valor a buscar, x: ";
+		cin >> num;
+		if(num == 0) break;
+		buscaEntero(L,M,n,k,x)
+	}
 	cout << "### Fin Problema 1 ###" << endl;
 	return EXIT_SUCCESS;
 }
@@ -69,7 +68,7 @@ void inserInList(nodo **L, int num){
 	nodo *nuevo = new nodo;
 	nuevo->val = num;
 
-	if(*L == nullptr || (*L)->val >= num){
+	if(*L == nullptr || *L->val >= num){
 		nuevo->next = *L;
 		*L = nuevo;
 	}
@@ -103,5 +102,6 @@ void printMuestras(celda *M, int m){
 }
 
 bool buscaEntero(nodo *L, celda *M, int n, int k, int x){
+	while
 	return false;
 }
