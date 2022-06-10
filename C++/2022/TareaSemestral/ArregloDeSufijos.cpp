@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <string>
 using namespace std;
 
 vector<int> leeArchivo(vector<char> &v, string path);
@@ -15,13 +16,10 @@ int main(){
     //--------------------------CREACION ARREGLO CHAR Y DE SUFIJOS--------------------------------
     string path = __FILE__; //gets source code path, include file name
     path = path.substr(0,1+path.find_last_of('\\')); //removes file name
-<<<<<<< HEAD
-    path+= "english.50MB"; //adds input file to path
+    path+= "test.txt"; //adds input file to path
+    cout << path << endl;
     vector<char> V(0);
     vector<int> suf = leeArchivo(V, path);
-    int n = V.size();   
-    //--------------------------------------QUICKSORT--------------------------------------
-    QuickSortLexicograficamente(V,suf, 0, n-1);
     //--------------------------------------BUSQUEDA--------------------------------------
     string patron;
     cout << "Ingrese su patron: ";
@@ -38,42 +36,57 @@ int main(){
     return EXIT_SUCCESS;
 }
 
-vector<int> leeArchivo(vector<char> &v, string path){
-=======
-    path+= "3mil.solamente"; //adds input file to path
->>>>>>> 71f4500cd90a5d480e0f5cb8aa9474e8801ae236
+vector<int> leeArchivo(vector<char> &V, string path){
     ifstream archivo(path);
     if(archivo.is_open()){
         string line;
         while(getline(archivo,line)) {
-            for(char c : line) v.push_back(c);
+            for(char c : line) V.push_back(c);
         }
         archivo.close();
-<<<<<<< HEAD
-        int n = v.size();
+        int n = V.size(), i = 0;
         vector <int> suf(n);
-        for(int i = 0; i < n; i++) suf[i] = i;
-        return suf;
-=======
-        int n = V.size();
-        vector<int> suf(n);
-        for(int i = 0; i < n; i++) {
-            suf[i] = i;
-        }
-        //QUICKSORT
+        string c;
+        do{
+            cout << "Tienes el archivo con los sufijos ordenados? ('si' o 'no')" << endl;
+            cin >> c;
+        }while(c.compare("no")!= 0 && c.compare("si") != 0 );
+        if(c.compare("si")==0){
+            cout << "Ingrese el nombre del archivo: ";
+            cin >> c;
+            path = path.substr(0,1+path.find_last_of('/')) + c;
+            ifstream archivo(path);
+            if(archivo.is_open()){
+                while(getline(archivo,line)) {
+                    suf[i++] = stoi(line);
+                }
+                archivo.close();
+                return suf;
+            } else {
+                cout << "No se ha podido encontrado el archivo" << endl;
+            }
+        }   
+        cout << "Se procedera con el ordenamiento del los sufijos" << endl;
+        for(i = 0; i < n; i++) suf[i] = i;
         QuickSortLexicograficamente(V,suf, 0, n-1);
-        cout << "Ingrese su patron: ";
-        getline(cin,patron);
-        int p_n = patron.size();
-        vector<char> P(p_n);
-        for(int i = 0; i < p_n; i++) P[i] = patron.at(i); 
-        vector<int> indices (0); 
-        Busqueda_ArregloSufijos(V,suf,P,indices);
-        cout << "Se encontraron coincidencias en: " << endl;
-        cout << indices.size() << endl;
-        //for(int i : indices) cout << "Indice: " << i << endl;
-        return EXIT_SUCCESS;
->>>>>>> 71f4500cd90a5d480e0f5cb8aa9474e8801ae236
+        do{      
+            cout << "Desea crear un archivo con los sufijos? ('si' o 'no')";
+            cin >> c;
+        }while(c.compare("no")!= 0 && c.compare("si") != 0 );
+        if(c.compare("si")==0){
+            cout << "Ingrese el nombre del archivo que quiere crear: " << endl;
+            cin >> c;
+            ofstream escritura;
+            escritura.open(c,ios::out);
+            for(i = 0; i < n-1; i++){
+                escritura << suf[i] << endl;
+            }
+            escritura << suf[i];
+            if(escritura.fail()){
+                cout << "no se pudo crear el archivo" << endl;
+            }
+        }
+        return suf;
     } else {
         cout << "No se puede abrir el archivo" << endl;
         vector <int> suf(0);
