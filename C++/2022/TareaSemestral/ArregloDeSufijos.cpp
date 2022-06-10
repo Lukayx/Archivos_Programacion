@@ -160,35 +160,52 @@ bool esPatron(int v_i, vector<char> v, vector<char> P){
 
 void Busqueda_ArregloSufijos(vector<char> v, vector<int> inSuf, vector<char> P, vector<int> &indices){
     int l = 0, n = inSuf.size(), r = n-1, m = r/2;
+    cout << " L: " << l << " R: " << r << " M: " << m << " n: " << n <<  endl;
+    int i = 0;
     while(l<=r){
 		if(esPatron(inSuf[m], v, P)){
+            cout << "True" << endl;
 			if(m == 0 || !esPatron(inSuf[m-1], v, P)){
                 l = m;
+                cout << "Iteracion N~" << ++i << " --- Dentro del return L: " << l <<  endl;
                 break;  
             }
             r=m-1;
         }else if(menorLex(P,v,inSuf[m])){
+            cout << "NO True ES PATRON" << endl;
             r=m-1;
-        } else{
+        }
+        else{
+            cout << "NO True MENORLEX" << endl;
             l=m+1;
         }
 		m=(l+r)/2;
+        cout << "Iteracion N~" << ++i << " --- L: " << l << " R: " << r << " M: " << m <<  endl;
 	}
     if(r<l) return;
     r = n-1;
+    m=(l+r)/2;
     int l_aux = l;
+    i = 0;
+    cout << "Afuera del primer While" << " --- L_AUX: " << l_aux << " R: " << r << " M: " << m << endl;
     while(l_aux<=r){
 		if(esPatron(inSuf[m], v, P)){
+            cout << "True" << endl;
 			if(m >= n-1 || !esPatron(inSuf[m+1], v, P)){
                 r = m;
+                cout << "Iteracion N~" << ++i << " --- Dentro del return R: " << r <<  endl;
                 break;  
             }
             l_aux=m+1;
-        } else
+        } else{
+            cout << "NO True" << endl;
             r=m-1;
+        }
 		m=(l_aux+r)/2;
+        cout << "Iteracion N~" << ++i << " --- L_aux: " << l_aux << " R: " << r << " M: " << m <<  endl;
 	}
     for(int j = l; j <= r; j++){
+        cout << j << endl;
         indices.push_back(inSuf[j]);
     }
 }

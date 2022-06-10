@@ -40,10 +40,10 @@ int main(int argc, char **argv){
     vector<dupla*> M = creaIntermedio(l,n);
     printArray(M);
     int x;
-        cout << "Ingrese entero a buscar (negativo para finalizar)" << endl;
+    cout << "Ingrese entero a buscar (negativo para finalizar)" << endl;
     while(true){
         cout << "x = ";
-        cin >> x;
+        cin >> num;
         if(x < 0) break;
         x = buscaDosPasos(M,x);
     }
@@ -93,7 +93,6 @@ int buscaDosPasos(vector<dupla*> &M, int x){
 	}
 	cout << "No encontrado" << endl;
 	return -1;
-
 }
 
 // ===========================================================================================

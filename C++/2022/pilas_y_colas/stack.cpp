@@ -77,7 +77,7 @@ void Stack::pop(){
 
 // retorna el valor que esta al tope de la pila
 int Stack::top(){
-	if (S ==nullptr)
+	if (S == nullptr)
 		return -1;
 	return S->val;
 }
