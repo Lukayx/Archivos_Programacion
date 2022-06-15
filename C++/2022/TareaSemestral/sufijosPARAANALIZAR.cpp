@@ -18,9 +18,9 @@ int main(){
     //--------------------------CREACION ARREGLO CHAR Y DE SUFIJOS--------------------------------
     string path = __FILE__; //gets source code path, include file name
     path = path.substr(0,1+path.find_last_of('\\')); //removes file name
-    path += "3mil.solamente"; //adds input file to path
+    path += "test.txt"; //adds input file to path
     vector<char> T(0);
-    vector<int> suf = leeArchivo(T, path); //EN ESTA FUNCION ESTA EL ORDENAMIENTO QUE SE DEMORA MUCHO
+    vector<int> suf = leeArchivo(T, path);
     //--------------------------------------BUSQUEDA--------------------------------------
     string patron;
     cout << "Ingrese su patron: ";
@@ -30,9 +30,8 @@ int main(){
     for(int i = 0; i < p_n; i++) P[i] = patron.at(i); 
     vector<int> indices (0); 
     Busqueda_ArregloSufijos(T,suf,P,indices);
-    cout << "Se encontraron " << indices.size() << " coincidencias" << endl;
-    //cout << "Se encontraron coincidencias en: " << endl;
-    //for(int i : indices) cout << "Indice: " << i << endl;
+    cout << "Se encontraron coincidencias en: " << endl;
+    for(int i : indices) cout << "Indice: " << i << endl;
     return EXIT_SUCCESS;
 }
 
@@ -71,8 +70,8 @@ vector<int> leeArchivo(vector<char> &T, string path){
         auto start = high_resolution_clock::now();
         QuickSortLexicograficamente(T,suf, 0, n-1); //FUNCION QUICKSORT MODIFICADA PARA PODER ORDENAR SUFIJOS MEDIANTE UN VECTOR CON LAS POSICIONES DEL TEXTO Y EL VECTOR QUE ALMACENA EL TEXTO
         auto stop = high_resolution_clock::now();
-        auto duration = duration_cast<seconds>(stop - start);
-    cout << "Se domoro " << duration.count() << " segundos" << endl;
+        auto duration = duration_cast<microseconds>(stop - start);
+        cout << duration.count() << endl;
         do{      
             cout << "Desea crear un archivo con los sufijos? ('si' o 'no'): ";
             cin >> c;
@@ -100,29 +99,34 @@ vector<int> leeArchivo(vector<char> &T, string path){
 bool menorLex(vector<char> P, vector<char> T, int t_i){ //UNA SIMPLE COMPRABACION DE PATRON AL INICIO DEL VECTOR ('t_i' es el sufijo del vector con el texto)
     int p_n = P.size(), t_n = T.size(), i = 0;
     while(i != p_n && (i+t_i) != t_n){
-        if(P[i] < T[i+t_i]) return true; //SI ES MENOR ENTONCES TRUE
-
-        if(P[i] > T[i+t_i]) return false; //SI ES MAYOR ENTONCES FALSE
-        
+        if(P[i] < T[i+t_i]){
+            return true;
+        }
+        if(P[i] > T[i+t_i]){
+            return false;
+        }
         i++;
     }
-    if(i==p_n) return true;
+    if(p_n < t_n){
+        return true;
+    }
     return false;
 }
 
 bool menorLexOrdenamiento(int v_i, int pv, vector<char> T){ // 'v_i' ES EL INDICE DEL SUFIJO QUE SE QUIERE VER SI ES MENOR QUE EL INDICE DE 'pv' (AMBOS EN T)
     int n = T.size(), i = 0;
     while(i+v_i != n && i+pv != n){
-        if(T[i+v_i] < T[i+pv])// TRUE SI ES MENOR EL SUFIJO DE v_i
+        if(T[i+v_i] < T[i+pv]){// TRUE SI ES MENOR EL SUFIJO DE v_i
             return true;
-        
-        if(T[i+v_i] > T[i+pv])// FALSE SI ES MAYOR EL SUFIJO DE v_i
+        }
+        if(T[i+v_i] > T[i+pv]){// FALSE SI ES MAYOR EL SUFIJO DE v_i
             return false;
-        
+        }
         i++;
     }
-    if(i+v_i == n) //SI 'SUFIJO DE v_i' LLEGÓ AL MAXIMO DEL VECTOR Y ES IGUAL AL SUFIJO DE 'pv' ENTONCES TRUE ('v_i' es menor) 
+    if(i+v_i == n){ //SI 'SUFIJO DE v_i' LLEGÓ AL MAXIMO DEL VECTOR Y ES IGUAL AL SUFIJO DE 'pv' ENTONCES TRUE ('v_i' es menor) 
         return true;
+    }
     return false; // SI NO ENTONCES FALSE
 }
 
@@ -158,36 +162,47 @@ bool esPatron(int v_i, vector<char> T, vector<char> P){
 
 void Busqueda_ArregloSufijos(vector<char> T, vector<int> inSuf, vector<char> P, vector<int> &indices){
     int l = 0, n = inSuf.size(), r = n-1, m = r/2;
+   // cout << " L: " << l << " R: " << r << " M: " << m << " n: " << n <<  endl;
     while(l<=r){
 		if(esPatron(inSuf[m], T, P)){ // SI ENCUENTRA UNA COINCIDENCIA EN T[inSuf[M]]
+           // cout << "True" << endl;
 			if(m == 0 || !esPatron(inSuf[m-1], T, P)){ //EN CASO DE QUE SEA EL PRINCIPIO DEL VECTOR (PRIMERA COINCIDENCIA DEL PATRON) O QUE EL ANTERIOR A T[inSuf[M]] NO TENGA EL PATRON
                 l = m; //SE ENCONTRO EL EXTREMO INFERIOR DONDE SE ENCUENTRAN LAS COINCIDENCIAS
+               // cout << "Iteracion N~" << ++i << " --- Dentro del return L: " << l <<  endl;
                 break;  
             }
             r=m-1;
         }else if(menorLex(P,T,inSuf[m])){// SI NO HAY COINCIDENCIA EN T[inSuf[M]] ENTONCES VERÁ SI EL PATRON SE ENCUENTRA MAS A LA DERECHA O A LA IZQUIERDA DEL VECTOR
+           // cout << "NO True ES PATRON" << endl;
             r=m-1;//SI EL PATRON ES MENOR QUE T[inSuf[M]]
         }
         else{
+            //cout << "NO True MENORLEX" << endl;
             l=m+1;//SI EL PATRON ES MAYOR A T[inSuf[M]]
         }
 		m=(l+r)/2;// SE LE ASIGNA A 'M' LA MITAD DEL INTERVALO L HASTA R COMO PIVOTE
+        //cout << "Iteracion N~" << ++i << " --- L: " << l << " R: " << r << " M: " << m <<  endl;
 	}
     if(r<l) return; // SI SE DIVIDIÓ VARIAS VECES Y NO ENCONTRO COINCIDENCIA ENTONCES PARARA LA BUSQUEDA
     r = n-1; // EL R VUELVE A SER EL LARGO COMPLETO DEL VECTOR
     m=(l+r)/2;
     int l_aux = l;// EXTREMO INFERIOR AUXILIAR PARA NO MODIFICAR EL YA LISTO
+    //cout << "Afuera del primer While" << " --- L_AUX: " << l_aux << " R: " << r << " M: " << m << endl;
     while(l_aux<=r){
 		if(esPatron(inSuf[m], T, P)){ // SI ENCUENTRA UNA COINCIDENCIA EN T[inSuf[M]]
+            //cout << "True" << endl;
 			if(m >= n-1 || !esPatron(inSuf[m+1], T, P)){// SI ES INDICE MAXIMO O SI EL QUE VIENE DESPUÉS NO TIENE EL PATRON 
                 r = m; //SE ENCONTRO EL EXTREMO SUPERIOR DONDE SE ENCUENTRAN LAS COINCIDENCIAS
+                //cout << "Iteracion N~" << ++i << " --- Dentro del return R: " << r <<  endl;
                 break;  
             }
             l_aux=m+1; // SI SE ENCUENTRA EN MEDIO DEL PATRON ENTONCES EL EXTREMO SUPERIOR DEBE ESTAR MAS ADELANTE
         } else{
+            //cout << "NO True" << endl;
             r=m-1; // SI NO SE ENCUENTRA EN EL PATRON ENTONCES SE CAMBIA EL R
         }
 		m=(l_aux+r)/2; // SE LE ASIGNA A 'M' LA MITAD DEL INTERVALO L_aux HASTA R COMO PIVOTE
+        //cout << "Iteracion N~" << ++i << " --- L_aux: " << l_aux << " R: " << r << " M: " << m <<  endl;
 	}
     for(int j = l; j <= r; j++)
         indices.push_back(inSuf[j]); //ITERARÁ DONDE ESTAN LOS PATRONES Y AGRAGARÁ TODOS SUS INDICES
