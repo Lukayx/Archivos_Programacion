@@ -1,0 +1,12 @@
+
+Prueba N°1: 	Largo vector sufijos: 475767
+		Lineas de codigo: 10000 (Diez Mil)
+		Tiempo que se demoró: 260 segundos (4 minutos 20 segundos)
+
+Prueba N°2: 	Largo vector sufijos: 937769
+		Lineas de codigo: 20000 (Veinte Mil)
+		Tiempo que se demoró: 4174 segundos (1 Hora 9 Minutos 56 Segundos)
+
+Prueba N°2: 	Largo vector sufijos: 937769
+		Lineas de codigo: 20000 (Veinte Mil)
+		Tiempo que se demoró: 4174 segundos (1 Hora 9 Minutos 56 Segundos)

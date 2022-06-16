@@ -18,7 +18,7 @@ int main(){
     //--------------------------CREACION ARREGLO CHAR Y DE SUFIJOS--------------------------------
     string path = __FILE__; //gets source code path, include file name
     path = path.substr(0,1+path.find_last_of('\\')); //removes file name
-    path += "3mil.solamente"; //adds input file to path
+    path += "30milSOLAMENTE"; //adds input file to path
     vector<char> T(0);
     vector<int> suf = leeArchivo(T, path); //EN ESTA FUNCION ESTA EL ORDENAMIENTO QUE SE DEMORA MUCHO
     //--------------------------------------BUSQUEDA--------------------------------------
@@ -61,6 +61,7 @@ vector<int> leeArchivo(vector<char> &T, string path){
                     suf[i++] = stoi(line);//LEE EL ARCHIVO DE LOS SUFIJOS ORDENADOS, LOS TRANSFORMA A 'INT' Y LOS ALMACENA EN SU RESPECTIVA POSICION
                 }
                 archivo.close();
+                cout << "LARGO VECTOR SUFIJOS: " << suf.size() << endl;
                 return suf; // RETORNA EL ARREGLO DE SUFIJOS ORDENADOS
             } else {
                 cout << "No se ha podido encontrado el archivo" << endl;
@@ -72,13 +73,13 @@ vector<int> leeArchivo(vector<char> &T, string path){
         QuickSortLexicograficamente(T,suf, 0, n-1); //FUNCION QUICKSORT MODIFICADA PARA PODER ORDENAR SUFIJOS MEDIANTE UN VECTOR CON LAS POSICIONES DEL TEXTO Y EL VECTOR QUE ALMACENA EL TEXTO
         auto stop = high_resolution_clock::now();
         auto duration = duration_cast<seconds>(stop - start);
-    cout << "Se domoro " << duration.count() << " segundos" << endl;
+        cout << "Se domoró " << duration.count() << " segundos" << endl;
         do{      
             cout << "Desea crear un archivo con los sufijos? ('si' o 'no'): ";
             cin >> c;
         }while(c.compare("no") != 0 && c.compare("si") != 0 ); // MIENTRAS QUE LA RESPUESTA SEA DIFERENTE DE UN 'NO' Y  DIFERENTE UN 'SI' ENTONCES LE SEGUIRA PREGUNTANDO
         if(c.compare("si") == 0){
-            cout << "Ingrese el nombre del archivo que quiere crear: " << endl;
+            cout << "Ingrese el nombre del archivo que quiere crear: ";
             cin >> c;
             ofstream escritura;
             escritura.open(c,ios::out);
