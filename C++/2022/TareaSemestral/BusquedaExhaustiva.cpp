@@ -7,7 +7,7 @@ using namespace std;
 void buscaPatron(vector<char> T, vector<char> P, vector<int> &indices);
 
 int main(){
-    ifstream archivo("3mil.solamente");
+    ifstream archivo("20milSOLAMENTE");
     if(archivo.is_open()){
         string line,patron;
         vector<char> T(0);
@@ -21,11 +21,11 @@ int main(){
         getline(cin,patron);
         vector<char> P(0);
         for(char c : patron) P.push_back(c);
-        t0 = clock();
         vector<int> indices(0);
+        t0 = clock();
         buscaPatron(T,P,indices);
-        cout << "Se encontraron coincidencias en: " << indices.size()<< endl;
         t1 = clock();
+        cout << "Se encontraron coincidencias en: " << indices.size()<< endl;
         double time = (double(t1-t0)/CLOCKS_PER_SEC);
         cout << "El tiempo que demoró fue: " << time << endl;
         //for(int i : indices) cout << "Indice: " << i << endl;

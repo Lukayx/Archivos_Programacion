@@ -1,10 +1,9 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include <chrono>
+#include <ctime>
 #include <string>
 using namespace std;
-using namespace std::chrono;
 
 vector<int> leeArchivo(vector<char> &T, string path);
 void Busqueda_ArregloSufijos(vector<char> T, vector<int> inSuf, vector<char> P, vector<int> &indices);
@@ -18,19 +17,24 @@ int main(){
     //--------------------------CREACION ARREGLO CHAR Y DE SUFIJOS--------------------------------
     string path = __FILE__; //gets source code path, include file name
     path = path.substr(0,1+path.find_last_of('\\')); //removes file name
-    path += "30milSOLAMENTE"; //adds input file to path
+    path += "20milSOLAMENTE"; //adds input file to path
     vector<char> T(0);
     vector<int> suf = leeArchivo(T, path); //EN ESTA FUNCION ESTA EL ORDENAMIENTO QUE SE DEMORA MUCHO
     //--------------------------------------BUSQUEDA--------------------------------------
     string patron;
     cout << "Ingrese su patron: ";
     cin >> patron;
+    unsigned t1,t0;
     int p_n = patron.size();
     vector<char> P(p_n);
     for(int i = 0; i < p_n; i++) P[i] = patron.at(i); 
     vector<int> indices (0); 
+    t0 = clock();
     Busqueda_ArregloSufijos(T,suf,P,indices);
+    t1 = clock();
+    double time = (double(t1-t0)/CLOCKS_PER_SEC);
     cout << "Se encontraron " << indices.size() << " coincidencias" << endl;
+    cout << "El tiempo que demoró fue: " << time << endl;
     //cout << "Se encontraron coincidencias en: " << endl;
     //for(int i : indices) cout << "Indice: " << i << endl;
     return EXIT_SUCCESS;
@@ -69,11 +73,7 @@ vector<int> leeArchivo(vector<char> &T, string path){
         }   
         for(i = 0; i < n; i++) suf[i] = i; // AGREGA TODOS LOS INDICES EN SUS RESPECTIVAS POSICIONES PARA SER DESPUES ORDENADO Y MODIFICADO ESTE VECTOR
         cout << "Se procedera con el ordenamiento del los sufijos" << endl;
-        auto start = high_resolution_clock::now();
         QuickSortLexicograficamente(T,suf, 0, n-1); //FUNCION QUICKSORT MODIFICADA PARA PODER ORDENAR SUFIJOS MEDIANTE UN VECTOR CON LAS POSICIONES DEL TEXTO Y EL VECTOR QUE ALMACENA EL TEXTO
-        auto stop = high_resolution_clock::now();
-        auto duration = duration_cast<seconds>(stop - start);
-        cout << "Se domoró " << duration.count() << " segundos" << endl;
         do{      
             cout << "Desea crear un archivo con los sufijos? ('si' o 'no'): ";
             cin >> c;
