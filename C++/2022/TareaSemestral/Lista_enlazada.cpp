@@ -2,6 +2,7 @@
 #include <fstream>
 #include <ctime>
 #include <vector>
+#include <stdlib.h>
 using namespace std;
 
 struct DoubleList {
@@ -18,23 +19,28 @@ void QuickSortLexicograficamente(vector<char> T, vector<int> &inSuf, int l, int 
 int particion(vector<char> T, vector<int> &inSuf, int l, int r);
 bool menorLexOrdenamiento(int v_i, int pv, vector<char> T);
 
-int main(){
+int main(int argc, char **argv){
+    if(argc != 2){
+		cout << "Error. Debe ejecutarse como ./ListaEnlazada nombreArchivo" << endl;
+		exit(EXIT_FAILURE);
+	}
     //--------------------------CREACION ARREGLO CHAR Y DE SUFIJOS--------------------------------
     string path = __FILE__; //gets source code path, include file name
     path = path.substr(0,1+path.find_last_of('\\')); //removes file name
-    path += "DNA4LINEAS"; //adds input file to path
+    path += argv[1]; //adds input file to path
     vector<char> T(0);
     vector<int> suf = leeArchivo(T, path); //EN ESTA FUNCION ESTA EL ORDENAMIENTO QUE SE DEMORA MUCHO
     //--------------------------------------BUSQUEDA--------------------------------------
     string patron;
+    if (suf.size()==0)return EXIT_FAILURE;
     int n = suf.size();
     cout << "Ingrese su patron: ";
     cin >> patron;
     unsigned t1,t0;
     int p_n = patron.size();
     vector<char> P(p_n);
-    for(int i = 0; i < p_n; i++) P[i] = patron.at(i); 
-    vector<int> indices (0); 
+    for(int i = 0; i < p_n; i++) P[i] = patron.at(i);
+    vector<int> indices (0);
     t0 = clock();
     indices=BusquedaListaEnlazada(T,P,suf,n,p_n);
     t1 = clock();
@@ -159,7 +165,7 @@ vector<int> leeArchivo(vector<char> &T, string path){
         }
         archivo.close();
         int n = T.size(), i = 0; //N ES EL LARGO DEL VECTOR(PARA NO LLAMAR T.SIZE() MUCHAS VECES) - i sera un iterador
-        vector<int> suf(n); // AQUI SE ALMACENARAN LOS INDICES DE LOS SUFIJOS DEL TEXTO (LUEGO ORDENAREMOS EL VECTOR EN BASE A SUS POSICIONES RESPECTO AL VECTOR T) 
+        vector<int> suf(n); // AQUI SE ALMACENARAN LOS INDICES DE LOS SUFIJOS DEL TEXTO (LUEGO ORDENAREMOS EL VECTOR EN BASE A SUS POSICIONES RESPECTO AL VECTOR T)
         string c; // UTILIZARE ESTA VARIABLE VARIAS VECES PARA RECIBIR LAS RESPUESTAS ESCRITAS A MANO DEL USUARIO
         do{
             cout << "Tienes el archivo con los sufijos ordenados? ('si' o 'no'): ";
@@ -180,11 +186,11 @@ vector<int> leeArchivo(vector<char> &T, string path){
             } else {
                 cout << "No se ha podido encontrado el archivo" << endl;
             }
-        }   
+        }
         for(i = 0; i < n; i++) suf[i] = i; // AGREGA TODOS LOS INDICES EN SUS RESPECTIVAS POSICIONES PARA SER DESPUES ORDENADO Y MODIFICADO ESTE VECTOR
         cout << "Se procedera con el ordenamiento del los sufijos" << endl;
         QuickSortLexicograficamente(T,suf, 0, n-1); //FUNCION QUICKSORT MODIFICADA PARA PODER ORDENAR SUFIJOS MEDIANTE UN VECTOR CON LAS POSICIONES DEL TEXTO Y EL VECTOR QUE ALMACENA EL TEXTO
-        do{      
+        do{
             cout << "Desea crear un archivo con los sufijos? ('si' o 'no'): ";
             cin >> c;
         }while(c.compare("no") != 0 && c.compare("si") != 0 ); // MIENTRAS QUE LA RESPUESTA SEA DIFERENTE DE UN 'NO' Y  DIFERENTE UN 'SI' ENTONCES LE SEGUIRA PREGUNTANDO
@@ -213,13 +219,13 @@ bool menorLexOrdenamiento(int v_i, int pv, vector<char> T){ // 'v_i' ES EL INDIC
     while(i+v_i != n && i+pv != n){
         if(T[i+v_i] < T[i+pv])// TRUE SI ES MENOR EL SUFIJO DE v_i
             return true;
-        
+
         if(T[i+v_i] > T[i+pv])// FALSE SI ES MAYOR EL SUFIJO DE v_i
             return false;
-        
+
         i++;
     }
-    if(i+v_i == n) //SI 'SUFIJO DE v_i' LLEGÓ AL MAXIMO DEL VECTOR Y ES IGUAL AL SUFIJO DE 'pv' ENTONCES TRUE ('v_i' es menor) 
+    if(i+v_i == n) //SI 'SUFIJO DE v_i' LLEGÓ AL MAXIMO DEL VECTOR Y ES IGUAL AL SUFIJO DE 'pv' ENTONCES TRUE ('v_i' es menor)
         return true;
     return false; // SI NO ENTONCES FALSE
 }

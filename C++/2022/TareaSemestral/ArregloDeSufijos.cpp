@@ -3,6 +3,7 @@
 #include <vector>
 #include <ctime>
 #include <string>
+#include <stdlib.h>
 using namespace std;
 
 vector<int> leeArchivo(vector<char> &T, string path);
@@ -13,26 +14,28 @@ bool menorLexOrdenamiento(int v_i, int pv, vector<char> T);
 bool menorLex(vector<char> P, vector<char> T, int t_i);
 bool esPatron(int v_i, vector<char> T, vector<char> P);
 
-int main(){
+int main(int argc, char **argv){
     if(argc != 2){
-		cout << "Error. Debe ejecutarse como ./ArregloDeSufijos " << endl;
+		cout << "Error. Debe ejecutarse como ./ArregloDeSufijos nombreArchivo" << endl;
 		exit(EXIT_FAILURE);
 	}
     //--------------------------CREACION ARREGLO CHAR Y DE SUFIJOS--------------------------------
     string path = __FILE__; //gets source code path, include file name
     path = path.substr(0,1+path.find_last_of('\\')); //removes file name
-    path += atos(argv[1]); //adds input file to path
+    path += argv[1]; //adds input file to path
+
     vector<char> T(0);
     vector<int> suf = leeArchivo(T, path); //EN ESTA FUNCION ESTA EL ORDENAMIENTO QUE SE DEMORA MUCHO
     //--------------------------------------BUSQUEDA--------------------------------------
+    if (suf.size()==0)return EXIT_FAILURE;
     string patron;
     cout << "Ingrese su patron: ";
     cin >> patron;
     //unsigned t1,t0;
     int p_n = patron.size();
     vector<char> P(p_n);
-    for(int i = 0; i < p_n; i++) P[i] = patron.at(i); 
-    vector<int> indices (0); 
+    for(int i = 0; i < p_n; i++) P[i] = patron.at(i);
+    vector<int> indices (0);
     //t0 = clock();
     Busqueda_ArregloSufijos(T,suf,P,indices);
     //t1 = clock();
@@ -53,7 +56,7 @@ vector<int> leeArchivo(vector<char> &T, string path){
         }
         archivo.close();
         int n = T.size(), i = 0; //N ES EL LARGO DEL VECTOR(PARA NO LLAMAR T.SIZE() MUCHAS VECES) - i sera un iterador
-        vector<int> suf(n); // AQUI SE ALMACENARAN LOS INDICES DE LOS SUFIJOS DEL TEXTO (LUEGO ORDENAREMOS EL VECTOR EN BASE A SUS POSICIONES RESPECTO AL VECTOR T) 
+        vector<int> suf(n); // AQUI SE ALMACENARAN LOS INDICES DE LOS SUFIJOS DEL TEXTO (LUEGO ORDENAREMOS EL VECTOR EN BASE A SUS POSICIONES RESPECTO AL VECTOR T)
         string c; // UTILIZARE ESTA VARIABLE VARIAS VECES PARA RECIBIR LAS RESPUESTAS ESCRITAS A MANO DEL USUARIO
         do{
             cout << "Tienes el archivo con los sufijos ordenados? ('si' o 'no'): ";
@@ -74,11 +77,11 @@ vector<int> leeArchivo(vector<char> &T, string path){
             } else {
                 cout << "No se ha podido encontrado el archivo" << endl;
             }
-        }   
+        }
         for(i = 0; i < n; i++) suf[i] = i; // AGREGA TODOS LOS INDICES EN SUS RESPECTIVAS POSICIONES PARA SER DESPUES ORDENADO Y MODIFICADO ESTE VECTOR
         cout << "Se procedera con el ordenamiento del los sufijos" << endl;
         QuickSortLexicograficamente(T,suf, 0, n-1); //FUNCION QUICKSORT MODIFICADA PARA PODER ORDENAR SUFIJOS MEDIANTE UN VECTOR CON LAS POSICIONES DEL TEXTO Y EL VECTOR QUE ALMACENA EL TEXTO
-        do{      
+        do{
             cout << "Desea crear un archivo con los sufijos? ('si' o 'no'): ";
             cin >> c;
         }while(c.compare("no") != 0 && c.compare("si") != 0 ); // MIENTRAS QUE LA RESPUESTA SEA DIFERENTE DE UN 'NO' Y  DIFERENTE UN 'SI' ENTONCES LE SEGUIRA PREGUNTANDO
@@ -106,7 +109,7 @@ bool menorLex(vector<char> P, vector<char> T, int t_i){ //UNA SIMPLE COMPRABACIO
     int p_n = P.size(), t_n = T.size(), i = 0;
     while(i != p_n && (i+t_i) != t_n){
         if(P[i] < T[i+t_i]) return true; //SI ES MENOR ENTONCES TRUE
-        if(P[i] > T[i+t_i]) return false; //SI ES MAYOR ENTONCES FALSE  
+        if(P[i] > T[i+t_i]) return false; //SI ES MAYOR ENTONCES FALSE
         i++;
     }
     if(i==p_n) return true;
@@ -118,13 +121,13 @@ bool menorLexOrdenamiento(int v_i, int pv, vector<char> T){ // 'v_i' ES EL INDIC
     while(i+v_i != n && i+pv != n){
         if(T[i+v_i] < T[i+pv])// TRUE SI ES MENOR EL SUFIJO DE v_i
             return true;
-        
+
         if(T[i+v_i] > T[i+pv])// FALSE SI ES MAYOR EL SUFIJO DE v_i
             return false;
-        
+
         i++;
     }
-    if(i+v_i == n) //SI 'SUFIJO DE v_i' LLEGÓ AL MAXIMO DEL VECTOR Y ES IGUAL AL SUFIJO DE 'pv' ENTONCES TRUE ('v_i' es menor) 
+    if(i+v_i == n) //SI 'SUFIJO DE v_i' LLEGÓ AL MAXIMO DEL VECTOR Y ES IGUAL AL SUFIJO DE 'pv' ENTONCES TRUE ('v_i' es menor)
         return true;
     return false; // SI NO ENTONCES FALSE
 }
@@ -165,7 +168,7 @@ void Busqueda_ArregloSufijos(vector<char> T, vector<int> inSuf, vector<char> P, 
 		if(esPatron(inSuf[m], T, P)){ // SI ENCUENTRA UNA COINCIDENCIA EN T[inSuf[M]]
 			if(m == 0 || !esPatron(inSuf[m-1], T, P)){ //EN CASO DE QUE SEA EL PRINCIPIO DEL VECTOR (PRIMERA COINCIDENCIA DEL PATRON) O QUE EL ANTERIOR A T[inSuf[M]] NO TENGA EL PATRON
                 l = m; //SE ENCONTRO EL EXTREMO INFERIOR DONDE SE ENCUENTRAN LAS COINCIDENCIAS
-                break;  
+                break;
             }
             r=m-1;
         }else if(menorLex(P,T,inSuf[m])){// SI NO HAY COINCIDENCIA EN T[inSuf[M]] ENTONCES VERÁ SI EL PATRON SE ENCUENTRA MAS A LA DERECHA O A LA IZQUIERDA DEL VECTOR
@@ -182,9 +185,9 @@ void Busqueda_ArregloSufijos(vector<char> T, vector<int> inSuf, vector<char> P, 
     int l_aux = l;// EXTREMO INFERIOR AUXILIAR PARA NO MODIFICAR EL YA LISTO
     while(l_aux<=r){
 		if(esPatron(inSuf[m], T, P)){ // SI ENCUENTRA UNA COINCIDENCIA EN T[inSuf[M]]
-			if(m >= n-1 || !esPatron(inSuf[m+1], T, P)){// SI ES INDICE MAXIMO O SI EL QUE VIENE DESPUÉS NO TIENE EL PATRON 
+			if(m >= n-1 || !esPatron(inSuf[m+1], T, P)){// SI ES INDICE MAXIMO O SI EL QUE VIENE DESPUÉS NO TIENE EL PATRON
                 r = m; //SE ENCONTRO EL EXTREMO SUPERIOR DONDE SE ENCUENTRAN LAS COINCIDENCIAS
-                break;  
+                break;
             }
             l_aux=m+1; // SI SE ENCUENTRA EN MEDIO DEL PATRON ENTONCES EL EXTREMO SUPERIOR DEBE ESTAR MAS ADELANTE
         } else{

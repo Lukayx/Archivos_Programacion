@@ -1,16 +1,16 @@
 CC=g++
 CFLAGS=-Wall -std=c++17 -O3
 BINS=BusquedaExhaustiva ArregloDeSufijos Lista_enlazada
-all: clean BusquedaExhaustiva ArregloDeSufijos Lista_enlazada
+all: clean BusquedaExhaustiva ArregloDeSufijos ListaEnlazada
 
-recursividad:
+BusquedaExhaustiva:
 	$(CC) $(CFLAGS) -o BusquedaExhaustiva BusquedaExhaustiva.cpp
 
-sortAlg:
+ArregloDeSufijos:
 	$(CC) $(CFLAGS) -o ArregloDeSufijos ArregloDeSufijos.cpp
 
-sortSTL:
-	$(CC) $(CFLAGS) -o Lista_enlazada ListaEnlazada.cpp
+ListaEnlazada:
+	$(CC) $(CFLAGS) -o ListaEnlazada Lista_Enlazada.cpp
 
 clean:
 	@echo " [CLN] Removing binary files"

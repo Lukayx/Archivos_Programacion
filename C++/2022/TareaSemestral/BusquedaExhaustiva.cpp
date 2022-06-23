@@ -2,12 +2,17 @@
 #include <fstream>
 #include <vector>
 #include <ctime>
+#include <stdlib.h>
 using namespace std;
 
 void buscaPatron(vector<char> T, vector<char> P, vector<int> &indices);
 
-int main(){
-    ifstream archivo("dna.50MB");
+int main(int argc, char **argv){
+    if(argc != 2){
+		cout << "Error. Debe ejecutarse como ./BusquedaExhaustiva nombreArchivo" << endl;
+		exit(EXIT_FAILURE);
+	}
+    ifstream archivo(argv[1]);
     if(archivo.is_open()){
         string line,patron;
         vector<char> T(0);
@@ -45,5 +50,5 @@ void buscaPatron(vector<char> T, vector<char> P, vector<int> &indices){
         if(j==N_P){ //O(N)
             indices.push_back(i);
         }
-    }    
+    }
 }
