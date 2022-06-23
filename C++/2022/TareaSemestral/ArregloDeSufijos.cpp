@@ -14,10 +14,14 @@ bool menorLex(vector<char> P, vector<char> T, int t_i);
 bool esPatron(int v_i, vector<char> T, vector<char> P);
 
 int main(){
+    if(argc != 2){
+		cout << "Error. Debe ejecutarse como ./ArregloDeSufijos " << endl;
+		exit(EXIT_FAILURE);
+	}
     //--------------------------CREACION ARREGLO CHAR Y DE SUFIJOS--------------------------------
     string path = __FILE__; //gets source code path, include file name
     path = path.substr(0,1+path.find_last_of('\\')); //removes file name
-    path += "DNA4L"; //adds input file to path
+    path += atos(argv[1]); //adds input file to path
     vector<char> T(0);
     vector<int> suf = leeArchivo(T, path); //EN ESTA FUNCION ESTA EL ORDENAMIENTO QUE SE DEMORA MUCHO
     //--------------------------------------BUSQUEDA--------------------------------------
