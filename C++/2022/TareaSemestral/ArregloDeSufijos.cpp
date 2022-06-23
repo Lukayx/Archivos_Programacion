@@ -17,24 +17,24 @@ int main(){
     //--------------------------CREACION ARREGLO CHAR Y DE SUFIJOS--------------------------------
     string path = __FILE__; //gets source code path, include file name
     path = path.substr(0,1+path.find_last_of('\\')); //removes file name
-    path += "20milSOLAMENTE"; //adds input file to path
+    path += "DNA4L"; //adds input file to path
     vector<char> T(0);
     vector<int> suf = leeArchivo(T, path); //EN ESTA FUNCION ESTA EL ORDENAMIENTO QUE SE DEMORA MUCHO
     //--------------------------------------BUSQUEDA--------------------------------------
     string patron;
     cout << "Ingrese su patron: ";
     cin >> patron;
-    unsigned t1,t0;
+    //unsigned t1,t0;
     int p_n = patron.size();
     vector<char> P(p_n);
     for(int i = 0; i < p_n; i++) P[i] = patron.at(i); 
     vector<int> indices (0); 
-    t0 = clock();
+    //t0 = clock();
     Busqueda_ArregloSufijos(T,suf,P,indices);
-    t1 = clock();
-    double time = (double(t1-t0)/CLOCKS_PER_SEC);
+    //t1 = clock();
+    //double time = (double(t1-t0)/CLOCKS_PER_SEC);
     cout << "Se encontraron " << indices.size() << " coincidencias" << endl;
-    cout << "El tiempo que demoró fue: " << time << endl;
+    //cout << "El tiempo que demoró fue: " << time << endl;
     //cout << "Se encontraron coincidencias en: " << endl;
     //for(int i : indices) cout << "Indice: " << i << endl;
     return EXIT_SUCCESS;
@@ -65,7 +65,7 @@ vector<int> leeArchivo(vector<char> &T, string path){
                     suf[i++] = stoi(line);//LEE EL ARCHIVO DE LOS SUFIJOS ORDENADOS, LOS TRANSFORMA A 'INT' Y LOS ALMACENA EN SU RESPECTIVA POSICION
                 }
                 archivo.close();
-                cout << "LARGO VECTOR SUFIJOS: " << suf.size() << endl;
+                //cout << "LARGO VECTOR SUFIJOS: " << suf.size() << endl;
                 return suf; // RETORNA EL ARREGLO DE SUFIJOS ORDENADOS
             } else {
                 cout << "No se ha podido encontrado el archivo" << endl;
@@ -102,9 +102,7 @@ bool menorLex(vector<char> P, vector<char> T, int t_i){ //UNA SIMPLE COMPRABACIO
     int p_n = P.size(), t_n = T.size(), i = 0;
     while(i != p_n && (i+t_i) != t_n){
         if(P[i] < T[i+t_i]) return true; //SI ES MENOR ENTONCES TRUE
-
-        if(P[i] > T[i+t_i]) return false; //SI ES MAYOR ENTONCES FALSE
-        
+        if(P[i] > T[i+t_i]) return false; //SI ES MAYOR ENTONCES FALSE  
         i++;
     }
     if(i==p_n) return true;
