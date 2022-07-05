@@ -25,9 +25,10 @@ int main(int argc, char **argv){
 	}
 
 	int i, val, val2, n, m, c, j, k;
+	srand(time(NULL));
 	n = atoi(argv[1]);
-	c = //atoi(argv[2]);
-	m = atoi(argv[2]);//computeM(MAX, c);
+	c = atoi(argv[2]);
+	m = computeM(MAX, c);
 	
 	cout << " m = " << m << endl;
 	nodo **T = new nodo*[m];		// tabla T de tamaño m
@@ -41,7 +42,7 @@ int main(int argc, char **argv){
 	}
 	printT(T, m);
 	
-	/*
+	
 	// testear busqueda...
 	for (i=0; i<10; i++){
 		val = rand()%MAX;
@@ -59,14 +60,12 @@ int main(int argc, char **argv){
 		k = removeFromT(T, m, val);
 		if(k != -1){
 			val2 = rand()%MAX;
-			cout << "Se elimina " << val << " desde T[" << k << "], y se inserta " << val2 
-              << " en T[" << insertInT(T, m, val2) << "]" << endl;
+			cout << "Se elimina " << val << " desde T[" << k << "], y se inserta " << val2 << " en T[" << insertInT(T, m, val2) << "]" << endl;
 			printT(T, m);
 			i++;
-		}else
+		} else
 			cout << "nodo con val=" << val << " No existe!" << endl;
 	}
-	*/
 	
 	cout << "## Fin del programa ##" << endl;
 
@@ -76,6 +75,25 @@ int main(int argc, char **argv){
 // si lo encuentra retorna la key de donde fue eliminado (el primero que encuentra),
 // si no rerorna -1
 int removeFromT(nodo **T, int m, int val){
+	nodo *p = T[val%m];
+	if(p != nullptr){
+		if(p->val == val){
+			T[val%m] = p->next;
+		} else {
+			nodo *q = p;
+			p = p->next;
+			while(p!=nullptr && p->val!=val){
+				q = p;
+				p = p->next;
+			} 
+			if(p==nullptr) {
+				return -1;
+			}
+			q->next = p->next;
+		}
+		delete p;
+		return val%m;
+	}
 	return -1;
 }
 
@@ -116,10 +134,10 @@ bool esPrimo(int m){
 // Deseamos encontrar el primer primo m tal que U/(m+k) = c. Considere U=MAX
 int computeM(int U, int c){
 	int m = U/c;
-	while(esPrimo(m)) && {
-		m--;
+	while(esPrimo(m) == false) {
+		m++;
 	}
-	return 0;	
+	return m;	
 }
 
 void printT(nodo **T, int m){
