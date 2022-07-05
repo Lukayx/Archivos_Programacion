@@ -26,10 +26,10 @@ int main(int argc, char **argv){
 
 	int i, val, val2, n, m, c, j, k;
 	n = atoi(argv[1]);
-	c = atoi(argv[2]);
-	m = computeM(MAX, c);
+	c = //atoi(argv[2]);
+	m = atoi(argv[2]);//computeM(MAX, c);
 	
-	cout << " m = " << m << endl;exit(0);
+	cout << " m = " << m << endl;
 	nodo **T = new nodo*[m];		// tabla T de tamaño m
 	for (i=0; i<m; i++)
 		T[i] = NULL;
@@ -77,32 +77,48 @@ int main(int argc, char **argv){
 // si no rerorna -1
 int removeFromT(nodo **T, int m, int val){
 	return -1;
-
 }
 
 // si lo encuentra retorna la key en donde se encuentra,
 // si no rerorna -1
 int search(nodo **T, int m, int val){
-		
+	nodo *p = T[val%m];
+	while(p!=nullptr && p->val!=val) p = p->next;
+	if(p!=nullptr) return val%m;
 	return -1;
 }
 
 // inserta un nodo con valor val en la lista correspondiente a su clave (T[key]),
 // lo inserta a la cabeza de la lista (por la izq.) y retorna el indice de T en donde se insertó (key)
 int insertInT(nodo **T, int m, int val){
+	nodo *nuevoNodo = new nodo();
+	nuevoNodo->val = val;
+
+	nuevoNodo->next = T[val%m];
 	
-	return -1;
+	T[val%m] = nuevoNodo;
+
+	return val%m;
 }
 
 // retorna true si m es primo y false si no lo es
 // m = 100
 bool esPrimo(int m){
-	return false;
+	if(m==1) return false;
+
+	for (int i = 2; i < m; i++){
+		if(m%i==0) return false;
+	}
+
+	return true;
 }
 
 // Deseamos encontrar el primer primo m tal que U/(m+k) = c. Considere U=MAX
 int computeM(int U, int c){
-	
+	int m = U/c;
+	while(esPrimo(m)) && {
+		m--;
+	}
 	return 0;	
 }
 
