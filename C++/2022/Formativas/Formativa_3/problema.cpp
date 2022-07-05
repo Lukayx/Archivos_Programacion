@@ -1,8 +1,8 @@
 #include "BST.h"
 using namespace std;
 
-#define LEN 10
-const int KEY[LEN] = {10,7,3,8,9,17,12,37,27,40};
+#define LEN 12
+const int KEY[LEN] = {10,7,3,8,9,17,12,37,27,40,1,28};
 
 /*
 Si inserta las claves de KEY[] en orden, debe quedar un BST con la sgte. forma:
@@ -31,5 +31,3 @@ int main(int argc, char **argv){
 	cout << endl << "### Fin Problema ###" << endl;
 	return EXIT_SUCCESS;
 }
-
-

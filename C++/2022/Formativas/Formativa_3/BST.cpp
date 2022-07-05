@@ -62,27 +62,25 @@ int BST::sumAllKey(nodoBST *t){
 	return 0;
 }
 
-nodoBST BST::encuentraSubArboles(nodoBST *t, int num){
+nodoBST* BST::encuentraSubArboles(nodoBST *t, int num){
 	if(t != nullptr){
-		if(sumAllKey(t) == num) return *t;
-		nodoBST *p = *encuentraSubArboles(t->der, num);
+		if(sumAllKey(t) == num) return t;
+		nodoBST *p = encuentraSubArboles(t->der, num);
 		if(p!=nullptr) return p;
-		p = *encuentraSubArboles(t->izq, num);
+		p = encuentraSubArboles(t->izq, num);
 		if(p!=nullptr) return p;
 	}
-	return *t;
+	return NULL;
 }
 
 // Para todo nodo 't' a la derecha del root, si exite subárbol a la izquierda del root cuya suma == t->key, debe imprimir un match 
 // Al comienzo, 't' debe ser el hijo derecho del root
 void BST::findNodesRightRoot(nodoBST *t){
 	if(t != nullptr){
-		nodoBST *p = t;
-		*t = encuentraSubArboles(root->izq,t->key);
-		if(t != nullptr && t->key == p->key) {
-			cout << "**Match encontrado: suma = " << p->key << " en el subarbol(key="<<t->key<<",pos="<<t->pos<<") == nodo clave "<<p->key<<endl;
+		nodoBST *p = encuentraSubArboles(root->izq,t->key);
+		if(p != nullptr) {
+			cout << "**Match encontrado: suma = " << t->key << " en el subarbol(key="<<p->key<<",pos="<<p->pos<<") == nodo clave "<<t->key<<endl;
 		}
-		*t = *p; 
 		findNodesRightRoot(t->izq);
 		findNodesRightRoot(t->der);
 	}

@@ -24,5 +24,5 @@ public:
 	
 	int sumAllKey(nodoBST *t);
 	void findNodesRightRoot(nodoBST *t);
-	nodoBST encuentraSubArboles(nodoBST *t, int num);
+	nodoBST *encuentraSubArboles(nodoBST *t, int num);
 };

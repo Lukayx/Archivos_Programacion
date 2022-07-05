@@ -17,7 +17,7 @@ int main(int argc, char **argv){
 		cout << "Error. Debe ejecutarse como ./heaps n" << endl;
 		exit(EXIT_FAILURE);
 	}
-
+	srand(time(NULL));
 	n = atoi(argv[1]);
 	int *X = new int[n+1];
 	for (i=1; i<=n; i++)
@@ -71,17 +71,58 @@ int main(int argc, char **argv){
 	
 // cada valor X[i], i=2,3,4....,n, sube hasta su posición correcta
 void makeMaxHeap(int *X, int n){
-
+	int i, j, hijo, padre, k;
+	for(i = 2; i <= n; i++){
+		hijo = X[i];
+		k = i/2;
+		padre = X[k]; 
+		j = i;
+		while(k && hijo > padre){
+			X[j] = X[k];
+			j = k;
+			k = k/2;
+			padre = X[k];
+		}
+		X[j] = hijo;
+	}
 }
 
 // busca y deja key = X[1] en su posicion correcta en X[1..n], bajando desde la raíz
 void maxHeapify(int *X, int n){
+	int i = 1, key, indice;
+	while(i<=n){
+		key = X[i];
+		if(i*2<=n && X[i*2]>X[i*2+1])
+			indice = i*2;
+		else
+			indice = i*2+1;
+		if(key<X[indice]){
+			X[i] = X[indice];
+			X[indice] = key;
+			i = indice;
+		} else {
+			break;
+		}
+	}
 }
 
 
 // cada valor X[i], i=2,3,4....,n, sube hasta su posición correcta
 void makeMinHeap(int *X, int n){
-
+	int i, j, hijo, padre, k;
+	for(i = 2; i <= n; i++){
+		hijo = X[i];
+		k = i/2;
+		padre = X[k]; 
+		j = i;
+		while(k && hijo < padre){
+			X[j] = X[k];
+			j = k;
+			k = k/2;
+			padre = X[k];
+		}
+		X[j] = hijo;
+	}
 }
 
 // busca y deja key = X[1] en su posicion correcta en X[1..n], bajando desde la raíz
