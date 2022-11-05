@@ -12,7 +12,7 @@
       "environment": [],
       "externalConsole": true,
       "MIMode": "gdb",
-      "miDebuggerPath": "C:\\MinGW\\bin\\gdb.exe",
+      "miDebuggerPath": "C:\\TDM-GCC-32\\bin\\exe",
       "setupCommands": [
           {
               "description": "Habilitar la impresión con sangría para gdb",
