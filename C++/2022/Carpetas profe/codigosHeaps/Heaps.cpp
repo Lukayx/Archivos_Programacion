@@ -89,20 +89,19 @@ void makeMaxHeap(int *X, int n){
 
 // busca y deja key = X[1] en su posicion correcta en X[1..n], bajando desde la raíz
 void maxHeapify(int *X, int n){
-	int i = 1, key, indice;
+	int hijo = 2, key = X[1], padre = 1;
 	while(i<=n){
 		key = X[i];
-		if(i*2<=n && X[i*2]>X[i*2+1])
-			indice = i*2;
-		else
-			indice = i*2+1;
-		if(key<X[indice]){
-			X[i] = X[indice];
-			X[indice] = key;
-			i = indice;
-		} else {
+		if(i*2 <= n && X[hijo*2] < X[hijo*2+1])
+			hijo++;
+		
+		if(key < X[hijo]){
+			X[padre] = X[hijo];
+			padre = hijo;
+			hijo *= 2;
+		} else 
 			break;
-		}
+		X[padre] = key;
 	}
 }
 
@@ -127,7 +126,19 @@ void makeMinHeap(int *X, int n){
 
 // busca y deja key = X[1] en su posicion correcta en X[1..n], bajando desde la raíz
 void minHeapify(int *X, int n){
-
+	int hijo = 2, key = X[1], padre = 1;
+	while(i<=n){
+		key = X[i];
+		if(hijo+1 <= n && X[hijo] > X[hijo+1])
+			hijo++;
+		if(key > X[hijo]){
+			X[padre] = X[hijo];
+			padre = hijo;
+			hijo *= 2;
+		} else 
+			break;
+		X[padre] = key;
+	}
 }
 
 // método de ordenamiento ascendente en base a un maxheap

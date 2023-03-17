@@ -134,8 +134,8 @@ bool esPrimo(int m){
 // Deseamos encontrar el primer primo m tal que U/(m+k) = c. Considere U=MAX
 int computeM(int U, int c){
 	int m = U/c;
-	while(esPrimo(m) == false) {
-		m++;
+	while(!esPrimo(m)) {
+		m--;
 	}
 	return m;	
 }
