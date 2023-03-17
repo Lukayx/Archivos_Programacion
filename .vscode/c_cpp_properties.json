@@ -10,11 +10,18 @@
                 "UNICODE",
                 "_UNICODE"
             ],
-            "compilerPath": "C:/MinGW/bin/gcc.exe",
-            "cStandard": "${default}",
-            "cppStandard": "${default}",
+            "compilerPath": "C:\\TDM-GCC-32\\bin\\g++.exe",
+            "cStandard": "c17",
+            "cppStandard": "c++11",
             "intelliSenseMode": "windows-gcc-x86",
-            "compilerArgs": [],
+            "compilerArgs": [
+                "-lbgi",
+                "-lgdi32",
+                "-lcomdlg32",
+                "-luuid",
+                "-loleaut32",
+                "-lole32"
+            ],
             "configurationProvider": "ms-vscode.makefile-tools"
         }
     ],
