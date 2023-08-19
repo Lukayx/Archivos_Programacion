@@ -22,29 +22,29 @@ void moda(vector<int> v);
 void conteo(vector<int> v);
 
 int main(int argc, char **argv) {
-  string nombre;
+  string u;
   string valor;
-  vector<int> valores;
+  vector<int> v;
   int c;
 
   while ((c = getopt(argc, argv, "u:v:")) != -1) {
     switch (c) {
       case 'u': {
-        nombre = optarg;
+        u = optarg;
         break;
       }
       case 'v': {
         stringstream ss(optarg);
         while (getline(ss, valor, ';')) {
           int i = stoi(valor);
-          valores.push_back(i);
+          v.push_back(i);
         }
         break;
       }
     }
   }
 
-  getout(nombre, valores);
+  getout(u, v);
   return 0;
 }
 
@@ -59,12 +59,23 @@ void getout(string u, vector<int> v) {
     cout << " 2)-Realizar promedio del vector" << endl;
     cout << " 3)-Realizar moda del vector" << endl;
     cout << " 4)-Contar elementos del vector" << endl;
-    cout << "CUALQUIER OTRO CASO TERMINARA EL PROGRAMA" << endl;
-    bool condition = true;
+    cout << " 0)-SALIR" << endl;
     int c;
-    cout << endl << "Seleccione el numero de la operacion que quiere realizar: ";
-    cin >> c;
+    bool condition = true;
+    bool entradaValida = false;
     while(condition){
+      cout << "\nElija una Opcion: ";
+      while(!entradaValida){
+        cin >> c;
+        entradaValida = true;
+        for(char a : c){
+          if(!isdigit(a)){
+            entradaValida = false;
+            cout << "\nOpcion invalida, Elija denuevo: ";
+            break;
+          }
+        }
+      }
       switch(c){
         case 1:
           if(confirmPermiss(usuario, c)){
@@ -94,13 +105,12 @@ void getout(string u, vector<int> v) {
             cout << "No tiene permiso para acceder a esta operacion." << endl;
           }
           break;
-        default:
+        case 0:
           condition = false;
           break;
-      }
-      if(condition){
-        cout << "\nQue otra operacion desea realizar? ";
-        cin >> c;
+        default:
+          cout << "Esa opcion no esta disponible por el momento."
+          break;
       }
     }
   } else {
