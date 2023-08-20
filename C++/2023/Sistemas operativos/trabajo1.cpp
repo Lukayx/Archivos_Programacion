@@ -20,6 +20,7 @@ void sumatoria(vector<int> v);
 void promedio(vector<int> v);
 void moda(vector<int> v);
 void conteo(vector<int> v);
+int gatito(int c, string d);
 
 int main(int argc, char **argv) {
   string nombre;
