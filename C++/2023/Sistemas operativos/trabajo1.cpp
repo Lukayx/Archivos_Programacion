@@ -1,3 +1,4 @@
+#include <functional>
 #include <iostream>
 #include <unistd.h>
 #include <fstream>
@@ -12,23 +13,28 @@ struct Usuario {
   vector<int> options;
 };
 
-void getout(string u, vector<int> v);
+void getout(string u, vector<int> v, string path, string texto);
 void signIn(string username);
 bool validation(Usuario& usuario);
 bool confirmPermiss(Usuario& usuario, int num);
+void salir();
 void sumatoria(vector<int> v);
 void promedio(vector<int> v);
 void moda(vector<int> v);
-void conteo(vector<int> v);
-int gatito(int c, string d);
+void contar(vector<int> v);
+void crearArchivo(string path);
+void agregarTexto(string text);
+void opcionIndefinida();
+map<int, pair<string, function<void(vector<int>)>>> crearMapa(string path, string texto);
 
 int main(int argc, char **argv) {
   string u;
   string valor;
+  string path;
+  string texto;
   vector<int> v;
   int c;
-
-  while ((c = getopt(argc, argv, "u:v:")) != -1) {
+  while ((c = getopt(argc, argv, "u:v:f:t:")) != -1) {
     switch (c) {
       case 'u': {
         u = optarg;
@@ -42,88 +48,59 @@ int main(int argc, char **argv) {
         }
         break;
       }
+      case 'f': {
+        path = optarg;
+        break;
+      }
+      case 't': {
+        texto = optarg;
+        break;
+      }
     }
   }
-
-  getout(u, v);
+  getout(u,v,path,texto);
   return 0;
 }
 
-void getout(string u, vector<int> v) {
+void getout(string u, vector<int> v, string path, string texto) {
   Usuario usuario;
   usuario.u = u;
 
   if(validation(usuario)) {
-    cout << "\n-------Usuario Valido-------" << endl;
-    cout << "\nOperaciones" << endl;
-    cout << " 1)-Realizar sumatoria del vector" << endl;
-    cout << " 2)-Realizar promedio del vector" << endl;
-    cout << " 3)-Realizar moda del vector" << endl;
-    cout << " 4)-Contar elementos del vector" << endl;
-    cout << " 0)-SALIR" << endl;
-    int c;
+    map<int, pair<string, function<void(vector<int>)>>> menuOptions = crearMapa(path,texto);
     bool condition = true;
-    bool entradaValida = false;
+    bool entradaValida = true;
+    string respuesta;
+    cout << "\nOPCIONES DE MENU\n" << endl;
+    for (const auto& option : menuOptions){
+      cout << option.first << ")- " << option.second.first << endl;
+    }
     while(condition){
-      cout << "\nElija una Opcion: ";
-      while(!entradaValida){
-        cin >> c;
+      do{
+        cout << "\nElija una Opcion: ";
+        cin >> respuesta;
         entradaValida = true;
-        for(char a : c){
+        for(char a : respuesta){
           if(!isdigit(a)){
             entradaValida = false;
             cout << "\nOpcion invalida, Elija denuevo: ";
             break;
           }
         }
-      }
-      switch(c){
-        case 1:
-          if(confirmPermiss(usuario, c)){
-            sumatoria(v);
-          } else {
-            cout << "No tiene permiso para acceder a esta operacion." << endl;
-          }
-          break;
-        case 2:
-          if(confirmPermiss(usuario, c)){
-            promedio(v);
-          } else {
-            cout << "No tiene permiso para acceder a esta operacion." << endl;
-          }
-          break;
-        case 3:
-          if(confirmPermiss(usuario, c)){
-            moda(v);
-          } else {
-            cout << "No tiene permiso para acceder a esta operacion." << endl;
-          }
-          break;
-        case 4:
-          if(confirmPermiss(usuario, c)){
-            conteo(v);
-          } else {
-            cout << "No tiene permiso para acceder a esta operacion." << endl;
-          }
-          break;
-        case 0:
-          condition = false;
-          break;
-        default:
-          cout << "Esa opcion no esta disponible por el momento."
-          break;
+      }while(!entradaValida);
+      int opcion = stoi(respuesta);
+      if (confirmPermiss(usuario, opcion) || opcion==0 || opcion>6) {
+        if (menuOptions.find(opcion) != menuOptions.end()) {
+            menuOptions[opcion].second(v);
+        } else {
+            std::cout << "Opcion invalida." << std::endl;
+        }
+      } else {
+        cout << "No tiene permiso para acceder a esta operacion." << endl;
       }
     }
   } else {
-    string respuesta;
-    cout << "\n-------Usuario Invalido-------" << endl;
-    cout << endl << "Usted no se encuentra en la base de datos" << endl;
-    do {
-      cout << " Desea Registrarse? (Si/No): ";
-      cin >> respuesta;
-    } while (respuesta != "Si" && respuesta != "No");
-    if (respuesta == "Si") 
-      signIn(u);
+    signIn(u);
   }
   cout << "Que tenga un buen dia" << endl;
 }
@@ -148,59 +125,65 @@ bool validation(Usuario& usuario) {
         usuario.options.push_back(i);
       }
       archivo.close();
+      cout << "\n-------Usuario Valido-------" << endl;
       return true; // Usuario encontrado y opciones procesadas
     }
   }
-
   archivo.close();
+  cout << "\n-------Usuario Invalido-------" << endl;
+  cout << endl << "Usted no se encuentra en la base de datos" << endl;
   return false; // Usuario no encontrado en la base de datos
 }
 
-
-
 void signIn(string username) {
-  ofstream archivo("db.txt", ios::app);
   string respuesta;
-  string text[] = {
-  " Realizar sumatoria del vector",
-  " Realizar promedio del vector",
-  " Realizar moda del vector",
-  " Contar elementos del vector"
-  };
-  int i = 0;
-  bool unaVez = false;
-
-  if (!archivo.is_open()) {
-    cout << "No se pudo abrir el archivo";
-    exit(1);
-  }
-  string linea = username + ";";
-  cout << linea << endl;
-  cout << "Que permisos desea tener:" << endl;
-  while (i<4){
-    do{
-      cout << text[i] <<" (Si/No): ";
-      cin >> respuesta;
-    }while(respuesta != "Si" && respuesta != "No");
-    i++;
-    if(respuesta == "Si"){
-      if(!unaVez){
-        linea = linea + to_string(i);
-      } else {
-        linea = linea + "," + to_string(i);
-      }
-      unaVez = true;
+  do {
+    cout << " Desea Registrarse? (Si/No): ";
+    cin >> respuesta;
+  } while (respuesta != "Si" && respuesta != "No");
+  if (respuesta == "Si") {
+    ofstream archivo("db.txt", ios::app);
+    string respuesta;
+    string text[] = {
+    " Realizar sumatoria del vector",
+    " Realizar promedio del vector",
+    " Realizar moda del vector",
+    " Contar elementos del vector"
+    };
+    int i = 0;
+    bool unaVez = false;
+    if (!archivo.is_open()) {
+      cout << "No se pudo abrir el archivo";
+      exit(1);
     }
+    string linea = username + ";";
+    cout << linea << endl;
+    cout << "Que permisos desea tener:" << endl;
+    while (i<4){
+      do{
+        cout << text[i] <<" (Si/No): ";
+        cin >> respuesta;
+      }while(respuesta != "Si" && respuesta != "No");
+      i++;
+      if(respuesta == "Si"){
+        if(!unaVez){
+          linea = linea + to_string(i);
+        } else {
+          linea = linea + "," + to_string(i);
+        }
+        unaVez = true;
+      }
+    }
+    cout << linea << endl;
+    if(unaVez){
+      archivo << endl << linea;
+      cout << endl << "------Se ha registrado exitosamente------\n" << endl;  
+    } else {
+      cout << endl << "--------No ha podido registrarse--------\n" << endl;  
+      cout << "Debe de tener almenos un permiso." << endl;
+    }
+    archivo.close();
   }
-  cout << linea << endl;
-  if(unaVez){
-    archivo << endl << linea;
-    cout << endl << "------Se ha registrado exitosamente------\n" << endl;  
-  } else {
-    cout << endl << "--------No ha podido registrarse--------\n" << endl;  
-    cout << "Debe de tener almenos un permiso." << endl;
-  }
-  archivo.close();
 }
 
 bool confirmPermiss(Usuario& usuario, int num) {
@@ -210,6 +193,11 @@ bool confirmPermiss(Usuario& usuario, int num) {
     }
   }
   return false;
+}
+
+void salir(){
+  cout << "Que tenga un buen dia" << endl;
+  exit(1);
 }
 
 void sumatoria(vector<int> v){
@@ -247,6 +235,65 @@ void moda(vector<int> v){
   cout << "La moda del vector es: " << moda << endl;
 }
 
-void conteo(vector<int> v){
+void contar(vector<int> v){
   cout << "El numero de elementos del vector es: " << v.size() << endl;
+}
+
+void crearArchivo(string path){
+
+}
+
+void agregarTexto(string text){
+
+}
+
+void opcionIndefinida(){
+  cout << "La opcion que elejiste aun no ha sido implementada." << endl;
+}
+
+map<int, pair<string, function<void(vector<int>)>>> crearMapa(string path, string texto){
+  map<int, pair<string, function<void(vector<int>)>>> mapa;
+
+  ifstream archivoMenu("menu.txt");
+  string linea;
+
+  if (!archivoMenu.is_open()) {
+    cout << "No se pudo abrir el archivo";
+    exit(1);
+  }
+
+  while (getline(archivoMenu, linea)) {
+    string x;
+    stringstream dd(linea);
+    string valor;
+    getline(dd, valor, ',');
+    int opcion = stoi(valor);
+
+    getline(dd, valor, ',');
+    string label = valor;
+
+    getline(dd, valor, ',');
+    function<void(vector<int>)> funcion;
+
+    if (valor == "salir") {
+      funcion = [](vector<int>) { salir(); };
+    } else if (valor == "sumatoria") {
+      funcion = [](vector<int> v) { sumatoria(v); };
+    } else if (valor == "promedio") {
+      funcion = [](vector<int> v) { promedio(v); };
+    } else if (valor == "moda") {
+      funcion = [](vector<int> v) { moda(v); };
+    } else if (valor == "contar") {
+      funcion = [](vector<int> v) { contar(v); };
+    } else if (valor == "crearArchivo") {
+      funcion = [path](vector<int>) { crearArchivo(path); }; // Agrega la ruta que necesites
+    } else if (valor == "agregarTexto") {
+      funcion = [texto](vector<int>) { agregarTexto(texto); }; // Agrega el texto que necesites
+    } else {
+      funcion = [](vector<int>) { opcionIndefinida(); };
+    }
+    mapa[opcion] = make_pair(label, funcion);
+  }
+  archivoMenu.close();
+  return mapa;
 }

@@ -10,7 +10,7 @@ Para compilar el codigo y generar el archivo .exe se debe escribir:
   g++ trabajo1.cpp -o trabajo1
 
 Para ejecutar el .exe generado tras compilar se debe escribir: 
-  trabajo1 -u "{username}" -v "{vector}"
+  trabajo1 -u "{username}" -v "{vector}" -f "{ruta}" -t "{texto}"
 Donde username es Nombre y apellido con mayusculas al principio y sin caracteres especiales.
 El vector se escribe de la forma 3;6;1;7;12 (Se transformara a <3,6,1,7,12>)
 
