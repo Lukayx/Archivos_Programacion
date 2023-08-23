@@ -23,7 +23,7 @@ void promedio(vector<int> v);
 void moda(vector<int> v);
 void contar(vector<int> v);
 void crearArchivo(string path);
-void agregarTexto(string text);
+void agregarTexto(string text, string path);
 void opcionIndefinida();
 map<int, pair<string, function<void(vector<int>)>>> crearMapa(string path, string texto);
 
@@ -93,7 +93,7 @@ void getout(string u, vector<int> v, string path, string texto) {
         if (menuOptions.find(opcion) != menuOptions.end()) {
             menuOptions[opcion].second(v);
         } else {
-            std::cout << "Opcion invalida." << std::endl;
+            cout << "Opcion invalida." << endl;
         }
       } else {
         cout << "No tiene permiso para acceder a esta operacion." << endl;
@@ -106,7 +106,7 @@ void getout(string u, vector<int> v, string path, string texto) {
 }
 
 bool validation(Usuario& usuario) {
-  ifstream archivo("db.txt");
+  ifstream archivo("Bases_de_datos/db.txt");
   string linea;
 
   if (!archivo.is_open()) {
@@ -142,7 +142,7 @@ void signIn(string username) {
     cin >> respuesta;
   } while (respuesta != "Si" && respuesta != "No");
   if (respuesta == "Si") {
-    ofstream archivo("db.txt", ios::app);
+    ofstream archivo("Bases_de_datos/db.txt", ios::app);
     string respuesta;
     string text[] = {
     " Realizar sumatoria del vector",
@@ -240,11 +240,38 @@ void contar(vector<int> v){
 }
 
 void crearArchivo(string path){
+  ifstream existenciaArchivo(path);
+  if(existenciaArchivo){
+    cout << "El archivo ya existe en la ruta especificada." << endl;
+    existenciaArchivo.close();
+    return;
+  }
+  ofstream archivo(path,ios::out);
+  if (!archivo.is_open()) {
+    cout << "No se pudo abrir el archivo";
+    exit(1);
+  }
 
+  archivo.close();
+  cout << "Archivo creado exitosamente." << endl;
 }
 
-void agregarTexto(string text){
+void agregarTexto(string text, string path){
+  ifstream existenciaArchivo(path);
+  if(!existenciaArchivo){
+    cout << "El archivo al que intentas acceder en la ruta especificada no existe." << endl;
+    existenciaArchivo.close();
+    return;
+  }
 
+  ofstream archivo(path,ios::out);
+  if (!archivo.is_open()) {
+    cout << "No se pudo abrir el archivo";
+    exit(1);
+  }
+  archivo << text;
+  archivo.close();
+  cout << "Texto agregado al archivo exitosamente." << endl;
 }
 
 void opcionIndefinida(){
@@ -254,7 +281,7 @@ void opcionIndefinida(){
 map<int, pair<string, function<void(vector<int>)>>> crearMapa(string path, string texto){
   map<int, pair<string, function<void(vector<int>)>>> mapa;
 
-  ifstream archivoMenu("menu.txt");
+  ifstream archivoMenu("Bases_de_datos/menu.txt");
   string linea;
 
   if (!archivoMenu.is_open()) {
@@ -288,7 +315,7 @@ map<int, pair<string, function<void(vector<int>)>>> crearMapa(string path, strin
     } else if (valor == "crearArchivo") {
       funcion = [path](vector<int>) { crearArchivo(path); }; // Agrega la ruta que necesites
     } else if (valor == "agregarTexto") {
-      funcion = [texto](vector<int>) { agregarTexto(texto); }; // Agrega el texto que necesites
+      funcion = [texto,path](vector<int>) { agregarTexto(texto,path); }; // Agrega el texto que necesites
     } else {
       funcion = [](vector<int>) { opcionIndefinida(); };
     }

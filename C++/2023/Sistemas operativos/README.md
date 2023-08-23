@@ -13,7 +13,13 @@ Para ejecutar el .exe generado tras compilar se debe escribir:
   trabajo1 -u "{username}" -v "{vector}" -f "{ruta}" -t "{texto}"
 Donde username es Nombre y apellido con mayusculas al principio y sin caracteres especiales.
 El vector se escribe de la forma 3;6;1;7;12 (Se transformara a <3,6,1,7,12>)
+La ruta puede ser escrita como solo el nombre del archivo para crearlo en la misma carpeta o una mas especifica para crearla en otro lugar.
+El texto será lo que quieres escribir dentro del archivo. 
 
-La base de datos (Archivo db.txt) se estructura de la forma {username};{permisos}
+La base de datos (db.txt) se estructura de la forma {username};{permisos}
 como por ejemplo: 
   Vicente Alves;1,3,4 
+
+Las opciones del menú (menu.txt) se estructura de la forma {numeroOpcion},{Label},{identificador}
+como por ejemplo: 
+  5,Crear archivo de texto,crearArchivo
