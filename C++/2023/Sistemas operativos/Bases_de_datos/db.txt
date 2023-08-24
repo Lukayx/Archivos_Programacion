@@ -2,3 +2,5 @@ Fernando Inzulza;1,3,4
 Agustin Estrada;2,3,4
 Martin Rehl;1,4
 Fernanda Salgado;1,2,3,4,5,6
+Cristian Huenchullanca;1,2,3,4,5,6
+Vicente Alves;1,2,4,5,6

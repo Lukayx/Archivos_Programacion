@@ -14,7 +14,7 @@ struct Usuario {
 };
 
 void getout(string u, vector<int> v, string path, string texto);
-void signIn(string username);
+void signIn(string username, map<int, pair<string, function<void(vector<int>)>>> menuOptions);
 bool validation(Usuario& usuario);
 bool confirmPermiss(Usuario& usuario, int num);
 void salir();
@@ -43,6 +43,12 @@ int main(int argc, char **argv) {
       case 'v': {
         stringstream ss(optarg);
         while (getline(ss, valor, ';')) {
+          for(const auto& a : valor){
+            if(!isdigit(a) && a != '-'){
+              cout << "Vector incorrecto, escribalo bien e intente nuevamente." << endl;
+              exit(1);
+            }
+          }
           int i = stoi(valor);
           v.push_back(i);
         }
@@ -65,9 +71,9 @@ int main(int argc, char **argv) {
 void getout(string u, vector<int> v, string path, string texto) {
   Usuario usuario;
   usuario.u = u;
+  map<int, pair<string, function<void(vector<int>)>>> menuOptions = crearMapa(path,texto);
 
   if(validation(usuario)) {
-    map<int, pair<string, function<void(vector<int>)>>> menuOptions = crearMapa(path,texto);
     bool condition = true;
     bool entradaValida = true;
     string respuesta;
@@ -100,7 +106,7 @@ void getout(string u, vector<int> v, string path, string texto) {
       }
     }
   } else {
-    signIn(u);
+    signIn(u, menuOptions);
   }
   cout << "Que tenga un buen dia" << endl;
 }
@@ -135,7 +141,7 @@ bool validation(Usuario& usuario) {
   return false; // Usuario no encontrado en la base de datos
 }
 
-void signIn(string username) {
+void signIn(string username, map<int, pair<string, function<void(vector<int>)>>> menuOptions) {s
   string respuesta;
   do {
     cout << " Desea Registrarse? (Si/No): ";
@@ -144,13 +150,6 @@ void signIn(string username) {
   if (respuesta == "Si") {
     ofstream archivo("Bases_de_datos/db.txt", ios::app);
     string respuesta;
-    string text[] = {
-    " Realizar sumatoria del vector",
-    " Realizar promedio del vector",
-    " Realizar moda del vector",
-    " Contar elementos del vector"
-    };
-    int i = 0;
     bool unaVez = false;
     if (!archivo.is_open()) {
       cout << "No se pudo abrir el archivo";
@@ -159,17 +158,18 @@ void signIn(string username) {
     string linea = username + ";";
     cout << linea << endl;
     cout << "Que permisos desea tener:" << endl;
-    while (i<4){
+    for(const auto& val : menuOptions){
+      int key = val.first;
+      if(key == 0 || menuOptions.find(key+1) == menuOptions.end()) continue;
       do{
-        cout << text[i] <<" (Si/No): ";
+        cout << "Permiso a '"<< val.second.first <<"' (Si/No): ";
         cin >> respuesta;
       }while(respuesta != "Si" && respuesta != "No");
-      i++;
       if(respuesta == "Si"){
         if(!unaVez){
-          linea = linea + to_string(i);
+          linea = linea + to_string(key);
         } else {
-          linea = linea + "," + to_string(i);
+          linea = linea + "," + to_string(key);
         }
         unaVez = true;
       }
