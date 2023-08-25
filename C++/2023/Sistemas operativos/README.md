@@ -1,19 +1,46 @@
 Trabajo 1 sistope
-Al recibir el nombre y el vector este lo recibe con la funcion getotp y los almacena en las variables u y v respectivamente. Luego se envian a la funcion getout para verificar si se encuentran en la base de datos, a partir de aqui hay 2 caminos:
+
+-----------------------------------------Archivo Main-----------------------------------------
+Importa los archivos dataBaseManagement y menuOptions al principio del archivo, así no tiene que importar las librerias directamente ya que estan  
+Al recibir el nombre, el vector, la ruta y el texto con la funcion getotp son verificados que sean correctos. Luego se envian a la funcion getout, donde se almacenan en el struct Usuario y se verifica si se encuentran en la base de datos. al mismo tiempo que se cargan las opciones del menu con un map que tiene un identificador (numero de la opcion) y un pair de un label y la funcion que va de acuerdo a la opcion elejida(con parametro del struct Usuario), a partir de aqui hay 2 caminos: 
 
   Estas en la base de datos: Te desplegara todas las opciones que hay pero solo podras acceder a las que tengas permiso
 
-  No estas en la base de datos: No podras acceder a las operaciones con vector pero te dara la opcion de Registrarte e ir elijiendo 
-    los permisos que deseas tener.
+  No estas en la base de datos: No podras acceder a las operaciones con vector pero te dara la opcion de Registrarte e ir elijiendo los permisos que deseas tener.
+
+---------------------------------Archivo dataBaseManagement-----------------------------------
+Tiene las funciones que recolectan la informacion de la base de datos y hace un #import al archivo menuOptions
+
+Las funciones son:
+
+  Validation: Resibe un struct Usuario del cual usando el nombre que tiene verifica su existencia en la base de datos.
+
+  signIn: Resibe un struct Usuario y el map con las opciones del menu. En caso de que no exista en la base de datos se le pregunta si quiere registrarse, si lo quiere hacerlo entonces tendra una serie de preguntas que le irán dando los permisos que usted quiera tener (cada pregunta tiene el label sacado del map para saber la opcion a la que tendra permiso), si no quiere entonces termina.
+
+  confirmPermiss: recibe un struct Usuario y un entero opcion. El struct usuario tiene sus permisos sacados de la base de datos por lo que recorre estos permisos y busca si se encuentra la opcion elejida, si la encuentra entonces tiene permiso para usar esa opcion, en caso contrario no lo tiene.
+
+  crearMapa: recibe un struct usuario. Se crea un map con una key de primera y un pair de segunda con un string y una funcion de parametros Usuario. Luego lee la base de datos del menu y separa cada linea con las ',' y agrega el numero de opcion en la key del map. luego agrega el label en el string del pair y con el identificador del ultimo getline se le agrega la funcion correspondiente (usando funciones lambda)
+
+-----------------------------------Archivo menuOptions---------------------------------------
+
+Tiene todas las opciones del menu (salir, sumatoria, promedio, moda, contar, crearArchivo, agregarTexto y opcionIndefinida). La mayoria recibe el parametro Usuario a excepcion de las funciones salir y opcionIndefinida.
+
+También, aqui está definido el struct Usuario con los atributos u,path y text de tipo string, v y options siendo vectores de tipo int.
+
+  u: nombre de usuario
+  v: vector dado por linea de comando
+  options: permisos a los que tiene acceso el usuario
+  path: ruta dada por linea de comando
+  text: texto dado por linea de comando
 
 Para compilar el codigo y generar el archivo .exe se debe escribir:
-  g++ trabajo1.cpp -o trabajo1
+  g++ main.cpp -o main
 
 Para ejecutar el .exe generado tras compilar se debe escribir: 
-  trabajo1 -u "{username}" -v "{vector}" -f "{ruta}" -t "{texto}"
+  main -u "{username}" -v "{vector}" -f "{ruta}" -t "{texto}"
 Donde username es Nombre y apellido con mayusculas al principio y sin caracteres especiales.
 El vector se escribe de la forma 3;6;1;7;12 (Se transformara a <3,6,1,7,12>)
-La ruta puede ser escrita como solo el nombre del archivo para crearlo en la misma carpeta o una mas especifica para crearla en otro lugar.
+La ruta puede ser escrita como solo el nombre del archivo y su extension para crearlo en la misma carpeta o una mas especifica para crearla en otro lugar.
 El texto será lo que quieres escribir dentro del archivo. 
 
 La base de datos (db.txt) se estructura de la forma {username};{permisos}

@@ -1,13 +1,13 @@
 #include "menuOptions.cpp"
 #include <functional>
+#include <windows.h>
 
 using namespace std;
 
 bool validation(Usuario& usuario);
-bool confirmPermiss(Usuario& usuario, int num);
+bool confirmPermiss(Usuario& usuario, int opcion);
 void signIn(string username, map<int, pair<string, function<void(Usuario& usuario)>>> menuOptions);
 map<int, pair<string, function<void(Usuario& usuario)>>> crearMapa(Usuario& usuario);
-
 
 bool validation(Usuario& usuario) {
   ifstream archivo("Bases_de_datos/db.txt");
@@ -30,6 +30,8 @@ bool validation(Usuario& usuario) {
       }
       archivo.close();
       cout << "\n-------Usuario Valido-------" << endl;
+      Sleep(1000);
+      system("cls");
       return true; // Usuario encontrado y opciones procesadas
     }
   }
@@ -84,9 +86,9 @@ void signIn(string username, map<int, pair<string, function<void(Usuario& usuari
   }
 }
 
-bool confirmPermiss(Usuario& usuario, int num) {
+bool confirmPermiss(Usuario& usuario, int opcion) {
   for(int i : usuario.options){
-    if(i == num){
+    if(i == opcion){
       return true;
     }
   }

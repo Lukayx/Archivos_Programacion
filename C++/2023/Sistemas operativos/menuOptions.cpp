@@ -94,12 +94,12 @@ void agregarTexto(Usuario& usuario){
     return;
   }
 
-  ofstream archivo(usuario.path,ios::out);
+  ofstream archivo(usuario.path,ios::app);
   if (!archivo.is_open()) {
     cout << "No se pudo abrir el archivo";
     exit(1);
   }
-  archivo << usuario.text;
+  archivo << usuario.text << endl;
   archivo.close();
   cout << "Texto agregado al archivo exitosamente." << endl;
 }

@@ -1,5 +1,6 @@
 #include "dataBaseManagement.cpp"
-
+#include <cstdlib>
+#include <limits> 
 using namespace std;
 
 void getout(string u, vector<int> v, string path, string texto);
@@ -32,6 +33,7 @@ int main(int argc, char **argv) {
       }
     }
   }
+  system("cls");
   getout(u,v,path,texto);
   return 0;
 }
@@ -47,11 +49,11 @@ void getout(string u, vector<int> v, string path, string texto) {
     bool condition = true;
     bool entradaValida = true;
     string respuesta;
-    cout << "\nOPCIONES DE MENU\n" << endl;
-    for (const auto& option : menuOptions){
-      cout << option.first << ")- " << option.second.first << endl;
-    }
     while(condition){
+      cout << "\nOPCIONES DE MENU\n" << endl;
+      for (const auto& option : menuOptions){
+        cout << option.first << ")- " << option.second.first << endl;
+      }
       do{
         cout << "\nElija una Opcion: ";
         cin >> respuesta;
@@ -74,10 +76,13 @@ void getout(string u, vector<int> v, string path, string texto) {
       } else {
         cout << "No tiene permiso para acceder a esta operacion." << endl;
       }
+      cout << "\nPresiona Enter para limpiar la pantalla  ";
+      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+      cin.get();
+      system("cls");
     }
   } else {
     signIn(usuario.u, menuOptions);
   }
-  cout << "Que tenga un buen dia" << endl;
+  cout << "\nQue tenga un buen dia" << endl;
 }
-
