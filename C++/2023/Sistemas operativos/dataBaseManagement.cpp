@@ -1,9 +1,13 @@
 #include "menuOptions.cpp"
 #include <functional>
 #include <windows.h>
+#include <unordered_map>
 
 using namespace std;
 
+unordered_map<string, string> db;
+
+void leerEnv(unordered_map<string, string>& db);
 bool validation(Usuario& usuario);
 vector<int> userProfileAssignment(string userProfile);
 bool confirmPermiss(Usuario& usuario, int opcion);
@@ -13,9 +17,6 @@ map<int, pair<string, function<void(Usuario& usuario)>>> crearMapa(Usuario& usua
 bool validation(Usuario& usuario) {
   ifstream archivo("Bases_de_datos/db.txt");
   string linea;
-  cout << dbMenuPath << endl;
-  cout << dbUserPath << endl;
-  cout << dbUserProfilePath << endl;
   if (!archivo.is_open()) {
     cout << "No se pudo abrir el archivo";
     exit(1);
@@ -64,6 +65,27 @@ vector<int> userProfileAssignment(string userProfile){
   }
   cout << "\n---Error al buscar el perfil de usuario---\n";
   exit(1);
+}
+
+void leerEnv(unordered_map<string, string>& db){
+  ifstream archivo(".env");
+  string key;
+  size_t i;
+  string linea;
+  if (!archivo.is_open()) {
+    cout << "No se pudo abrir el archivo";
+    exit(1);
+  }
+  while (getline(archivo, linea)){
+    size_t pos = linea.find("DB_");
+    if(pos == 0){
+      i = linea.find("=");
+      key = linea.substr(3, i);
+      db[key] = linea.substr(i+1, linea.length());
+      cout << key << " --- " << db[key];
+    } 
+  }
+  archivo.close();
 }
 
 void signIn(string username, map<int, pair<string, function<void(Usuario& usuario)>>> menuOptions) {

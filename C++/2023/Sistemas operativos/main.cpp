@@ -54,6 +54,7 @@ void getout(string u, vector<int> v, string path, string texto, string input, st
   usuario.text = texto;
   usuario.input = input;
   usuario.output = output;
+  unordered_map<string, string>& db;
   map<int, pair<string, function<void(Usuario& usuario)>>> menuOptions = crearMapa(usuario);
   if(validation(usuario)) {
     bool condition = true;
