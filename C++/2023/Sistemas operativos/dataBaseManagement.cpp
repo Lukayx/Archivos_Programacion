@@ -5,6 +5,7 @@
 using namespace std;
 
 bool validation(Usuario& usuario);
+vector<int> userProfileAssignment(string userProfile);
 bool confirmPermiss(Usuario& usuario, int opcion);
 void signIn(string username, map<int, pair<string, function<void(Usuario& usuario)>>> menuOptions);
 map<int, pair<string, function<void(Usuario& usuario)>>> crearMapa(Usuario& usuario);
@@ -12,7 +13,9 @@ map<int, pair<string, function<void(Usuario& usuario)>>> crearMapa(Usuario& usua
 bool validation(Usuario& usuario) {
   ifstream archivo("Bases_de_datos/db.txt");
   string linea;
-
+  cout << dbMenuPath << endl;
+  cout << dbUserPath << endl;
+  cout << dbUserProfilePath << endl;
   if (!archivo.is_open()) {
     cout << "No se pudo abrir el archivo";
     exit(1);
@@ -21,13 +24,9 @@ bool validation(Usuario& usuario) {
   while (getline(archivo, linea)) {
     size_t pos = linea.find(usuario.u + ";"); // Buscar el nombre de usuario en la línea
     if (pos == 0) {
-      string val = linea.substr(usuario.u.length() + 1); // Obtener la parte después del nombre
-      stringstream dd(val);
-      string x;
-      while (getline(dd, x, ',')) {
-        int i = stoi(x);
-        usuario.options.push_back(i);
-      }
+      string profile = linea.substr(usuario.u.length() + 1); // Obtener la parte después del nombre
+      usuario.options = userProfileAssignment(profile);
+      usuario.userProfile = profile;
       archivo.close();
       cout << "\n-------Usuario Valido-------" << endl;
       Sleep(1000);
@@ -39,6 +38,32 @@ bool validation(Usuario& usuario) {
   cout << "\n-------Usuario Invalido-------" << endl;
   cout << endl << "Usted no se encuentra en la base de datos" << endl;
   return false; // Usuario no encontrado en la base de datos
+}
+
+vector<int> userProfileAssignment(string userProfile){
+  ifstream archivo("Bases_de_datos/userProfiles.txt");
+  string linea;
+  if (!archivo.is_open()) {
+    cout << "No se pudo abrir el archivo";
+    exit(1);
+  }
+  while(getline(archivo, linea)) {
+    size_t pos = linea.find(userProfile + ";"); // Buscar el nombre de usuario en la línea
+    if (pos == 0) {
+      string permissions = linea.substr(userProfile.length() + 1); // Obtener la parte después del nombre
+      stringstream dd(permissions);
+      string value;
+      vector<int> v;
+      while(getline(dd, value, ',')) {
+        int i = stoi(value);
+        v.push_back(i);
+      }
+      archivo.close();
+      return v;
+    }
+  }
+  cout << "\n---Error al buscar el perfil de usuario---\n";
+  exit(1);
 }
 
 void signIn(string username, map<int, pair<string, function<void(Usuario& usuario)>>> menuOptions) {

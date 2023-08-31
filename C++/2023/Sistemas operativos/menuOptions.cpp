@@ -10,10 +10,13 @@ using namespace std;
 
 struct Usuario {
   string u;
-  vector<int> options;
-  vector<int> v;
   string path;
   string text;
+  string userProfile;
+  string input;
+  string output;
+  vector<int> options;
+  vector<int> v;
 };
 
 void salir();
@@ -23,6 +26,7 @@ void moda(Usuario& usuario);
 void contar(Usuario& usuario);
 void crearArchivo(Usuario& usuario);
 void agregarTexto(Usuario& usuario);
+void conteoPalabras(Usuario& usuario);
 void opcionIndefinida();
 
 void salir(){
@@ -102,6 +106,18 @@ void agregarTexto(Usuario& usuario){
   archivo << usuario.text << endl;
   archivo.close();
   cout << "Texto agregado al archivo exitosamente." << endl;
+}
+
+void conteoPalabras(Usuario& usuario){
+  ifstream archivo(usuario.input);
+  string linea;
+
+  if (!archivo.is_open()) {
+    cout << "No se pudo abrir el archivo";
+    exit(1);
+  }
+
+  
 }
 
 void opcionIndefinida(){

@@ -3,13 +3,13 @@
 #include <limits> 
 using namespace std;
 
-void getout(string u, vector<int> v, string path, string texto);
+void getout(string u, vector<int> v, string path, string texto, string input, string output);
 
 int main(int argc, char **argv) {
-  string u, valor, path, texto;
+  string u, valor, path, texto, input, output;
   vector<int> v;
   int c;
-  while ((c = getopt(argc, argv, "u:v:f:t:")) != -1) {
+  while ((c = getopt(argc, argv, "u:v:f:t:i:o:")) != -1) {
     switch (c) {
       case 'u': {
         u = optarg;
@@ -31,25 +31,36 @@ int main(int argc, char **argv) {
         texto = optarg;
         break;
       }
+      case 'i': {
+        input = optarg;
+        break;
+      }
+      case 'o': {
+        output = optarg;
+        break;
+      }
     }
   }
   system("cls");
-  getout(u,v,path,texto);
+  getout(u,v,path,texto, input, output);
   return 0;
 }
 
-void getout(string u, vector<int> v, string path, string texto) {
+void getout(string u, vector<int> v, string path, string texto, string input, string output) {
   Usuario usuario;
   usuario.u = u;
   usuario.v = v;
   usuario.path = path;
   usuario.text = texto;
+  usuario.input = input;
+  usuario.output = output;
   map<int, pair<string, function<void(Usuario& usuario)>>> menuOptions = crearMapa(usuario);
   if(validation(usuario)) {
     bool condition = true;
     bool entradaValida = true;
     string respuesta;
     while(condition){
+      cout << "Usuario Actual: " << usuario.u << " / " << usuario.userProfile << endl;
       cout << "\nOPCIONES DE MENU\n" << endl;
       for (const auto& option : menuOptions){
         cout << option.first << ")- " << option.second.first << endl;

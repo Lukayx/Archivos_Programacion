@@ -5,4 +5,5 @@
 4,Contar elementos del vector,contar
 5,Crear Archivo,crearArchivo
 6,Agregar texto al archivo,agregarTexto
-7,Nueva Opcion,indefinido
+7,Conteo de palabras,contarPalabras
+8,Nueva Opcion,indefinido
