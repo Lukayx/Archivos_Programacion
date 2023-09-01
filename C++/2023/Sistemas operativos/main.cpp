@@ -1,9 +1,10 @@
 #include "dataBaseManagement.cpp"
 #include <cstdlib>
 #include <limits> 
+#include <filesystem>
 using namespace std;
 
-void getout(string u, vector<int> v, string path, string texto, string input, string output);
+void getout(Usuario& usuario);
 
 int main(int argc, char **argv) {
   string u, valor, path, texto, input, output;
@@ -25,6 +26,13 @@ int main(int argc, char **argv) {
       }
       case 'f': {
         path = optarg;
+        // if(path.find_last_of('/') != string::npos){
+        //   string directoryPath = path.substr(0,path.find_last_of('/'));
+        //   if (!(filesystem::exists(directoryPath) && filesystem::is_directory(directoryPath))) {
+        //       cout << "La ruta dada en el parametro '-f' no es válida, intente ingresarla nuevamente." << endl;
+        //       exit(1);
+        //   }
+        // }
         break;
       }
       case 't': {
@@ -33,7 +41,19 @@ int main(int argc, char **argv) {
       }
       case 'i': {
         input = optarg;
-        break;
+        ifstream archivo(input, ios::ate);
+        if (!archivo.is_open()) {
+          cout << "La ruta dada en el parametro '-i' no se pudo encontrar, revise bien la ruta ingresada." << endl;
+          cout << "Se cerrara el programa.";
+          exit(1);
+        }
+        streampos fileSize = archivo.tellg(); // Obtener tamaño del archivo
+        archivo.close();
+        if(fileSize == -1) {
+          cerr << "No se pudo obtener el tamaño del archivo." << endl;
+          exit(1);
+        }
+      break;
       }
       case 'o': {
         output = optarg;
@@ -41,12 +61,6 @@ int main(int argc, char **argv) {
       }
     }
   }
-  system("cls");
-  getout(u,v,path,texto, input, output);
-  return 0;
-}
-
-void getout(string u, vector<int> v, string path, string texto, string input, string output) {
   Usuario usuario;
   usuario.u = u;
   usuario.v = v;
@@ -54,9 +68,15 @@ void getout(string u, vector<int> v, string path, string texto, string input, st
   usuario.text = texto;
   usuario.input = input;
   usuario.output = output;
-  unordered_map<string, string>& db;
-  map<int, pair<string, function<void(Usuario& usuario)>>> menuOptions = crearMapa(usuario);
-  if(validation(usuario)) {
+  system("cls");
+  getout(usuario);
+  return 0;
+}
+
+void getout(Usuario& usuario) {
+  unordered_map<string, string> dataBase = leerEnv();
+  map<int, pair<string, function<void(Usuario& usuario)>>> menuOptions = crearMapa(usuario, dataBase["MENU"]);
+  if(validation(usuario, dataBase)) {
     bool condition = true;
     bool entradaValida = true;
     string respuesta;
@@ -94,7 +114,7 @@ void getout(string u, vector<int> v, string path, string texto, string input, st
       system("cls");
     }
   } else {
-    signIn(usuario.u, menuOptions);
+    signIn(usuario.u, menuOptions, dataBase["USER"]);
   }
   cout << "\nQue tenga un buen dia" << endl;
 }

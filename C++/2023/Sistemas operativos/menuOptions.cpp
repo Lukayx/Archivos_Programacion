@@ -5,6 +5,7 @@
 #include <vector>
 #include <string>
 #include <map>  
+#include <algorithm>
 
 using namespace std;
 
@@ -28,6 +29,8 @@ void crearArchivo(Usuario& usuario);
 void agregarTexto(Usuario& usuario);
 void conteoPalabras(Usuario& usuario);
 void opcionIndefinida();
+bool isSpecialCharacter(unsigned char c);
+char removeAccent(unsigned char c);
 
 void salir(){
   cout << "Que tenga un buen dia" << endl;
@@ -108,16 +111,46 @@ void agregarTexto(Usuario& usuario){
   cout << "Texto agregado al archivo exitosamente." << endl;
 }
 
-void conteoPalabras(Usuario& usuario){
-  ifstream archivo(usuario.input);
-  string linea;
+bool isSpecialCharacter(unsigned char c) {
+    if (c == ' ') return false;
+    if (c == 225 || c == 233 || c == 237 || c == 243 || c == 250 || c == 193 || c == 201 || c == 205 || c == 211 || c == 218) {
+        return false;
+    }
+    return !isalnum(c);
+}
 
-  if (!archivo.is_open()) {
-    cout << "No se pudo abrir el archivo";
-    exit(1);
-  }
+char removeAccent(unsigned char c) {
+    switch (c) {
+        case 225: return 'a';
+        case 233: return 'e';
+        case 237: return 'i';
+        case 243: return 'o';
+        case 250: return 'u';
+        case 193: return 'A';
+        case 201: return 'E';
+        case 205: return 'I';
+        case 211: return 'O';
+        case 218: return 'U';
+        default: return c;
+    }
+}
 
-  
+void conteoPalabras(Usuario& usuario) {
+    ifstream archivo(usuario.input);
+    string linea;
+
+    while (getline(archivo, linea)) {
+        string resultado = "";
+        // cout << "Línea original: " << linea << std::endl;
+        
+        for (unsigned char c : linea) {
+            resultado += removeAccent(c);
+            cout << c << endl;
+        }
+        // cout << "Línea después de eliminar caracteres especiales y reemplazar tildes: " << resultado << endl << endl;
+        
+        resultado.erase(std::remove_if(resultado.begin(), resultado.end(), isSpecialCharacter), resultado.end());
+    }
 }
 
 void opcionIndefinida(){

@@ -5,28 +5,25 @@
 
 using namespace std;
 
-unordered_map<string, string> db;
-
-void leerEnv(unordered_map<string, string>& db);
-bool validation(Usuario& usuario);
-vector<int> userProfileAssignment(string userProfile);
+bool validation(Usuario& usuario, unordered_map<string, string> dataBase);
+vector<int> userProfileAssignment(string userProfile, string dataBase);
+unordered_map<string, string> leerEnv();
+void signIn(string username, map<int, pair<string, function<void(Usuario& usuario)>>> menuOptions, string dataBase);
 bool confirmPermiss(Usuario& usuario, int opcion);
-void signIn(string username, map<int, pair<string, function<void(Usuario& usuario)>>> menuOptions);
-map<int, pair<string, function<void(Usuario& usuario)>>> crearMapa(Usuario& usuario);
+map<int, pair<string, function<void(Usuario& usuario)>>> crearMapa(Usuario& usuario, string dataBase);
 
-bool validation(Usuario& usuario) {
-  ifstream archivo("Bases_de_datos/db.txt");
+bool validation(Usuario& usuario, unordered_map<string, string> dataBase) {
+  ifstream archivo(dataBase["USER"]);
   string linea;
   if (!archivo.is_open()) {
     cout << "No se pudo abrir el archivo";
     exit(1);
   }
-
   while (getline(archivo, linea)) {
     size_t pos = linea.find(usuario.u + ";"); // Buscar el nombre de usuario en la línea
     if (pos == 0) {
       string profile = linea.substr(usuario.u.length() + 1); // Obtener la parte después del nombre
-      usuario.options = userProfileAssignment(profile);
+      usuario.options = userProfileAssignment(profile, dataBase["PROFILES"]);
       usuario.userProfile = profile;
       archivo.close();
       cout << "\n-------Usuario Valido-------" << endl;
@@ -41,8 +38,8 @@ bool validation(Usuario& usuario) {
   return false; // Usuario no encontrado en la base de datos
 }
 
-vector<int> userProfileAssignment(string userProfile){
-  ifstream archivo("Bases_de_datos/userProfiles.txt");
+vector<int> userProfileAssignment(string userProfile, string dataBase){
+  ifstream archivo(dataBase);
   string linea;
   if (!archivo.is_open()) {
     cout << "No se pudo abrir el archivo";
@@ -67,11 +64,12 @@ vector<int> userProfileAssignment(string userProfile){
   exit(1);
 }
 
-void leerEnv(unordered_map<string, string>& db){
+unordered_map<string, string> leerEnv(){
+  unordered_map<string, string> dataBase;
   ifstream archivo(".env");
   string key;
-  size_t i;
   string linea;
+  size_t indice;
   if (!archivo.is_open()) {
     cout << "No se pudo abrir el archivo";
     exit(1);
@@ -79,27 +77,28 @@ void leerEnv(unordered_map<string, string>& db){
   while (getline(archivo, linea)){
     size_t pos = linea.find("DB_");
     if(pos == 0){
-      i = linea.find("=");
-      key = linea.substr(3, i);
-      db[key] = linea.substr(i+1, linea.length());
-      cout << key << " --- " << db[key];
+      indice = linea.find('=');
+      key = linea.substr(3, indice-3);
+      dataBase[key] = linea.substr(indice + 1, linea.length());
+      cout << key << " --- " << dataBase[key] << endl;
     } 
   }
   archivo.close();
+  return dataBase;
 }
 
-void signIn(string username, map<int, pair<string, function<void(Usuario& usuario)>>> menuOptions) {
+void signIn(string username, map<int, pair<string, function<void(Usuario& usuario)>>> menuOptions, string dataBase) {
   string respuesta;
   do {
     cout << " Desea Registrarse? (Si/No): ";
     cin >> respuesta;
   } while (respuesta != "Si" && respuesta != "No");
   if (respuesta == "Si") {
-    ofstream archivo("Bases_de_datos/db.txt", ios::app);
+    ofstream archivo(dataBase, ios::app);
     string respuesta;
     bool unaVez = false;
     if (!archivo.is_open()) {
-      cout << "No se pudo abrir el archivo";
+      cout << "No se pudo abrir la base de datos de Usuarios";
       exit(1);
     }
     string linea = username + ";";
@@ -142,10 +141,10 @@ bool confirmPermiss(Usuario& usuario, int opcion) {
   return false;
 }
 
-map<int, pair<string, function<void(Usuario& usuario)>>> crearMapa(Usuario& usuario){
+map<int, pair<string, function<void(Usuario& usuario)>>> crearMapa(Usuario& usuario, string dataBase){
   map<int, pair<string, function<void(Usuario& usuario)>>> mapa;
 
-  ifstream archivoMenu("Bases_de_datos/menu.txt");
+  ifstream archivoMenu(dataBase);
   string linea;
 
   if (!archivoMenu.is_open()) {
@@ -180,6 +179,8 @@ map<int, pair<string, function<void(Usuario& usuario)>>> crearMapa(Usuario& usua
       funcion = [](Usuario& usuario) { crearArchivo(usuario); }; // Agrega la ruta que necesites
     } else if (valor == "agregarTexto") {
       funcion = [](Usuario& usuario) { agregarTexto(usuario); }; // Agrega el texto que necesites
+    } else if (valor == "contarPalabras") {
+      funcion = [](Usuario& usuario) { conteoPalabras(usuario); }; // Agrega el texto que necesites
     } else {
       funcion = [](Usuario&) { opcionIndefinida(); };
     }

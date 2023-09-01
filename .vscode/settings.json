@@ -52,6 +52,8 @@
         "compare": "cpp",
         "concepts": "cpp",
         "map": "cpp",
-        "ranges": "cpp"
+        "ranges": "cpp",
+        "codecvt": "cpp",
+        "iomanip": "cpp"
     }
 }
