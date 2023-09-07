@@ -1,7 +1,7 @@
 #include "menuOptions.cpp"
 #include <functional>
 #include <windows.h>
-#include <unordered_map>
+
 
 using namespace std;
 
@@ -16,7 +16,7 @@ bool validation(Usuario& usuario, unordered_map<string, string> dataBase) {
   ifstream archivo(dataBase["USER"]);
   string linea;
   if (!archivo.is_open()) {
-    cout << "No se pudo abrir el archivo";
+    cout << "No se pudo abrir la base de datos del usuario";
     exit(1);
   }
   while (getline(archivo, linea)) {
@@ -34,6 +34,8 @@ bool validation(Usuario& usuario, unordered_map<string, string> dataBase) {
   }
   archivo.close();
   cout << "\n-------Usuario Invalido-------" << endl;
+  Sleep(1000);
+  system("cls");
   cout << endl << "Usted no se encuentra en la base de datos" << endl;
   return false; // Usuario no encontrado en la base de datos
 }
@@ -80,7 +82,7 @@ unordered_map<string, string> leerEnv(){
       indice = linea.find('=');
       key = linea.substr(3, indice-3);
       dataBase[key] = linea.substr(indice + 1, linea.length());
-      cout << key << " --- " << dataBase[key] << endl;
+      // cout << key << " --- " << dataBase[key] << endl;
     } 
   }
   archivo.close();
@@ -95,39 +97,29 @@ void signIn(string username, map<int, pair<string, function<void(Usuario& usuari
   } while (respuesta != "Si" && respuesta != "No");
   if (respuesta == "Si") {
     ofstream archivo(dataBase, ios::app);
-    string respuesta;
-    bool unaVez = false;
+    int respuesta;
     if (!archivo.is_open()) {
       cout << "No se pudo abrir la base de datos de Usuarios";
       exit(1);
     }
     string linea = username + ";";
-    cout << linea << endl;
-    cout << "Que permisos desea tener:" << endl;
-    for(const auto& val : menuOptions){
-      int key = val.first;
-      if(key == 0 || menuOptions.find(key+1) == menuOptions.end()) continue;
-      do{
-        cout << "Permiso a '"<< val.second.first <<"' (Si/No): ";
-        cin >> respuesta;
-      }while(respuesta != "Si" && respuesta != "No");
-      if(respuesta == "Si"){
-        if(!unaVez){
-          linea = linea + to_string(key);
-        } else {
-          linea = linea + "," + to_string(key);
-        }
-        unaVez = true;
-      }
-    }
-    cout << linea << endl;
-    if(unaVez){
-      archivo << endl << linea;
-      cout << endl << "------Se ha registrado exitosamente------\n" << endl;  
+    do{
+      cout << "\nQue tipo de usuario desea ser? " << endl;
+      cout << "1)-admin" << endl;
+      cout << "2)-userGeneral" << endl; 
+      cout << "3)-userRookie" << endl;
+      cin >> respuesta;
+    } while(respuesta < 1 || respuesta > 3);
+    if(respuesta == 1){
+      linea += "admin";
+    } else if(respuesta == 2){
+      linea += "userGeneral";
     } else {
-      cout << endl << "--------No ha podido registrarse--------\n" << endl;  
-      cout << "Debe de tener almenos un permiso." << endl;
+      linea += "userRookie";
     }
+    archivo << endl << linea;
+    system("cls");
+    cout << endl << "------Se ha registrado exitosamente------\n" << endl;  
     archivo.close();
   }
 }

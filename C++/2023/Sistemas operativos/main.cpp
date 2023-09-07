@@ -50,9 +50,13 @@ int main(int argc, char **argv) {
         streampos fileSize = archivo.tellg(); // Obtener tamaño del archivo
         archivo.close();
         if(fileSize == -1) {
-          cerr << "No se pudo obtener el tamaño del archivo." << endl;
+          cout << "No se pudo obtener el tamaño del archivo." << endl;
+          exit(1);
+        } else if(fileSize < 1048576){
+          cout << "El archivo pasado por el input pesa menos de 1 MB"<< endl;
           exit(1);
         }
+
       break;
       }
       case 'o': {
@@ -81,7 +85,7 @@ void getout(Usuario& usuario) {
     bool entradaValida = true;
     string respuesta;
     while(condition){
-      cout << "Usuario Actual: " << usuario.u << " / " << usuario.userProfile << endl;
+      cout << "\nUsuario Actual: " << usuario.u << " / " << usuario.userProfile << endl;
       cout << "\nOPCIONES DE MENU\n" << endl;
       for (const auto& option : menuOptions){
         cout << option.first << ")- " << option.second.first << endl;
@@ -98,8 +102,10 @@ void getout(Usuario& usuario) {
           }
         }
       }while(!entradaValida);
+      system("cls");
+      cout << "==================================================" << endl;
       int opcion = stoi(respuesta);
-      if (confirmPermiss(usuario, opcion) || opcion==0 || opcion>6) {
+      if (confirmPermiss(usuario, opcion) || opcion==0 || opcion>7) {
         if (menuOptions.find(opcion) != menuOptions.end()) {
             menuOptions[opcion].second(usuario);
         } else {
@@ -108,13 +114,11 @@ void getout(Usuario& usuario) {
       } else {
         cout << "No tiene permiso para acceder a esta operacion." << endl;
       }
-      cout << "\nPresiona Enter para limpiar la pantalla  ";
-      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-      cin.get();
-      system("cls");
+      cout << "===================================================" << endl;
     }
   } else {
     signIn(usuario.u, menuOptions, dataBase["USER"]);
   }
-  cout << "\nQue tenga un buen dia" << endl;
+  cout << "Que tenga un buen dia" << endl;
+  cout << "===================================================" << endl;
 }

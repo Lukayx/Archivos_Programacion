@@ -1,4 +1,4 @@
-Fernando Inzulza;admin
+Fernando Inzulza;userGeneral
 Agustin Estrada;admin
 Fernanda Salgado;userRookie
 Cristian Huenchullanca;userGeneral
