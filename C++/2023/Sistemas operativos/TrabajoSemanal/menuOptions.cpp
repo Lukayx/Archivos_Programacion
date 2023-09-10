@@ -1,26 +1,14 @@
+#include <unordered_map>
+#include <algorithm>
 #include <iostream>
 #include <unistd.h>
 #include <fstream>
 #include <sstream>
-#include <vector>
-#include <string>
-#include <map>  
 #include <cctype>
-#include <algorithm>
-#include <unordered_map>
+#include "user.h"
+#include <map>  
 
 using namespace std;
-
-struct Usuario {
-  string u;
-  string path;
-  string text;
-  string userProfile;
-  string input;
-  string output;
-  vector<int> options;
-  vector<int> v;
-};
 
 void salir();
 void sumatoria(Usuario& usuario);
@@ -88,7 +76,7 @@ void crearArchivo(Usuario& usuario){
   }
   ofstream archivo(usuario.path,ios::out);
   if (!archivo.is_open()) {
-    cout << "No se pudo abrir el archivo";
+    cout << "No se pudo crear el archivo";
     exit(1);
   }
 

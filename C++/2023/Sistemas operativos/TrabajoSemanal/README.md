@@ -64,5 +64,5 @@ como por ejemplo:
 Los perfiles de usuario (userProfile.txt) se estructura de la forma {userProfile};{permisos} como por ejemplo:
   admin;1,2,3,4,5,6,7
 
-
-AÑADIR .ENV 
+Archivo .env:
+  De momento tiene las variables que contienen las bases de datos, estas están escritas de la forma:  "DB_" + "(BASE DE DATOS CORRESPONDIENTE)"

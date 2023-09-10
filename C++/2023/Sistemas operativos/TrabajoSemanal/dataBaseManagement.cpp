@@ -2,7 +2,6 @@
 #include <functional>
 #include <windows.h>
 
-
 using namespace std;
 
 bool validation(Usuario& usuario, unordered_map<string, string> dataBase);
@@ -44,7 +43,7 @@ vector<int> userProfileAssignment(string userProfile, string dataBase){
   ifstream archivo(dataBase);
   string linea;
   if (!archivo.is_open()) {
-    cout << "No se pudo abrir el archivo";
+    cout << "No se pudo abrir la base de datos de los Perfiles de Usuario";
     exit(1);
   }
   while(getline(archivo, linea)) {
@@ -73,7 +72,8 @@ unordered_map<string, string> leerEnv(){
   string linea;
   size_t indice;
   if (!archivo.is_open()) {
-    cout << "No se pudo abrir el archivo";
+    cout << "No se pudo abrir el archivo .env" << endl;
+    cout << "Verifique de que se encuentre en la carpeta actual";
     exit(1);
   }
   while (getline(archivo, linea)){
