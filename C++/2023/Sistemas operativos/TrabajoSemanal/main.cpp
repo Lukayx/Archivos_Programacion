@@ -56,7 +56,6 @@ int main(int argc, char **argv) {
           cout << "El archivo pasado por el input pesa menos de 1 MB"<< endl;
           exit(1);
         }
-
       break;
       }
       case 'o': {
