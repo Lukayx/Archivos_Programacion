@@ -1,0 +1,3 @@
+conseguir: 1
+trabajo: 1
+quiero: 1

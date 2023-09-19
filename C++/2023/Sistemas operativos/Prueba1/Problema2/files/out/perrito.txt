@@ -1,0 +1,7 @@
+polilla: 1
+una: 1
+de: 1
+amigo: 1
+hice: 1
+me: 1
+ayer: 1
