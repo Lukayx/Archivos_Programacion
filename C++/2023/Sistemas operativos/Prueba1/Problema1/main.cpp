@@ -1,7 +1,5 @@
 #include "databaseFunctions.cpp"
-
 void app(User& user);
-
 int main(int argc, char **argv) {
   std::string userName;
   std::string password;

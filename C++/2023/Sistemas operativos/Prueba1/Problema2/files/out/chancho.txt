@@ -1,0 +1,8 @@
+barro; 1
+el; 1
+en; 1
+revolcandose; 1
+animal; 1
+del; 1
+sonidos; 1
+oink; 1

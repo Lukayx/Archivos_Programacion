@@ -3,3 +3,5 @@ Ivan Pizarro;12345678
 Cristian Huenchullanca;perrito
 Vicente Alves;winover
 Fernanda Salgado;lol
+Pablo;perro
+Fe;asd

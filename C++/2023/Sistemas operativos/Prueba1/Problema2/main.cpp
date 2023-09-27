@@ -10,24 +10,27 @@
 #include <mutex>
 #include <queue>
 
-using mapEnv = std::unordered_map<std::string, std::string>; 
+using mapEnv = std::unordered_map<std::string, std::string>;
 using cola = std::queue<std::string>;
+using vector = std::vector<std::string>;
 namespace fs = std::filesystem;
 
-cola fileRead(mapEnv env);
+vector fileRead(mapEnv env);
 void countWords(std::string input, std::string output);
-void procesarArchivos(cola& archivos, std::mutex& mtx, std::string output);
+void procesarArchivos(vector& archivos, std::mutex& mtx, std::string output, int startIndex, int step);
 bool isSpecialCharacter(unsigned char c);
 mapEnv envRead();
 
 int main(){
-  mapEnv env = envRead();
-  cola colaArchivos = fileRead(env);
-  std::mutex queueMutex;
+  mapEnv env = envRead(); //Almacena las variables de entorno en un unordered_map
+  vector vectorArchivos = fileRead(env); //Recoge los nombres de los archivos en un vector bajo los criterios de las variables de entorno
+  std::mutex mutex;
   std::vector<std::thread> hilos;
-  for(int i = 0; i<stoi(env["AMOUNT_THREADS"]); i++){
-    hilos.emplace_back(procesarArchivos, std::ref(colaArchivos), std::ref(queueMutex), env["PATH_FILES_OUT"]);
+  int numThreads = stoi(env["AMOUNT_THREADS"]);
+  for (int i = 0; i < numThreads; i++) {
+    hilos.emplace_back(procesarArchivos, std::ref(vectorArchivos), std::ref(mutex), env["PATH_FILES_OUT"], i, numThreads);
   }
+
 
   for(std::thread& hilo : hilos){
     hilo.join();
@@ -41,7 +44,7 @@ void countWords(std::string input, std::string output) {
   std::ifstream file(input);
   std::string linea;
   std::unordered_map<std::string, int> resultado;
-  while (getline(file, linea)) {
+  while(getline(file, linea)) {
     linea.erase(std::remove_if(linea.begin(), linea.end(), isSpecialCharacter), linea.end());
     std::string key;
     std::stringstream ss(linea);
@@ -61,13 +64,12 @@ void countWords(std::string input, std::string output) {
   std::ofstream outFile(output + "/" + namefile, std::ios::trunc);  
 
   for(auto& indice: resultado){
-    outFile << indice.first << ": " << indice.second << std::endl;
+    outFile << indice.first << "; " << indice.second << std::endl;
   }
   outFile.close();
-  std::cout << "Se contaron las palabras con exito y se creo un archivo con sus frecuencias." << std::endl;
 }
 
-mapEnv envRead(){
+mapEnv envRead(){ 
   std::ifstream env(".env");
   mapEnv map;
   std::string line;
@@ -98,12 +100,12 @@ bool isSpecialCharacter(unsigned char c) {
     return !isalnum(c);
 }
 
-cola fileRead(mapEnv env){
+vector fileRead(mapEnv env){
   std::string extension = env["EXTENSION"];
   std::string folderIn = env["PATH_FILES_IN"];
   fs::path folderPath = folderIn;
   int n = extension.length();
-  cola queue;
+  vector vectorEnv;
   if(!fs::exists(folderPath) || !fs::is_directory(folderPath)){
     std::cout << "La carpeta no existe o no es un directorio Valido." << std::endl;
     exit(1);
@@ -113,26 +115,25 @@ cola fileRead(mapEnv env){
       std::string filename = iterador.path().filename().string();
       int f_n = filename.length(); 
       if(f_n > n && filename.find(extension) == (f_n - n)){
-        queue.push(folderIn + "/" + filename);
+        vectorEnv.push_back(folderIn + "/" + filename);
         // std::cout << folderIn + "/" + filename << std::endl;
       }
     }
   }
-  return queue;
+  return vectorEnv;
 }
 
-void procesarArchivos(cola& archivos, std::mutex& mtx, std::string output){
-  while (true){
+void procesarArchivos(vector& archivos, std::mutex& mtx, std::string output, int startIndex, int step){
+  for (int i = startIndex; i < archivos.size(); i += step) {
     std::string archivo;
-    std::lock_guard<std::mutex> lock(mtx);
-    if(!archivos.empty()){
-      archivo = archivos.front();
-      archivos.pop();
+    {
+      std::lock_guard<std::mutex> lock(mtx);
+      archivo = archivos[i];
     }
-    if(archivo.empty()){
-      break;
+    if (!archivo.empty()) {
+      countWords(archivo, output);
+      pthread_t id = pthread_self();
+      printf("Archivo %s procesado por el hilo (%lu)\n",archivo.c_str(), id-1);
     }
-    countWords(archivo, output);
   }
-  
 }
