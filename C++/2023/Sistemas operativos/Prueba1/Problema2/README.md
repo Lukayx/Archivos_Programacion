@@ -1,3 +1,5 @@
-En cmd:
+En bash:
   g++ main.cpp -o main
-  main
+  ./main
+
+g++ en su ultima actualizacion
