@@ -1,15 +1,15 @@
 #include "menuOptions.cpp"
-#include "../../Include/dataBaseManagement.h"
+#include "../../Include/databaseManagement.h"
 
-bool validation(Usuario& usuario, std::unordered_map<std::string, std::string> dataBase);
-std::vector<int> userProfileAssignment(std::string userProfile, std::string dataBase);
-std::unordered_map<std::string, std::string> leerEnv();
-void signIn(std::string username, std::map<int, std::pair<std::string, std::function<void(Usuario& usuario)>>> menuOptions, std::string dataBase);
+bool validation(Usuario& usuario, dbMAP database);
+std::vector<int> userProfileAssignment(std::string userProfile, std::string database);
+dbMAP leerEnv();
+void signIn(std::string username, menuMAP menuOptions, std::string database);
 bool confirmPermiss(Usuario& usuario, int opcion);
-std::map<int, std::pair<std::string, std::function<void(Usuario& usuario)>>> crearMapa(Usuario& usuario, std::string dataBase);
+menuMAP crearMapa(Usuario& usuario, std::string database);
 
-bool validation(Usuario& usuario, std::unordered_map<std::string, std::string> dataBase) {
-  std::ifstream archivo(dataBase["USER"]);
+bool validation(Usuario& usuario, dbMAP database) {
+  std::ifstream archivo(database["USER"]);
   std::string linea;
   if (!archivo.is_open()) {
     std::cout << "No se pudo abrir la base de datos del usuario";
@@ -19,7 +19,7 @@ bool validation(Usuario& usuario, std::unordered_map<std::string, std::string> d
     size_t pos = linea.find(usuario.u + ";"); // Buscar el nombre de usuario en la línea
     if (pos == 0) {
       std::string profile = linea.substr(usuario.u.length() + 1); // Obtener la parte después del nombre
-      usuario.options = userProfileAssignment(profile, dataBase["PROFILES"]);
+      usuario.options = userProfileAssignment(profile, database["PROFILES"]);
       usuario.userProfile = profile;
       archivo.close();
       std::cout << "\n-------Usuario Valido-------" << std::endl;
@@ -36,8 +36,8 @@ bool validation(Usuario& usuario, std::unordered_map<std::string, std::string> d
   return false; // Usuario no encontrado en la base de datos
 }
 
-std::vector<int> userProfileAssignment(std::string userProfile, std::string dataBase){
-  std::ifstream archivo(dataBase);
+std::vector<int> userProfileAssignment(std::string userProfile, std::string database){
+  std::ifstream archivo(database);
   std::string linea;
   if (!archivo.is_open()) {
     std::cout << "No se pudo abrir la base de datos de los Perfiles de Usuario";
@@ -62,8 +62,8 @@ std::vector<int> userProfileAssignment(std::string userProfile, std::string data
   exit(1);
 }
 
-std::unordered_map<std::string, std::string> leerEnv(){
-  std::unordered_map<std::string, std::string> dataBase;
+dbMAP leerEnv(){
+  dbMAP database;
   std::ifstream archivo("../.env");
   std::string key;
   std::string linea;
@@ -78,22 +78,22 @@ std::unordered_map<std::string, std::string> leerEnv(){
     if(pos == 0){
       indice = linea.find('=');
       key = linea.substr(3, indice-3);
-      dataBase[key] = linea.substr(indice + 1, linea.length());
-      // std::cout << key << " --- " << dataBase[key] << std::endl;
+      database[key] = linea.substr(indice + 1, linea.length());
+      // std::cout << key << " --- " << database[key] << std::endl;
     } 
   }
   archivo.close();
-  return dataBase;
+  return database;
 }
 
-void signIn(std::string username, std::map<int, std::pair<std::string, std::function<void(Usuario& usuario)>>> menuOptions, std::string dataBase) {
+void signIn(std::string username, menuMAP menuOptions, std::string database) {
   std::string respuesta;
   do {
     std::cout << " Desea Registrarse? (Si/No): ";
     std::cin >> respuesta;
   } while (respuesta != "Si" && respuesta != "No");
   if (respuesta == "Si") {
-    std::ofstream archivo(dataBase, std::ios::app);
+    std::ofstream archivo(database, std::ios::app);
     int respuesta;
     if (!archivo.is_open()) {
       std::cout << "No se pudo abrir la base de datos de Usuarios";
@@ -130,10 +130,10 @@ bool confirmPermiss(Usuario& usuario, int opcion) {
   return false;
 }
 
-std::map<int, std::pair<std::string, std::function<void(Usuario& usuario)>>> crearMapa(Usuario& usuario, std::string dataBase){
-  std::map<int, std::pair<std::string, std::function<void(Usuario& usuario)>>> mapa;
+menuMAP crearMapa(Usuario& usuario, std::string database){
+  menuMAP mapa;
 
-  std::ifstream archivoMenu(dataBase);
+  std::ifstream archivoMenu(database);
   std::string linea;
 
   if (!archivoMenu.is_open()) {

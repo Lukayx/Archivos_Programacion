@@ -1,7 +1,9 @@
-#include "Functions/dataBaseManagement.cpp"
+#include "Functions/databaseManagement.cpp"
 #include <cstdlib>
 #include <limits>
 #include <filesystem>
+
+namespace fs = std::filesystem;
 
 void getout(Usuario& usuario);
 
@@ -27,7 +29,7 @@ int main(int argc, char **argv) {
         path = optarg;
         if (path.find_last_of('/') != std::string::npos) {
           std::string directoryPath = path.substr(0, path.find_last_of('/'));
-          if (!(std::filesystem::exists(directoryPath) && std::filesystem::is_directory(directoryPath))) {
+          if (!(fs::exists(directoryPath) && fs::is_directory(directoryPath))) {
             std::cout << "La ruta dada en el parametro '-f' no es válida, intente ingresarla nuevamente." << std::endl;
             exit(1);
           }
@@ -70,8 +72,8 @@ int main(int argc, char **argv) {
 }
 
 void getout(Usuario& usuario) {
-  std::unordered_map<std::string, std::string> dataBase = leerEnv();
-  std::map<int, std::pair<std::string, std::function<void(Usuario& usuario)>>> menuOptions = crearMapa(usuario, dataBase["MENU"]);
+  dbMAP dataBase = leerEnv();
+  menuMAP menuOptions = crearMapa(usuario, dataBase["MENU"]);
   if (validation(usuario, dataBase)) {
     bool condition = true;
     bool entradaValida = true;
