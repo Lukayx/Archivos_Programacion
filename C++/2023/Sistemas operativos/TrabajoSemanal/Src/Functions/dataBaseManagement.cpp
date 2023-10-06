@@ -19,7 +19,7 @@ bool validation(Usuario& usuario, dbMAP database) {
     size_t pos = linea.find(usuario.u + ";"); // Buscar el nombre de usuario en la línea
     if (pos == 0) {
       std::string profile = linea.substr(usuario.u.length() + 1); // Obtener la parte después del nombre
-      usuario.options = userProfileAssignment(profile, database["PROFILES"]);
+      usuario.options = userProfileAssignment(profile, database["DB_PROFILES"]);
       usuario.userProfile = profile;
       archivo.close();
       std::cout << "\n-------Usuario Valido-------" << std::endl;
@@ -73,15 +73,21 @@ dbMAP leerEnv(){
     std::cout << "Verifique de que se encuentre en la carpeta actual";
     exit(1);
   }
-  while (getline(archivo, linea)){
-    size_t pos = linea.find("DB_");
-    if(pos == 0){
-      indice = linea.find('=');
-      key = linea.substr(3, indice-3);
-      database[key] = linea.substr(indice + 1, linea.length());
-      // std::cout << key << " --- " << database[key] << std::endl;
-    } 
+  while(getline(archivo, linea)){
+    int pos = linea.find("=");
+    key = line.substr(0, pos); //Recorta el nombre de la variable
+    map[key] = linea.substr(pos+1, linea.length()); //Almacena el contenido de la variable del .env al map
   }
+  if(database["PATH_FILES_OUT"]==database["PATH_FILES_IN"]){
+    std::cout << "Los path PATH_FILES_IN y PATH_FILES_OUT no pueden ser iguales." << std::endl;
+    exit(1);
+  }
+
+  if(database["AMOUNT_THREADS"]<0 || database["AMOUNT_THREADS"] > 10){
+    std::cout << "La variable AMOUNT_THREADS como máximo puede ser 10." << std::endl;
+    exit(1);
+  }
+
   archivo.close();
   return database;
 }
@@ -165,14 +171,18 @@ menuMAP crearMapa(Usuario& usuario, std::string database){
     } else if (valor == "contar") {
       funcion = [](Usuario& usuario) { contar(usuario); };
     } else if (valor == "crearArchivo") {
-      funcion = [](Usuario& usuario) { crearArchivo(usuario); }; // Agrega la ruta que necesites
+      funcion = [](Usuario& usuario) { crearArchivo(usuario); }; 
     } else if (valor == "agregarTexto") {
-      funcion = [](Usuario& usuario) { agregarTexto(usuario); }; // Agrega el texto que necesites
+      funcion = [](Usuario& usuario) { agregarTexto(usuario); }; 
     } else if (valor == "contarPalabras") {
-      funcion = [](Usuario& usuario) { conteoPalabras(usuario); }; // Agrega el texto que necesites
+      funcion = [](Usuario& usuario) { conteoPalabras(usuario); }; 
+    } else if (valor == "prepararIndiceInvertido") {
+      funcion = [](Usuario& usuario) { prepararIndiceInvertido(usuario); }; 
+    } else if (valor == "crearIndiceInvertido") {
+      funcion = [](Usuario& usuario) { crearIndiceInvertido(usuario); }; 
     } else {
       funcion = [](Usuario&) { opcionIndefinida(); };
-    }
+    } 
     mapa[opcion] = std::make_pair(label, funcion);
   }
   archivoMenu.close();

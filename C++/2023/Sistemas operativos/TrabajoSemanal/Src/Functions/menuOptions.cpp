@@ -9,6 +9,8 @@ void contar(Usuario& usuario);
 void crearArchivo(Usuario& usuario);
 void agregarTexto(Usuario& usuario);
 void conteoPalabras(Usuario& usuario);
+void prepararIndiceInvertido(Usuario& usuario);
+void crearIndiceInvertido(Usuario& usuario);
 void opcionIndefinida();
 bool isSpecialCharacter(unsigned char c);
 char removeAccent(unsigned char c);

@@ -73,7 +73,7 @@ int main(int argc, char **argv) {
 
 void getout(Usuario& usuario) {
   dbMAP dataBase = leerEnv();
-  menuMAP menuOptions = crearMapa(usuario, dataBase["MENU"]);
+  menuMAP menuOptions = crearMapa(usuario, dataBase["DB_MENU"]);
   if (validation(usuario, dataBase)) {
     bool condition = true;
     bool entradaValida = true;
@@ -111,7 +111,7 @@ void getout(Usuario& usuario) {
       std::cout << "===================================================" << std::endl;
     }
   } else {
-    signIn(usuario.u, menuOptions, dataBase["USER"]);
+    signIn(usuario.u, menuOptions, dataBase["DB_USER"]);
   }
   std::cout << "Que tenga un buen dia" << std::endl;
   std::cout << "===================================================" << std::endl;

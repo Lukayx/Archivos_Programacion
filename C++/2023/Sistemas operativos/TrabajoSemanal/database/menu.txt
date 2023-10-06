@@ -6,4 +6,6 @@
 5,Crear Archivo,crearArchivo
 6,Agregar texto al archivo,agregarTexto
 7,Conteo de palabras,contarPalabras
-8,Nueva Opcion,indefinido
+8,Preparar datos para indice invertido,prepararIndiceInvertido
+9,Crear indice invertido,crearIndiceInvertido
+10,Nueva Opcion,indefinido
