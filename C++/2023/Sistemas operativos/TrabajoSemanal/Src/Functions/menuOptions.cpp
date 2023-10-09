@@ -1,5 +1,5 @@
-#include "../../Include/user.h"
 #include "../../Include/menuOptions.h"
+#include "utilidades.cpp"
 
 void salir();
 void sumatoria(Usuario& usuario);
@@ -9,15 +9,14 @@ void contar(Usuario& usuario);
 void crearArchivo(Usuario& usuario);
 void agregarTexto(Usuario& usuario);
 void conteoPalabras(Usuario& usuario);
-void prepararIndiceInvertido(Usuario& usuario);
-void crearIndiceInvertido(Usuario& usuario);
-void opcionIndefinida();
-bool isSpecialCharacter(unsigned char c);
+void prepararIndiceInvertido(dbMAP database);
+void crearIndiceInvertido(dbMAP database);
 char removeAccent(unsigned char c);
+void opcionIndefinida();
 
 void salir(){
   std::cout << "Que tenga un buen dia" << std::endl;
-  std::cout << "===================================================" << std::endl;
+  std::cout << "===============================================================================" << std::endl;
   exit(1);
 }
 
@@ -95,15 +94,6 @@ void agregarTexto(Usuario& usuario){
   std::cout << "Texto agregado al archivo exitosamente." << std::endl;
 }
 
-bool isSpecialCharacter(unsigned char c) {
-    if (c == ' ') return false;
-    if (c == 225 || c == 233 || c == 237 || c == 243 || c == 250 || c == 193 || c == 201 || c == 205 || c == 211 || c == 218) {
-        return false;
-    }
-    if (isdigit(c)) return true;
-    return !isalnum(c);
-}
-
 char removeAccent(unsigned char c) {
   switch (c) {
     case 225: return 'a';
@@ -149,6 +139,27 @@ void conteoPalabras(Usuario& usuario) {
   }
   output.close();
   std::cout << "Se contaron las palabras con éxito y se creó un archivo con sus frecuencias." << std::endl;
+}
+
+void prepararIndiceInvertido(dbMAP database){
+  std::string str = "./Functions/prepararIndiceInvertido";
+  str += " " + database["EXTENTION"];
+  str += " " + database["PATH_FILES_IN"];
+  str += " " + database["PATH_FILES_OUT"];
+  str += " " + database["AMOUNT_THREADS"];
+  const char* comando = str.c_str();
+  // Llama a std::system para ejecutar el comando
+  int resultado = std::system(comando);
+  // Comprueba el resultado
+}
+
+void crearIndiceInvertido(dbMAP database){
+  std::string str = "./Functions/crearIndiceInvertido";
+  str += " " + database["INVERTED_INDEX_FILE"];
+  str += " " + database["PATH_FILES_OUT"];
+  const char* comando = str.c_str();
+  // Llama a std::system para ejecutar el comando
+  int resultado = std::system(comando);
 }
 
 void opcionIndefinida(){

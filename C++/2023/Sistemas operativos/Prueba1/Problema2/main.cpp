@@ -11,7 +11,6 @@
 #include <queue>
 
 using mapEnv = std::unordered_map<std::string, std::string>;
-using cola = std::queue<std::string>;
 using vector = std::vector<std::string>;
 namespace fs = std::filesystem;
 

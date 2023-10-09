@@ -1,0 +1,47 @@
+# Compilador
+CC = g++
+
+# Opciones de compilación
+CFLAGS = -std=c++17 -Wall
+
+# Rutas a los directorios de fuente y objetos
+SRCDIR = Src
+FUNCIONESDIR = $(SRCDIR)/Functions
+OBJDIR = Obj
+OBJFUNCIONESDIR = $(OBJDIR)/Functions
+
+# Nombres de los archivos fuente
+SRCS = $(SRCDIR)/main.cpp \
+      $(FUNCIONESDIR)/crearIndiceInvertido.cpp \
+      $(FUNCIONESDIR)/prepararIndiceInvertido.cpp \
+      $(FUNCIONESDIR)/utilidades.cpp \
+			$(FUNCIONESDIR)/menuOptions.cpp  
+
+# Nombres de los archivos objeto
+OBJS = $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(SRCS))
+
+# Ejecutable principal
+EXECUTABLE = aplicacion
+
+.PHONY: all clean
+
+all: $(OBJDIR) $(OBJFUNCIONESDIR) $(EXECUTABLE)
+
+$(OBJDIR)/%.o: $(SRCDIR)/%.cpp
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(OBJDIR):
+	mkdir -p $(OBJDIR)
+
+$(OBJFUNCIONESDIR):
+	mkdir -p $(OBJFUNCIONESDIR)
+
+$(EXECUTABLE): $(OBJS)
+	$(CC) $(CFLAGS) $^ -o $@ -lstdc++fs
+
+run: $(EXECUTABLE)
+	./$(EXECUTABLE)
+
+clean:
+	rm -rf $(OBJDIR) $(EXECUTABLE)
+	rm -f $(OBJFUNCIONESDIR)/*.o  # Elimina archivos objeto en el directorio Obj/Functions

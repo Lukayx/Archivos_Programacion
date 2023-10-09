@@ -4,7 +4,7 @@
 #include <filesystem>
 
 namespace fs = std::filesystem;
-
+int pid = getpid();
 void getout(Usuario& usuario);
 
 int main(int argc, char **argv) {
@@ -49,15 +49,15 @@ int main(int argc, char **argv) {
           std::cout << "Se cerrara el programa." << std::endl;
           exit(1);
         }
-        std::streampos fileSize = archivo.tellg(); // Obtener tamaño del archivo
         archivo.close();
-        if (fileSize == -1) {
-          std::cout << "No se pudo obtener el tamaño del archivo." << std::endl;
-          exit(1);
-        } else if (fileSize < 1048576) {
-          std::cout << "El archivo pasado por el input pesa menos de 1 MB" << std::endl;
-          exit(1);
-        }
+        // std::streampos fileSize = archivo.tellg(); // Obtener tamaño del archivo
+        // if (fileSize == -1) {
+        //   std::cout << "No se pudo obtener el tamaño del archivo." << std::endl;
+        //   exit(1);
+        // } else if (fileSize < 1048576) {
+        //   std::cout << "El archivo pasado por el input pesa menos de 1 MB" << std::endl;
+        //   exit(1);
+        // }
         break;
       }
       case 'o': {
@@ -66,20 +66,20 @@ int main(int argc, char **argv) {
       }
     }
   }
-  system("cls");
+  system("clear");
   getout(usuario);
   return 0;
 }
 
 void getout(Usuario& usuario) {
   dbMAP dataBase = leerEnv();
-  menuMAP menuOptions = crearMapa(usuario, dataBase["DB_MENU"]);
+  menuMAP menuOptions = crearMapa(usuario, dataBase);
   if (validation(usuario, dataBase)) {
-    bool condition = true;
-    bool entradaValida = true;
+    bool respuestaValida = true;
+    bool opcion_8 = false;
     std::string respuesta;
-    while (condition) {
-      std::cout << "\nUsuario Actual: " << usuario.u << " / " << usuario.userProfile << std::endl;
+    while (true) {
+      std::cout << "\nUsuario Actual: " << usuario.u << " / " << usuario.userProfile << " / Pid = " << pid << std::endl;
       std::cout << "\nOPCIONES DE MENU\n" << std::endl;
       for (const auto& option : menuOptions) {
         std::cout << option.first << ")- " << option.second.first << std::endl;
@@ -87,32 +87,40 @@ void getout(Usuario& usuario) {
       do {
         std::cout << "\nElija una Opcion: ";
         std::cin >> respuesta;
-        entradaValida = true;
+        respuestaValida = true;
         for (char a : respuesta) {
           if (!isdigit(a)) {
-            entradaValida = false;
+            respuestaValida = false;
             std::cout << "\nOpcion invalida, Elija denuevo: ";
             break;
           }
         }
-      } while (!entradaValida);
-      system("cls");
-      std::cout << "==================================================" << std::endl;
+      } while (!respuestaValida);
+      system("clear");
+      std::cout << "===============================================================================" << std::endl;
       int opcion = std::stoi(respuesta);
       if (confirmPermiss(usuario, opcion) || opcion == 0 || opcion > 7) {
         if (menuOptions.find(opcion) != menuOptions.end()) {
-          menuOptions[opcion].second(usuario);
+          if(opcion == 8) opcion_8 = true;
+          if(opcion!=9){
+            menuOptions[opcion].second(usuario);
+          } else if(opcion_8) {
+            menuOptions[opcion].second(usuario);
+          } else {
+            std::cout << "Primero elija la opcion 8" << std::endl;
+          }
         } else {
           std::cout << "Opcion invalida." << std::endl;
         }
       } else {
         std::cout << "No tiene permiso para acceder a esta operacion." << std::endl;
       }
-      std::cout << "===================================================" << std::endl;
+      std::cout << "===============================================================================" << std::endl;
     }
   } else {
     signIn(usuario.u, menuOptions, dataBase["DB_USER"]);
   }
+  std::cout << "===============================================================================" << std::endl;
   std::cout << "Que tenga un buen dia" << std::endl;
-  std::cout << "===================================================" << std::endl;
+  std::cout << "===============================================================================" << std::endl;
 }

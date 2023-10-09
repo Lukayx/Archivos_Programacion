@@ -43,9 +43,9 @@ Para compilar el codigo y generar el archivo .exe se debe escribir:
   g++ main.cpp -o main
 
 Para ejecutar el .exe generado tras compilar se debe escribir: 
-  main -u "{username}" -v "{vector}" -f "{ruta}" -t "{texto}" -i "{input}" -o "{output}"
+  ./main -u "{username}" -v "{vector}" -f "{ruta}" -t "{texto}" -i "{input}" -o "{output}"
 Ejemplo:
-  main -u "Fernando Inzulza" -v "13;7;-4;7;25" -f "perro.txt" -t "soy un perrito" -i "large_file.txt" -o "perrito/resultado.txt"
+  ./main -u "Fernando Inzulza" -v "13;7;-4;7;25" -f "perro.txt" -t "soy un perrito" -i "../Files/IN/file001.txt" -o "perrito/resultado.txt"
   
 Donde username es Nombre y apellido con mayusculas al principio y sin caracteres especiales.
 El vector se escribe de la forma 3;6;1;7;12 (Se transformara a <3,6,1,7,12>)

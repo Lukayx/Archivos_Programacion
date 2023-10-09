@@ -1,5 +1,5 @@
+#include "../../Include/dataBaseManagement.h"
 #include "menuOptions.cpp"
-#include "../../Include/databaseManagement.h"
 
 bool validation(Usuario& usuario, dbMAP database);
 std::vector<int> userProfileAssignment(std::string userProfile, std::string database);
@@ -7,31 +7,33 @@ dbMAP leerEnv();
 void signIn(std::string username, menuMAP menuOptions, std::string database);
 bool confirmPermiss(Usuario& usuario, int opcion);
 menuMAP crearMapa(Usuario& usuario, std::string database);
+void eliminarRetornoDeCarro(std::string& cadena);
 
 bool validation(Usuario& usuario, dbMAP database) {
-  std::ifstream archivo(database["USER"]);
+  std::ifstream archivo(database["DB_USER"].c_str());
   std::string linea;
   if (!archivo.is_open()) {
-    std::cout << "No se pudo abrir la base de datos del usuario";
+    std::cout << "No se pudo abrir la base de datos del usuario" << std::endl;
     exit(1);
   }
   while (getline(archivo, linea)) {
     size_t pos = linea.find(usuario.u + ";"); // Buscar el nombre de usuario en la línea
     if (pos == 0) {
       std::string profile = linea.substr(usuario.u.length() + 1); // Obtener la parte después del nombre
-      usuario.options = userProfileAssignment(profile, database["DB_PROFILES"]);
+      eliminarRetornoDeCarro(profile);
+      usuario.options = userProfileAssignment(profile, database["DB_PROFILES"].c_str());
       usuario.userProfile = profile;
       archivo.close();
       std::cout << "\n-------Usuario Valido-------" << std::endl;
-      ::Sleep(1000);
-      system("cls");
+
+      system("clear");
       return true; // Usuario encontrado y opciones procesadas
     }
   }
   archivo.close();
   std::cout << "\n-------Usuario Invalido-------" << std::endl;
-  ::Sleep(1000);
-  system("cls");
+
+  system("clear");
   std::cout << std::endl << "Usted no se encuentra en la base de datos" << std::endl;
   return false; // Usuario no encontrado en la base de datos
 }
@@ -40,7 +42,7 @@ std::vector<int> userProfileAssignment(std::string userProfile, std::string data
   std::ifstream archivo(database);
   std::string linea;
   if (!archivo.is_open()) {
-    std::cout << "No se pudo abrir la base de datos de los Perfiles de Usuario";
+    std::cout << "No se pudo abrir la base de datos de los Perfiles de Usuario" << std::endl;
     exit(1);
   }
   while(getline(archivo, linea)) {
@@ -58,7 +60,7 @@ std::vector<int> userProfileAssignment(std::string userProfile, std::string data
       return v;
     }
   }
-  std::cout << "\n---Error al buscar el perfil de usuario---\n";
+  std::cout << "\n---Error al buscar el perfil de usuario---\n" << std::endl;
   exit(1);
 }
 
@@ -67,23 +69,26 @@ dbMAP leerEnv(){
   std::ifstream archivo("../.env");
   std::string key;
   std::string linea;
-  size_t indice;
+  std::string valor;
   if (!archivo.is_open()) {
     std::cout << "No se pudo abrir el archivo .env" << std::endl;
-    std::cout << "Verifique de que se encuentre en la carpeta actual";
+    std::cout << "Verifique de que se encuentre en la carpeta actual" << std::endl;
     exit(1);
   }
   while(getline(archivo, linea)){
+
     int pos = linea.find("=");
-    key = line.substr(0, pos); //Recorta el nombre de la variable
-    map[key] = linea.substr(pos+1, linea.length()); //Almacena el contenido de la variable del .env al map
+    key = linea.substr(0, pos); //Recorta el nombre de la variable
+    valor = linea.substr(pos+1, linea.length());
+    eliminarRetornoDeCarro(valor);
+    database[key] = valor; //Almacena el contenido de la variable del .env al map
   }
   if(database["PATH_FILES_OUT"]==database["PATH_FILES_IN"]){
     std::cout << "Los path PATH_FILES_IN y PATH_FILES_OUT no pueden ser iguales." << std::endl;
     exit(1);
   }
 
-  if(database["AMOUNT_THREADS"]<0 || database["AMOUNT_THREADS"] > 10){
+  if(stoi(database["AMOUNT_THREADS"])<=0 || stoi(database["AMOUNT_THREADS"]) > 10){
     std::cout << "La variable AMOUNT_THREADS como máximo puede ser 10." << std::endl;
     exit(1);
   }
@@ -99,10 +104,10 @@ void signIn(std::string username, menuMAP menuOptions, std::string database) {
     std::cin >> respuesta;
   } while (respuesta != "Si" && respuesta != "No");
   if (respuesta == "Si") {
-    std::ofstream archivo(database, std::ios::app);
+    std::ofstream archivo(database.c_str(), std::ios::app);
     int respuesta;
     if (!archivo.is_open()) {
-      std::cout << "No se pudo abrir la base de datos de Usuarios";
+      std::cout << "No se pudo abrir la base de datos de Usuarios" << std::endl;
       exit(1);
     }
     std::string linea = username + ";";
@@ -121,7 +126,7 @@ void signIn(std::string username, menuMAP menuOptions, std::string database) {
       linea += "userRookie";
     }
     archivo << std::endl << linea;
-    system("cls");
+    system("clear");
     std::cout << std::endl << "------Se ha registrado exitosamente------\n" << std::endl;  
     archivo.close();
   }
@@ -136,14 +141,13 @@ bool confirmPermiss(Usuario& usuario, int opcion) {
   return false;
 }
 
-menuMAP crearMapa(Usuario& usuario, std::string database){
+menuMAP crearMapa(Usuario& usuario, dbMAP database){
   menuMAP mapa;
-
-  std::ifstream archivoMenu(database);
+  std::ifstream archivoMenu(database["DB_MENU"].c_str());
   std::string linea;
 
   if (!archivoMenu.is_open()) {
-    std::cout << "No se pudo abrir el archivo del menu";
+    std::cout << "No se pudo abrir el archivo del menu" << std::endl;
     exit(1);
   }
 
@@ -158,12 +162,14 @@ menuMAP crearMapa(Usuario& usuario, std::string database){
     std::string label = valor;
 
     getline(dd, valor, ',');
+    eliminarRetornoDeCarro(valor);
     std::function<void(Usuario&)> funcion;
 
     if (valor == "salir") {
       funcion = [](Usuario&) { salir(); };
     } else if (valor == "sumatoria") {
       funcion = [](Usuario& usuario) { sumatoria(usuario); };
+      std::cout << "perro" << std::endl;
     } else if (valor == "promedio") {
       funcion = [](Usuario& usuario) { promedio(usuario); };
     } else if (valor == "moda") {
@@ -177,9 +183,9 @@ menuMAP crearMapa(Usuario& usuario, std::string database){
     } else if (valor == "contarPalabras") {
       funcion = [](Usuario& usuario) { conteoPalabras(usuario); }; 
     } else if (valor == "prepararIndiceInvertido") {
-      funcion = [](Usuario& usuario) { prepararIndiceInvertido(usuario); }; 
+      funcion = [database](Usuario&) { prepararIndiceInvertido(database); }; 
     } else if (valor == "crearIndiceInvertido") {
-      funcion = [](Usuario& usuario) { crearIndiceInvertido(usuario); }; 
+      funcion = [database](Usuario&) { crearIndiceInvertido(database); }; 
     } else {
       funcion = [](Usuario&) { opcionIndefinida(); };
     } 
@@ -187,4 +193,8 @@ menuMAP crearMapa(Usuario& usuario, std::string database){
   }
   archivoMenu.close();
   return mapa;
+}
+
+void eliminarRetornoDeCarro(std::string& cadena) {
+  cadena.erase(std::remove(cadena.begin(), cadena.end(), '\r'), cadena.end());
 }
