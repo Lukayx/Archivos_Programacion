@@ -4,9 +4,9 @@
 bool validation(Usuario& usuario, dbMAP database);
 std::vector<int> userProfileAssignment(std::string userProfile, std::string database);
 dbMAP leerEnv();
-void signIn(std::string username, menuMAP menuOptions, std::string database);
+void signIn(std::string username, menuMAP menuOptions, dbMAP database);
 bool confirmPermiss(Usuario& usuario, int opcion);
-menuMAP crearMapa(Usuario& usuario, std::string database);
+menuMAP crearMapa(Usuario& usuario, dbMAP database);
 void eliminarRetornoDeCarro(std::string& cadena);
 
 bool validation(Usuario& usuario, dbMAP database) {
@@ -41,19 +41,22 @@ bool validation(Usuario& usuario, dbMAP database) {
 std::vector<int> userProfileAssignment(std::string userProfile, std::string database){
   std::ifstream archivo(database);
   std::string linea;
+  std::cout << "gatoo" << std::endl;
   if (!archivo.is_open()) {
     std::cout << "No se pudo abrir la base de datos de los Perfiles de Usuario" << std::endl;
     exit(1);
   }
   while(getline(archivo, linea)) {
+    size_t first = linea.find_first_of(";");
     size_t pos = linea.find(userProfile + ";"); // Buscar el nombre de usuario en la línea
-    if (pos == 0) {
-      std::string permissions = linea.substr(userProfile.length() + 1); // Obtener la parte después del nombre
+    if (pos == first+1) {
+      std::string permissions = linea.substr(linea.find_last_of(";") + 1); // Obtener la parte después del nombre
       std::stringstream dd(permissions);
       std::string value;
       std::vector<int> v;
       while(getline(dd, value, ',')) {
         int i = std::stoi(value);
+        std::cout << "perroo" << std::endl;
         v.push_back(i);
       }
       archivo.close();
@@ -87,46 +90,50 @@ dbMAP leerEnv(){
     std::cout << "Los path PATH_FILES_IN y PATH_FILES_OUT no pueden ser iguales." << std::endl;
     exit(1);
   }
-
-  if(stoi(database["AMOUNT_THREADS"])<=0 || stoi(database["AMOUNT_THREADS"]) > 10){
+  if(std::stoi(database["AMOUNT_THREADS"])<=0 || std::stoi(database["AMOUNT_THREADS"]) > 10){
     std::cout << "La variable AMOUNT_THREADS como máximo puede ser 10." << std::endl;
     exit(1);
   }
-
   archivo.close();
   return database;
 }
 
-void signIn(std::string username, menuMAP menuOptions, std::string database) {
+void signIn(std::string username, menuMAP menuOptions, dbMAP database) {
   std::string respuesta;
+  int opcion;
   do {
     std::cout << " Desea Registrarse? (Si/No): ";
     std::cin >> respuesta;
   } while (respuesta != "Si" && respuesta != "No");
   if (respuesta == "Si") {
-    std::ofstream archivo(database.c_str(), std::ios::app);
-    int respuesta;
+    std::ofstream archivo(database["DB_USER"].c_str(), std::ios::app);
     if (!archivo.is_open()) {
       std::cout << "No se pudo abrir la base de datos de Usuarios" << std::endl;
       exit(1);
     }
     std::string linea = username + ";";
-    do{
-      std::cout << "\nQue tipo de usuario desea ser? " << std::endl;
-      std::cout << "1)-admin" << std::endl;
-      std::cout << "2)-userGeneral" << std::endl; 
-      std::cout << "3)-userRookie" << std::endl;
-      std::cin >> respuesta;
-    } while(respuesta < 1 || respuesta > 3);
-    if(respuesta == 1){
-      linea += "admin";
-    } else if(respuesta == 2){
-      linea += "userGeneral";
-    } else {
-      linea += "userRookie";
+    std::string iterador;
+    std::map<int,std::string> perfiles;
+    int j = 1;
+    std::ifstream perfilFile(database["DB_PROFILES"].c_str());
+    while(getline(perfilFile, iterador)){
+      opcion = j++;
+      size_t inicio = iterador.find_first_of(";")+1;
+      std::string perfil = iterador.substr(inicio,iterador.find_last_of(";")-inicio);
+      perfiles[opcion] = perfil;
     }
+    perfilFile.close();
+    std::map<int, std::string>::iterator check;
+    do{
+      std::cout << "\nQue Perfil de usuario desea ser? " << std::endl;
+      for(auto i : perfiles) std::cout << i.first <<")-" << i.second <<std::endl;
+      std::cin >> opcion; 
+      check = perfiles.find(opcion);
+    }while(check == perfiles.end());
+    linea += perfiles[opcion];
     archivo << std::endl << linea;
     system("clear");
+    std::cout << "===============================================================================" << std::endl;
     std::cout << std::endl << "------Se ha registrado exitosamente------\n" << std::endl;  
     archivo.close();
   }
@@ -169,7 +176,6 @@ menuMAP crearMapa(Usuario& usuario, dbMAP database){
       funcion = [](Usuario&) { salir(); };
     } else if (valor == "sumatoria") {
       funcion = [](Usuario& usuario) { sumatoria(usuario); };
-      std::cout << "perro" << std::endl;
     } else if (valor == "promedio") {
       funcion = [](Usuario& usuario) { promedio(usuario); };
     } else if (valor == "moda") {

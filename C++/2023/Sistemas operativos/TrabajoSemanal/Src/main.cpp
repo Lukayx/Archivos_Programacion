@@ -72,9 +72,9 @@ int main(int argc, char **argv) {
 }
 
 void getout(Usuario& usuario) {
-  dbMAP dataBase = leerEnv();
-  menuMAP menuOptions = crearMapa(usuario, dataBase);
-  if (validation(usuario, dataBase)) {
+  dbMAP database = leerEnv();
+  menuMAP menuOptions = crearMapa(usuario, database);
+  if (validation(usuario, database)) {
     bool respuestaValida = true;
     bool opcion_8 = false;
     std::string respuesta;
@@ -101,8 +101,8 @@ void getout(Usuario& usuario) {
       int opcion = std::stoi(respuesta);
       if (confirmPermiss(usuario, opcion) || opcion == 0 || opcion > 7) {
         if (menuOptions.find(opcion) != menuOptions.end()) {
-          if(opcion == 8) opcion_8 = true;
           if(opcion!=9){
+            if(opcion == 8) opcion_8 = true;
             menuOptions[opcion].second(usuario);
           } else if(opcion_8) {
             menuOptions[opcion].second(usuario);
@@ -118,7 +118,7 @@ void getout(Usuario& usuario) {
       std::cout << "===============================================================================" << std::endl;
     }
   } else {
-    signIn(usuario.u, menuOptions, dataBase["DB_USER"]);
+    signIn(usuario.u, menuOptions, database);
   }
   std::cout << "===============================================================================" << std::endl;
   std::cout << "Que tenga un buen dia" << std::endl;

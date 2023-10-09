@@ -7,7 +7,6 @@ int main(int argc, char **argv){
   std::string PATH_FILES_OUT = argv[2];
   vector files = fileRead(PATH_FILES_OUT);
   IndexFile(files, INVERTED_INDEX_FILE);
-
   return 0;
 }
 
@@ -47,12 +46,10 @@ void agregaPalabrasMapa(wordCount_files& map, std::string filePath){
   std::string name = filePath.substr(filePath.find_last_of("/")+1,filePath.length());
   std::string linea;
   while(getline(file, linea)){
-    if(linea == "") std::cout << "Perro" << std::endl;
-    else{
+    if(linea != ""){
       std::string word = linea.substr(0,linea.find(";"));
-      int count = stoi(linea.substr(linea.find(";")+1,linea.length()));
+      int count = std::stoi(linea.substr(linea.find(";")+1,linea.length()));
       map[word][name] = count;
-      // std::cout << word << ";(" << name << "," << count << ")" << std::endl;
     }
   }
   file.close();
@@ -68,10 +65,10 @@ void crearIndexFile(wordCount_files& map, std::string INVERTED_INDEX_FILE){
       std::string nameFile = j.first;
       int count = j.second;
       if (primerElemento){
-        outFile << "(" << nameFile << "," << count << ")";
+        outFile << "(" << nameFile << ";" << count << ")";
         primerElemento = false;
       } else {
-        outFile << ";(" << nameFile << "," << count << ")";
+        outFile << ";(" << nameFile << ";" << count << ")";
       }
     }
     outFile << std::endl;

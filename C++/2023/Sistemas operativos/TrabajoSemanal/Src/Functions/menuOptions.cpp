@@ -149,8 +149,7 @@ void prepararIndiceInvertido(dbMAP database){
   str += " " + database["AMOUNT_THREADS"];
   const char* comando = str.c_str();
   // Llama a std::system para ejecutar el comando
-  int resultado = std::system(comando);
-  // Comprueba el resultado
+  std::system(comando);
 }
 
 void crearIndiceInvertido(dbMAP database){
@@ -159,7 +158,7 @@ void crearIndiceInvertido(dbMAP database){
   str += " " + database["PATH_FILES_OUT"];
   const char* comando = str.c_str();
   // Llama a std::system para ejecutar el comando
-  int resultado = std::system(comando);
+  std::system(comando);
 }
 
 void opcionIndefinida(){

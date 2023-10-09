@@ -1,4 +1,5 @@
 Fernando Inzulza;userGeneral
 Agustin Estrada;admin
-Fernanda Salgado;userRookie
+Fernanda Salgado;posadero
 Cristian Huenchullanca;userGeneral
+Fernando;posadero

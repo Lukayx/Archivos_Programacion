@@ -1,69 +1,62 @@
-Trabajo 1 sistope
+|===========================|
+|TRABAJO SISTEMAS OPERATIVOS|
+|===========================|
 
------------------------------------------Archivo Main-----------------------------------------
-Importa los archivos dataBaseManagement y menuOptions al principio del archivo, así no tiene que importar las librerias directamente ya que estan  
-Al recibir el nombre, el vector, la ruta y el texto con la funcion getotp son verificados que sean correctos. Luego se envian a la funcion getout, donde se almacenan en el struct Usuario y se verifica si se encuentran en la base de datos. al mismo tiempo que se cargan las opciones del menu con un map que tiene un identificador (numero de la opcion) y un pair de un label y la funcion que va de acuerdo a la opcion elejida(con parametro del struct Usuario), a partir de aqui hay 2 caminos: 
+---------------------------------------------------------------------------------------------------------------------------------------------
+DESCRIPCION GENERAL:
 
-  Estas en la base de datos: Te desplegara todas las opciones que hay pero solo podras acceder a las que tengas permiso
+Esta aplicación cuenta con un menú en el cual podrá seleccionar varias opciones, el acceso a estas opciones dependerá de los permisos que posea el usuario, estos permisos serán dados por el perfil de usuario que elijío al registarse. Las unicas opciones que no requieren permisos son la 0, 8 y 9. 
 
-  No estas en la base de datos: No podras acceder a las operaciones con vector pero te dara la opcion de Registrarte e ir elijiendo los permisos que deseas tener.
+Para compilar el programa debe situarse en la carpeta principal del proyecto, abrir el bash ahí y luego escribir:
+      make -f MAKEFILE
+      cd Src (AQUI PODRÁ EJECUTAR EL SIGUIENTE PASO)
 
----------------------------------Archivo dataBaseManagement-----------------------------------
-Tiene las funciones que recolectan la informacion de la base de datos y hace un #import al archivo menuOptions
-
-Las funciones son:
-
-  Validation: Resibe un struct Usuario del cual usando el nombre que tiene verifica su existencia en la base de datos.
-
-  signIn: Resibe un struct Usuario y el map con las opciones del menu. En caso de que no exista en la base de datos se le pregunta si quiere registrarse, si lo quiere hacerlo entonces tendra una serie de preguntas que le irán dando los permisos que usted quiera tener (cada pregunta tiene el label sacado del map para saber la opcion a la que tendra permiso), si no quiere entonces termina.
-
-  userProfileAssignment: Funcion que retorna un vector con los permisos correspondientes y recibe 2 strings, el perfil de usuario y el string de la base de datos (Sacada el .env). busca en la base de datos de los perfiles de usuario el que se pasó por los parametros de la funcion y luego le asigna los permisos de ese perfil al vector que será retornado.
-
-  confirmPermiss: recibe un struct Usuario y un entero opcion. El struct usuario tiene sus permisos sacados de la base de datos por lo que recorre estos permisos y busca si se encuentra la opcion elejida, si la encuentra entonces tiene permiso para usar esa opcion, en caso contrario no lo tiene.
-
-  crearMapa: recibe un struct usuario. Se crea un map con una key de primera y un pair de segunda con un string y una funcion de parametros Usuario. Luego lee la base de datos del menu y separa cada linea con las ',' y agrega el numero de opcion en la key del map. luego agrega el label en el string del pair y con el identificador del ultimo getline se le agrega la funcion correspondiente (usando funciones lambda)
-
-  leerEnv: No recibe parametros, el lee el .env e identifica cuales son las bases de datos. Despues, ocupando un unordered_map de <string,string> con el primero el nombre de la base de datos correspondiente y de segunda la ruta en la que se encuentra
-
------------------------------------Archivo menuOptions---------------------------------------
-
-Tiene todas las opciones del menu (salir, sumatoria, promedio, moda, contar, crearArchivo, agregarTexto y opcionIndefinida). La mayoria recibe el parametro Usuario a excepcion de las funciones salir y opcionIndefinida.
-
-También, aqui está definido el struct Usuario con los atributos u,path y text de tipo string, v y options siendo vectores de tipo int.
+Para ejecutar el archivo "main" generado tras compilar se debe escribir siguiendo la siguinte estructura: 
+      ./main -u "{username}" -v "{vector}" -f "{ruta}" -t "{texto}" -i "{input}" -o "{output}"
 
   u: nombre de usuario
-  v: vector dado por linea de comando
+  v: vector dado por linea de comando (Se escribe de la forma: 3;6;1;7;12)
   options: permisos a los que tiene acceso el usuario
   path: ruta dada por linea de comando
   text: texto dado por linea de comando
   input: ruta de archivo con al menos 1 MB de peso
   output: ruta de donde se creara el archivo con las frecuencias del conteo de palabras
 
-Para compilar el codigo y generar el archivo .exe se debe escribir:
-  g++ main.cpp -o main
+EJEMPLO:
+      ./main -u "Fernando Inzulza" -v "13;7;-4;7;25" -f "perro.txt" -t "soy un perrito" -i "../Files/IN/largeFile/large_file.txt" -o "../Files/outCuentaPalabras/large_file.txt"
+---------------------------------------------------------------------------------------------------------------------------------------------
 
-Para ejecutar el .exe generado tras compilar se debe escribir: 
-  ./main -u "{username}" -v "{vector}" -f "{ruta}" -t "{texto}" -i "{input}" -o "{output}"
-Ejemplo:
-  ./main -u "Fernando Inzulza" -v "13;7;-4;7;25" -f "perro.txt" -t "soy un perrito" -i "../Files/IN/file001.txt" -o "perrito/resultado.txt"
-  
-Donde username es Nombre y apellido con mayusculas al principio y sin caracteres especiales.
-El vector se escribe de la forma 3;6;1;7;12 (Se transformara a <3,6,1,7,12>)
-La ruta puede ser escrita como solo el nombre del archivo y su extension para crearlo en la misma carpeta o una mas especifica para crearla en otro lugar.
-El texto será lo que quieres escribir dentro del archivo. 
-El input será una ruta donde leerá un archivo que debe ser de al menos 1 MB
-El output es la ruta en donde se generara un archivo de frecuencia de palabras en el que se usó el input
 
-La base de datos (db.txt) se estructura de la forma {username};{userProfile}
-como por ejemplo: 
-  Vicente Alves;admin
+=============================================================================================================================================
+Los ~Base de datos de Perfiles de Usuarios~ disponibles se encuentran en la carpeta "Database", el nombre del archivo es "userProfiles.txt"
+-Su estructura es la siguiente:
+      {NOMBREDE_DEL_PERFIL_DE_USUARIO};{NUMERO_DE_LAS_OPCIONES_A_LAS_QUE_TIENE_PERMISO}
+      (EJEMPLO: userRookie:1,3,5,7,9)
+=============================================================================================================================================
 
-Las opciones del menú (menu.txt) se estructura de la forma {numeroOpcion},{Label},{identificador}
-como por ejemplo: 
-  5,Crear archivo de texto,crearArchivo
 
-Los perfiles de usuario (userProfile.txt) se estructura de la forma {userProfile};{permisos} como por ejemplo:
-  admin;1,2,3,4,5,6,7
+=============================================================================================================================================
+La ~Base de datos de Usuarios~ se encuentra en la carpeta "Database", el nombre del archivo es "db.txt"
+-Su estructura es la Siguiente:
+      {NOMBRE_DEL_USUARIO};{NOMBRE_DEL_PERFIL_DE_USUARIO}
+      (EJEMPLO: Erin Solstice;userRookie)
+=============================================================================================================================================
 
-Archivo .env:
-  De momento tiene las variables que contienen las bases de datos, estas están escritas de la forma:  "DB_" + "(BASE DE DATOS CORRESPONDIENTE)"
+
+=============================================================================================================================================
+La ~Base de datos del Menu~ se encuentra en la carpeta "Database", el nombre del archivo es "menu.txt"
+-Su estructura es la Siguiente:
+      {NUMERO_OPCION};{FUNCION_DE_LA_OPCION};{PALABRA_CLAVE}
+      (EJEMPLO: 8,Preparar datos para indice invertido,prepararIndiceInvertido)
+=============================================================================================================================================
+
+
+=============================================================================================================================================
+Las ~Variables de Entorno~ (.env) del proyecto se encuentran en la carpeta principal llamada "TrabajoSemanal"
+Su estrucura es la Siguiente:
+      Las bases de datos comienzan con "DB_" y luego le sigue el nombre a la que correponde. (EJ: DB_MENU)
+      EXTENTION = {extension del archivo que se busca los archivos de entrada}
+      PATH_FILES_(IN/OUT) = {ruta correspondiente a las carpetas con archivos de entrada y salida}
+      AMOUNT_THREADS = {Cantidad de hilos que se ocuparan para ciertas opciones}
+      INVERTED_INDEX_FILE = {Ruta en la que se creara el archivo de Indice Invertido}
+=============================================================================================================================================

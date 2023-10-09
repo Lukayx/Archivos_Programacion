@@ -4,44 +4,46 @@ CC = g++
 # Opciones de compilación
 CFLAGS = -std=c++17 -Wall
 
-# Rutas a los directorios de fuente y objetos
+# Rutas a los archivos fuente
 SRCDIR = Src
 FUNCIONESDIR = $(SRCDIR)/Functions
-OBJDIR = Obj
-OBJFUNCIONESDIR = $(OBJDIR)/Functions
 
 # Nombres de los archivos fuente
-SRCS = $(SRCDIR)/main.cpp \
-      $(FUNCIONESDIR)/crearIndiceInvertido.cpp \
-      $(FUNCIONESDIR)/prepararIndiceInvertido.cpp \
-      $(FUNCIONESDIR)/utilidades.cpp \
-			$(FUNCIONESDIR)/menuOptions.cpp  
+MAIN_SRC = $(SRCDIR)/main.cpp
+CREAR_INDICE_SRC = $(FUNCIONESDIR)/crearIndiceInvertido.cpp
+PREPARAR_INDICE_SRC = $(FUNCIONESDIR)/prepararIndiceInvertido.cpp
 
-# Nombres de los archivos objeto
-OBJS = $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(SRCS))
+# Directorios de destino para los ejecutables
+OUTPUT_DIR_MAIN = $(SRCDIR)
+OUTPUT_DIR_CREAR_INDICE = $(FUNCIONESDIR)
+OUTPUT_DIR_PREPARAR_INDICE = $(FUNCIONESDIR)
 
-# Ejecutable principal
-EXECUTABLE = aplicacion
+# Ejecutables
+MAIN_EXECUTABLE = $(OUTPUT_DIR_MAIN)/main
+CREAR_INDICE_EXECUTABLE = $(OUTPUT_DIR_CREAR_INDICE)/crearIndiceInvertido
+PREPARAR_INDICE_EXECUTABLE = $(OUTPUT_DIR_PREPARAR_INDICE)/prepararIndiceInvertido
 
 .PHONY: all clean
 
-all: $(OBJDIR) $(OBJFUNCIONESDIR) $(EXECUTABLE)
+all: $(MAIN_EXECUTABLE) $(CREAR_INDICE_EXECUTABLE) $(PREPARAR_INDICE_EXECUTABLE)
 
-$(OBJDIR)/%.o: $(SRCDIR)/%.cpp
-	$(CC) $(CFLAGS) -c $< -o $@
+$(MAIN_EXECUTABLE): $(MAIN_SRC)
+	$(CC) $(CFLAGS) $< -o $@ -lstdc++fs
 
-$(OBJDIR):
-	mkdir -p $(OBJDIR)
+$(CREAR_INDICE_EXECUTABLE): $(CREAR_INDICE_SRC)
+	$(CC) $(CFLAGS) $< -o $@ -lstdc++fs
 
-$(OBJFUNCIONESDIR):
-	mkdir -p $(OBJFUNCIONESDIR)
+$(PREPARAR_INDICE_EXECUTABLE): $(PREPARAR_INDICE_SRC)
+	$(CC) $(CFLAGS) $< -o $@ -lstdc++fs
 
-$(EXECUTABLE): $(OBJS)
-	$(CC) $(CFLAGS) $^ -o $@ -lstdc++fs
+run_main: $(MAIN_EXECUTABLE)
+	./$<
 
-run: $(EXECUTABLE)
-	./$(EXECUTABLE)
+run_crear_indice: $(CREAR_INDICE_EXECUTABLE)
+	./$<
+
+run_preparar_indice: $(PREPARAR_INDICE_EXECUTABLE)
+	./$<
 
 clean:
-	rm -rf $(OBJDIR) $(EXECUTABLE)
-	rm -f $(OBJFUNCIONESDIR)/*.o  # Elimina archivos objeto en el directorio Obj/Functions
+	rm -f $(MAIN_EXECUTABLE) $(CREAR_INDICE_EXECUTABLE) $(PREPARAR_INDICE_EXECUTABLE)

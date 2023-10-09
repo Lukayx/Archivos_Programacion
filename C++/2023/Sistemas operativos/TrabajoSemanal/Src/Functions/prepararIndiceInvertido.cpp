@@ -16,7 +16,7 @@ int main(int argc, char **argv){
   }
   std::mutex mutex;
   std::vector<std::thread> hilos;
-  int numThreads = stoi(env["AMOUNT_THREADS"]);
+  int numThreads = std::stoi(env["AMOUNT_THREADS"]);
   for (int i = 0; i < numThreads; i++) {
     hilos.emplace_back(procesarArchivos, std::ref(vectorArchivos), std::ref(mutex), env["PATH_FILES_OUT"], i, numThreads);
   }
