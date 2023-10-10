@@ -1,15 +1,18 @@
-|===========================|
-|TRABAJO SISTEMAS OPERATIVOS|
-|===========================|
+|==============================|
+|TRABAJO DE SISTEMAS OPERATIVOS|
+|==============================|
 
----------------------------------------------------------------------------------------------------------------------------------------------
+=============================================================================================================================================
 DESCRIPCION GENERAL:
 
 Esta aplicación cuenta con un menú en el cual podrá seleccionar varias opciones, el acceso a estas opciones dependerá de los permisos que posea el usuario, estos permisos serán dados por el perfil de usuario que elijío al registarse. Las unicas opciones que no requieren permisos son la 0, 8 y 9. 
 
 Para compilar el programa debe situarse en la carpeta principal del proyecto, abrir el bash ahí y luego escribir:
-      make -f MAKEFILE
-      cd Src (AQUI PODRÁ EJECUTAR EL SIGUIENTE PASO)
+      make
+Si quiere borrar los archivos EXECUTABLES para compilar de nuevo escriba:
+      make clean
+
+(LAS RUTAS SON RELATIVAS A DONDE ESTA EJECUTANDO EL BASH)
 
 Para ejecutar el archivo "main" generado tras compilar se debe escribir siguiendo la siguinte estructura: 
       ./main -u "{username}" -v "{vector}" -f "{ruta}" -t "{texto}" -i "{input}" -o "{output}"
@@ -24,7 +27,7 @@ Para ejecutar el archivo "main" generado tras compilar se debe escribir siguiend
 
 EJEMPLO:
       ./main -u "Fernando Inzulza" -v "13;7;-4;7;25" -f "perro.txt" -t "soy un perrito" -i "../Files/IN/largeFile/large_file.txt" -o "../Files/outCuentaPalabras/large_file.txt"
----------------------------------------------------------------------------------------------------------------------------------------------
+=============================================================================================================================================
 
 
 =============================================================================================================================================
