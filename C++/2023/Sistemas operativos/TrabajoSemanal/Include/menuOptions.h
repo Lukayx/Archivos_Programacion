@@ -6,7 +6,9 @@
 #include <sstream>
 #include <cctype>
 #include "user.h"
+#include <locale>
 #include <map>  
+#include <codecvt>
 
 using dbMAP = std::unordered_map<std::string, std::string>;
 using menuMAP = std::map<int, std::pair<std::string, std::function<void(Usuario&)>>>;

@@ -11,7 +11,6 @@ void agregarTexto(Usuario& usuario);
 void conteoPalabras(Usuario& usuario);
 void prepararIndiceInvertido(dbMAP database);
 void crearIndiceInvertido(dbMAP database);
-char removeAccent(unsigned char c);
 void opcionIndefinida();
 
 void salir(){
@@ -94,36 +93,16 @@ void agregarTexto(Usuario& usuario){
   std::cout << "Texto agregado al archivo exitosamente." << std::endl;
 }
 
-char removeAccent(unsigned char c) {
-  switch (c) {
-    case 225: return 'a';
-    case 233: return 'e';
-    case 237: return 'i';
-    case 243: return 'o';
-    case 250: return 'u';
-    case 193: return 'A';
-    case 201: return 'E';
-    case 205: return 'I';
-    case 211: return 'O';
-    case 218: return 'U';
-    default: return c;
-  }
-}
-
 void conteoPalabras(Usuario& usuario) {
-  std::ifstream input(usuario.input);
+  std::ifstream input(usuario.input, std::ios::in | std::ios::binary);
   std::string linea;
   std::unordered_map<std::string, int> resultado;
   while (getline(input, linea)) {
-    std::string cleanedLine;
-    for (unsigned char c : linea) {
-      if (!isSpecialCharacter(c)) {
-        cleanedLine.push_back(removeAccent(c));
-      }
-    }
-
-    std::transform(cleanedLine.begin(), cleanedLine.end(), cleanedLine.begin(), ::tolower);
-
+    std::string cleanedLine = "";
+    const char* lineaEspecial = linea.c_str();
+    for(const char* c = lineaEspecial; *c; c++) {
+      cleanedLine += isSpecialCharacter(c);
+    }    
     std::istringstream ss(cleanedLine);
     std::string key;
     while (ss >> key) {
@@ -133,9 +112,8 @@ void conteoPalabras(Usuario& usuario) {
   }
   input.close();
   std::ofstream output(usuario.output, std::ios::trunc);  
-
   for(const auto& indice: resultado){
-    output << indice.first << ": " << indice.second << std::endl;
+    output << indice.first << ":" << indice.second << std::endl;
   }
   output.close();
   std::cout << "Se contaron las palabras con éxito y se creó un archivo con sus frecuencias." << std::endl;

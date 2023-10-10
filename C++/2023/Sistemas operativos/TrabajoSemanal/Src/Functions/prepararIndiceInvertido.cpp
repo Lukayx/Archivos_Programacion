@@ -46,25 +46,21 @@ void countWords(std::string input, std::string output) {
   std::ifstream file(input);
   std::string linea;
   std::unordered_map<std::string, int> resultado;
-  while(getline(file, linea)) {
-    linea.erase(std::remove_if(linea.begin(), linea.end(), isSpecialCharacter), linea.end());
+  while (getline(file, linea)) {
+    std::string cleanedLine = "";
+    const char* lineaEspecial = linea.c_str();
+    for(const char* c = lineaEspecial; *c; c++) {
+      cleanedLine += isSpecialCharacter(c);
+    }    
+    std::istringstream ss(cleanedLine);
     std::string key;
-    std::stringstream ss(linea);
-    while(getline(ss, key, ' ')){
-      if(key.length() == 0 ) continue;
-      std::string key_minuscula = "";
-      char c; 
-      for(size_t i=0; i<key.length(); i++){
-        c = static_cast<char>(tolower(key[i]));
-        key_minuscula += c;
-      }
-      resultado[key_minuscula] += 1;
+    while (ss >> key) {
+      if (key.length() == 0) continue;
+      resultado[key]++;
     }
   }
   file.close();
-
   std::ofstream outFile(output + "/" + namefile, std::ios::trunc);  
-
   for(auto& indice: resultado){
     outFile << indice.first << ";" << indice.second << std::endl;
   }

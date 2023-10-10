@@ -47,3 +47,6 @@ run_preparar_indice: $(PREPARAR_INDICE_EXECUTABLE)
 
 clean:
 	rm -f $(MAIN_EXECUTABLE) $(CREAR_INDICE_EXECUTABLE) $(PREPARAR_INDICE_EXECUTABLE)
+
+# Borra los archivos ejecutables y luego los vuelve a compilar
+rebuild: clean all

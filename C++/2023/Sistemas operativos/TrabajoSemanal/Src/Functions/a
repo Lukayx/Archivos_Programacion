@@ -1,0 +1,45 @@
+// utilidades.cpp
+#include "../../Include/utilidades.h"
+
+std::string isSpecialCharacter(const char* c) {
+    // Lee el primer byte del carácter
+    unsigned char current = static_cast<unsigned char>(*c);
+
+    // Comprueba si es un espacio o un dígito
+    if (std::isdigit(current)) return "";
+    if (std::isspace(current)) return " ";
+
+    // Verifica si es una letra acentuada en mayúsculas
+    if (current == 0xC3) {
+        c++; // Avanza al siguiente byte
+        unsigned char next = static_cast<unsigned char>(*c);
+        switch (next) {
+            case 0x81: return "Á";
+            case 0x89: return "É";
+            case 0x8D: return "Í";
+            case 0x93: return "Ó";
+            case 0x9A: return "Ú";
+            case 0xB1: return "Ñ";
+        }
+    }
+
+    // Verifica si es una letra acentuada en minúsculas
+    if (current == 0xC2) {
+        c++; // Avanza al siguiente byte
+        unsigned char next = static_cast<unsigned char>(*c);
+        switch (next) {
+            case 0x81: return "á";
+            case 0x89: return "é";
+            case 0x8D: return "í";
+            case 0x93: return "ó";
+            case 0x9A: return "ú";
+            case 0x91: return "ñ";
+        }
+    }
+
+    // Comprueba si es una letra sin tilde
+    if (current >= 0x41 && current <= 0x5A) return std::string(1, static_cast<char>(current));
+    if (current >= 0x61 && current <= 0x7A) return std::string(1, static_cast<char>(current));
+
+    return ""; // Si no coincide con nada, se considera un carácter especial
+}

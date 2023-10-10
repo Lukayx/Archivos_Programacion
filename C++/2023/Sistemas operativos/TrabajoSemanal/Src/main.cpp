@@ -80,7 +80,7 @@ void getout(Usuario& usuario) {
     std::string respuesta;
     while (true) {
       std::cout << "\nUsuario Actual: " << usuario.u << " / " << usuario.userProfile << " / Pid = " << pid << std::endl;
-      std::cout << "\nOPCIONES DE MENU\n" << std::endl;
+      std::cout << "\nOPCIONES DE MENÚ\n" << std::endl;
       for (const auto& option : menuOptions) {
         std::cout << option.first << ")- " << option.second.first << std::endl;
       }

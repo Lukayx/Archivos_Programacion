@@ -1,3 +1,4 @@
 #include <cctype>
+#include <string>
 
-bool isSpecialCharacter(unsigned char c);
+std::string isSpecialCharacter(const char* c);
