@@ -8,4 +8,5 @@
 7,Conteo de palabras,contarPalabras
 8,Preparar datos para indice invertido,prepararIndiceInvertido
 9,Crear indice invertido,crearIndiceInvertido
-10,Nueva Opcion,indefinido
+10,Llamar buscador,buscador
+11,Nueva Opcion,indefinido

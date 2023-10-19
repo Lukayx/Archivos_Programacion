@@ -263,6 +263,7 @@ norte;1
 similar;2
 muro;1
 naturaleza;1
+indignarse;1
 necesidad;1
 Flash;1
 función;1
@@ -401,8 +402,6 @@ Extendió;1
 tenga;1
 cantador;1
 carencia;1
-indignarse;1
-atallen;1
 camino;2
 dudando;1
 cuerdas;1
@@ -587,6 +586,7 @@ Nuestras;1
 capaces;1
 nadie;1
 Ni;2
+aten;1
 pensaste;1
 peligroso;5
 desayunar;1

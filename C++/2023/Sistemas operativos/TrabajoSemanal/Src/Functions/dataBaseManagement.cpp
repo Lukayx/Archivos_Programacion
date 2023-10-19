@@ -86,6 +86,20 @@ dbMAP leerEnv(){
     eliminarRetornoDeCarro(valor);
     database[key] = valor; //Almacena el contenido de la variable del .env al map
   }
+  archivo.close();
+  
+  std::ifstream archivoIndexFile(database["INVERTED_INDEX_FILE"]);
+  if(!archivoIndexFile.is_open()){
+    std:: cout << "El archivo de indice invertido no existe." << std::endl;
+    exit(1);
+  }
+  archivoIndexFile.close();
+
+  if(database["TOPK"] < 4){
+    std::cout << "La variable TOPK del .env debe ser mayor o igual a 4." << std::endl;
+    exit(1);
+  }
+
   if(database["PATH_FILES_OUT"]==database["PATH_FILES_IN"]){
     std::cout << "Los path PATH_FILES_IN y PATH_FILES_OUT no pueden ser iguales." << std::endl;
     exit(1);
@@ -94,7 +108,6 @@ dbMAP leerEnv(){
     std::cout << "La variable AMOUNT_THREADS como máximo puede ser 10." << std::endl;
     exit(1);
   }
-  archivo.close();
   return database;
 }
 
@@ -192,6 +205,8 @@ menuMAP crearMapa(Usuario& usuario, dbMAP database){
       funcion = [database](Usuario&) { prepararIndiceInvertido(database); }; 
     } else if (valor == "crearIndiceInvertido") {
       funcion = [database](Usuario&) { crearIndiceInvertido(database); }; 
+    } else if (valor == "buscador") {
+      funcion = [database](Usuario&) { llamarBuscador(database); }; 
     } else {
       funcion = [](Usuario&) { opcionIndefinida(); };
     } 

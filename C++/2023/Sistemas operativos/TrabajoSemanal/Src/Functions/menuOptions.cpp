@@ -11,6 +11,7 @@ void agregarTexto(Usuario& usuario);
 void conteoPalabras(Usuario& usuario);
 void prepararIndiceInvertido(dbMAP database);
 void crearIndiceInvertido(dbMAP database);
+void llamarBuscador(dbMAP database);
 void opcionIndefinida();
 
 void salir(){
@@ -120,7 +121,7 @@ void conteoPalabras(Usuario& usuario) {
 }
 
 void prepararIndiceInvertido(dbMAP database){
-  std::string str = "./Functions/prepararIndiceInvertido";
+  std::string str = database["PATH_PREPARE_INVERTED_INDEX"];
   str += " " + database["EXTENTION"];
   str += " " + database["PATH_FILES_IN"];
   str += " " + database["PATH_FILES_OUT"];
@@ -131,11 +132,19 @@ void prepararIndiceInvertido(dbMAP database){
 }
 
 void crearIndiceInvertido(dbMAP database){
-  std::string str = "./Functions/crearIndiceInvertido";
+  std::string str = database["PATH_CREATE_INVERTED_INDEX"];
   str += " " + database["INVERTED_INDEX_FILE"];
   str += " " + database["PATH_FILES_OUT"];
   const char* comando = str.c_str();
   // Llama a std::system para ejecutar el comando
+  std::system(comando);
+}
+
+void llamarBuscador(dbMAP database){
+  std::string str = database["PATH_BUSCADOR"];
+  str += " " + database["INVERTED_INDEX_FILE"];
+  str += " " + database["TOPK"];
+  const char* comando = str.c_str();
   std::system(comando);
 }
 

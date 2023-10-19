@@ -32,8 +32,7 @@ vector fileRead(std::string PATH_FILES_OUT){
   return vectorfiles;
 }
 
-
-void IndexFile(vector files, std::string INVERTED_INDEX_FILE){
+void indexFile(vector files, std::string INVERTED_INDEX_FILE){
   wordCount_files palabras;
   for(const auto& file : files){
     agregaPalabrasMapa(palabras,file);

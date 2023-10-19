@@ -1,0 +1,52 @@
+# Compilador
+CC = g++
+
+# Opciones de compilación
+CFLAGS = -std=c++17 -pthread -Wall
+
+# Rutas a los archivos fuente
+SRCDIR = Src
+FUNCIONESDIR = $(SRCDIR)/Functions
+
+# Nombres de los archivos fuente
+MAIN_SRC = $(SRCDIR)/main.cpp
+CREAR_INDICE_SRC = $(FUNCIONESDIR)/crearIndiceInvertido.cpp
+PREPARAR_INDICE_SRC = $(FUNCIONESDIR)/prepararIndiceInvertido.cpp
+
+# Directorios de destino para los ejecutables
+OUTPUT_DIR_MAIN = $(SRCDIR)
+OUTPUT_DIR_CREAR_INDICE = $(FUNCIONESDIR)
+OUTPUT_DIR_PREPARAR_INDICE = $(FUNCIONESDIR)
+
+# Ejecutables
+MAIN_EXECUTABLE = $(OUTPUT_DIR_MAIN)/main
+CREAR_INDICE_EXECUTABLE = $(OUTPUT_DIR_CREAR_INDICE)/crearIndiceInvertido
+PREPARAR_INDICE_EXECUTABLE = $(OUTPUT_DIR_PREPARAR_INDICE)/prepararIndiceInvertido
+
+.PHONY: all clean
+
+all: $(MAIN_EXECUTABLE) $(CREAR_INDICE_EXECUTABLE) $(PREPARAR_INDICE_EXECUTABLE)
+
+$(MAIN_EXECUTABLE): $(MAIN_SRC)
+	$(CC) $(CFLAGS) $< -o $@ -lstdc++fs
+
+$(CREAR_INDICE_EXECUTABLE): $(CREAR_INDICE_SRC)
+	$(CC) $(CFLAGS) $< -o $@ -lstdc++fs
+
+$(PREPARAR_INDICE_EXECUTABLE): $(PREPARAR_INDICE_SRC)
+	$(CC) $(CFLAGS) $< -o $@ -lstdc++fs
+
+run_main: $(MAIN_EXECUTABLE)
+	./$<
+
+run_crear_indice: $(CREAR_INDICE_EXECUTABLE)
+	./$<
+
+run_preparar_indice: $(PREPARAR_INDICE_EXECUTABLE)
+	./$<
+
+clean:
+	rm -f $(MAIN_EXECUTABLE) $(CREAR_INDICE_EXECUTABLE) $(PREPARAR_INDICE_EXECUTABLE)
+
+# Borra los archivos ejecutables y luego los vuelve a compilar
+rebuild: clean all
