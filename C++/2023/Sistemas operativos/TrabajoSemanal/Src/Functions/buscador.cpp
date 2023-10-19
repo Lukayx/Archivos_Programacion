@@ -6,13 +6,25 @@ int main(int argc, char **argv){
   std::string INVERTED_INDEX_FILE = argv[1];
   std::string TOPK = argv[2];
   wordCount_files mapa = agregaPalabrasMapa(INVERTED_INDEX_FILE);
-
-
+  interfaz(mapa, TOPK);
+  std::string perro;
+  std::cin >> perro;
+  return 0;
 }
 
 void interfaz(wordCount_files mapa, std::string TOPK){
+  std::system("clear");
+  std::string respuesta;
   std::cout << "BUSCADOR BASADO EN INDICE INVERTIDO (" << pid << ")" << std::endl;
   std::cout << "Los top K documentos serán " << TOPK << std::endl;
+  std::cout << "Escriba texto a buscar: ";
+  std::getline(std::cin >> std::ws, respuesta); //Pregunta y evita el buffer de cin 
+  // std::unordered_map<std::string, int>
+  std::cout << "Respuesta ( tiempo = perro ):" << std::endl;
+  vector vectorTOP = creaVector(mapa, TOPK, respuesta);
+  for(int = 0; i < TOPK; i++){
+    std::cout << i << ") " << vectorTOP[i].first << ", " << vectorTOP[i].second << std::endl;
+  }
 }
 
 wordCount_files agregaPalabrasMapa(std::string filePath){
@@ -34,4 +46,44 @@ wordCount_files agregaPalabrasMapa(std::string filePath){
   }
   file.close();
   return map;
+}
+
+vector creaVector(wordCount_files mapa, std::string TOPK, std::string frase){
+  std::vector<std::string> palabras;
+  std::istringstream stream(frase);
+  std::vector<std::thread> hilos;
+  archivos coincidenciasArchivos;
+  std::string palabra;
+  vector vectorTOP;
+  while(stream >> palabra) {
+      palabras.push_back(palabra);
+  }
+  for (int i = 0; i < palabras.size(); i++) {
+    hilos.emplace_back(buscadorPalabras, std::ref(coincidenciasArchivos), palabras[i], mapa);
+  }
+
+  for(std::thread& hilo : hilos){
+    hilo.join();
+  }
+
+  for(auto& value : coincidenciasArchivos){
+    std::pair<std::string, int> par = std::make_pair(value.first, value.second)
+    vectorTOP.push_back(par);
+  }
+
+  std::sort(vectorTOP.begin(), vectorTOP.end(), [](const auto& a, const auto& b) {
+    return a.second > b.second;
+  });
+
+  return vectorTOP; 
+}
+
+void buscadorPalabras(archivos& mapaConteo, std::string palabra, wordCount_files mapa){
+  if(mapaConteo.empty()){
+    mapaConteo = mapa[palabra];
+  } else {
+    for(auto& value : mapa[palabra]){
+      mapaConteo[value.first] += value.second;
+    }
+  }
 }
