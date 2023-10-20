@@ -4,6 +4,7 @@
 #include <filesystem>
 #include <fstream>
 #include <algorithm>
+#include <chrono>
 #include <unordered_map>
 #include <unistd.h>
 #include <thread>
@@ -16,4 +17,4 @@ namespace fs = std::filesystem;
 void interfaz(wordCount_files mapa, std::string TOPK);
 wordCount_files agregaPalabrasMapa(std::string filePath);
 vector creaVector(wordCount_files mapa, std::string frase);
-void buscadorPalabras(archivos& vectorTOP, std::string palabra, wordCount_files mapa);
+void buscadorPalabras(archivos& vectorTOP, std::string palabra, wordCount_files mapa, int i);

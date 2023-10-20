@@ -77,6 +77,7 @@ void getout(Usuario& usuario) {
   if (validation(usuario, database)) {
     bool respuestaValida = true;
     bool opcion_8 = false;
+    bool opcion_9 = false;
     std::string respuesta;
     while (true) {
       std::cout << "\nUsuario Actual: " << usuario.u << " / " << usuario.userProfile << " / Pid = " << pid << std::endl;
@@ -101,13 +102,28 @@ void getout(Usuario& usuario) {
       int opcion = std::stoi(respuesta);
       if (confirmPermiss(usuario, opcion) || opcion == 0 || opcion > 7) {
         if (menuOptions.find(opcion) != menuOptions.end()) {
-          if(opcion!=9){
-            if(opcion == 8) opcion_8 = true;
-            menuOptions[opcion].second(usuario);
-          } else if(opcion_8) {
+          if(opcion != 8 && opcion != 9 && opcion != 10){
             menuOptions[opcion].second(usuario);
           } else {
-            std::cout << "Primero elija la opcion 8" << std::endl;
+            if(opcion == 8){
+              opcion_8 = true;
+              menuOptions[opcion].second(usuario);
+            } else if(opcion == 9){
+              if(opcion_8){
+                opcion_9 = true;
+                menuOptions[opcion].second(usuario);
+              } else {
+                std::cout << "Tiene que haber usado la opcion 8 al menos una vez." << std::endl;
+              }
+            } else if (opcion == 10){
+              if(opcion_9){
+                menuOptions[opcion].second(usuario);
+                std::cout << "===============================================================================" << std::endl;
+                std::cout << "Opcion 10 ejecutada exitosamente." << std::endl;
+              } else {
+                std::cout << "Tiene que haber usado la opcion 9 al menos una vez." << std::endl;
+              }
+            }
           }
         } else {
           std::cout << "Opcion invalida." << std::endl;
