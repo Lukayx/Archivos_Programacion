@@ -9,6 +9,7 @@ int main(int argc, char **argv){
   interfaz(mapa, TOPK);
   std::string perro;
   std::cin >> perro;
+  std::system("clear");
   return 0;
 }
 
@@ -21,9 +22,9 @@ void interfaz(wordCount_files mapa, std::string TOPK){
   std::getline(std::cin >> std::ws, respuesta); //Pregunta y evita el buffer de cin 
   // std::unordered_map<std::string, int>
   std::cout << "Respuesta ( tiempo = perro ):" << std::endl;
-  vector vectorTOP = creaVector(mapa, TOPK, respuesta);
-  for(int = 0; i < TOPK; i++){
-    std::cout << i << ") " << vectorTOP[i].first << ", " << vectorTOP[i].second << std::endl;
+  vector vectorTOP = creaVector(mapa, respuesta);
+  for(int i = 0; i < std::stoi(TOPK); i++){
+    std::cout << i+1 << ") " << vectorTOP[i].first << ", " << vectorTOP[i].second << std::endl;
   }
 }
 
@@ -37,9 +38,9 @@ wordCount_files agregaPalabrasMapa(std::string filePath){
       std::string word = linea.substr(0,linea.find(":"));
       std::string info = linea.substr(linea.find(":")+1, linea.length());
       std::stringstream ss(info);
-      while(getline(ss, valores, ";")){
+      while(getline(ss, valores, ';')){
         name = valores.substr(valores.find_first_of('(')+1,valores.find(':'));
-        count = stoi(valores.substr(valores.find(':')+1,valores.find_last_of(')')));
+        count = std::stoi(valores.substr(valores.find_first_of(':')+1,valores.find_last_of(')')));
         map[word][name] = count;
       }
     }
@@ -48,7 +49,7 @@ wordCount_files agregaPalabrasMapa(std::string filePath){
   return map;
 }
 
-vector creaVector(wordCount_files mapa, std::string TOPK, std::string frase){
+vector creaVector(wordCount_files mapa, std::string frase){
   std::vector<std::string> palabras;
   std::istringstream stream(frase);
   std::vector<std::thread> hilos;
@@ -58,7 +59,7 @@ vector creaVector(wordCount_files mapa, std::string TOPK, std::string frase){
   while(stream >> palabra) {
       palabras.push_back(palabra);
   }
-  for (int i = 0; i < palabras.size(); i++) {
+  for (size_t i = 0; i < palabras.size(); i++) {
     hilos.emplace_back(buscadorPalabras, std::ref(coincidenciasArchivos), palabras[i], mapa);
   }
 
@@ -67,7 +68,7 @@ vector creaVector(wordCount_files mapa, std::string TOPK, std::string frase){
   }
 
   for(auto& value : coincidenciasArchivos){
-    std::pair<std::string, int> par = std::make_pair(value.first, value.second)
+    std::pair<std::string, int> par = std::make_pair(value.first, value.second);
     vectorTOP.push_back(par);
   }
 

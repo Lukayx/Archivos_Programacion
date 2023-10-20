@@ -2,7 +2,7 @@
 CC = g++
 
 # Opciones de compilación
-CFLAGS = -std=c++17 -Wall
+CFLAGS = -std=c++17 -pthread -Wall
 
 # Rutas a los archivos fuente
 SRCDIR = Src
@@ -28,7 +28,7 @@ LLAMAR_BUSCADOR_EXECUTABLE = $(OUTPUT_DIR_LLAMAR_BUSCADOR)/buscador
 
 .PHONY: all clean
 
-all: $(MAIN_EXECUTABLE) $(CREAR_INDICE_EXECUTABLE) $(PREPARAR_INDICE_EXECUTABLE)
+all: $(MAIN_EXECUTABLE) $(CREAR_INDICE_EXECUTABLE) $(PREPARAR_INDICE_EXECUTABLE) $(LLAMAR_BUSCADOR_EXECUTABLE)
 
 $(MAIN_EXECUTABLE): $(MAIN_SRC)
 	$(CC) $(CFLAGS) $< -o $@ -lstdc++fs
@@ -51,7 +51,7 @@ run_crear_indice: $(CREAR_INDICE_EXECUTABLE)
 run_preparar_indice: $(PREPARAR_INDICE_EXECUTABLE)
 	./$<
 
-RUN_llamar_buscador: $(LLAMAR_BUSCADOR_EXECUTABLE)
+run_llamar_buscador: $(LLAMAR_BUSCADOR_EXECUTABLE)
 	./$<
 
 clean:

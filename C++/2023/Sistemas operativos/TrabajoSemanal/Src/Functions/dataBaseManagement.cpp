@@ -95,7 +95,7 @@ dbMAP leerEnv(){
   }
   archivoIndexFile.close();
 
-  if(database["TOPK"] < 4){
+  if(std::stoi(database["TOPK"]) < 4){
     std::cout << "La variable TOPK del .env debe ser mayor o igual a 4." << std::endl;
     exit(1);
   }

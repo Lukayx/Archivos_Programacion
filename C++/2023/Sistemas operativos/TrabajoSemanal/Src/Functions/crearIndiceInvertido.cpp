@@ -6,7 +6,7 @@ int main(int argc, char **argv){
   std::string INVERTED_INDEX_FILE = argv[1];
   std::string PATH_FILES_OUT = argv[2];
   vector files = fileRead(PATH_FILES_OUT);
-  IndexFile(files, INVERTED_INDEX_FILE);
+  indexFile(files, INVERTED_INDEX_FILE);
   return 0;
 }
 
@@ -64,10 +64,10 @@ void crearIndexFile(wordCount_files& map, std::string INVERTED_INDEX_FILE){
       std::string nameFile = j.first;
       int count = j.second;
       if (primerElemento){
-        outFile << "(" << nameFile << ";" << count << ")";
+        outFile << "(" << nameFile << ":" << count << ")";
         primerElemento = false;
       } else {
-        outFile << ";(" << nameFile << ";" << count << ")";
+        outFile << ";(" << nameFile << ":" << count << ")";
       }
     }
     outFile << std::endl;
