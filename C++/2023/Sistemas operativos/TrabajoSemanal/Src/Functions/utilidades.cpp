@@ -3,11 +3,21 @@
 
 std::string isSpecialCharacter(const char* c) {
     const char current = *c;  // Obtener el carácter actual
-    unsigned char current2 = static_cast<unsigned char>(*c);
     // Comprueba si es un espacio o un dígito
-    if (std::isdigit(current)) return "";
+    const char* letras[] = {
+        "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
+        "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z",
+        "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",
+        "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"
+    };
+    std::string d(1, current); // Convierte el carácter actual en std::string
+    for (int i = 0; i < 52; i++) {
+        if (d == letras[i]) return letras[i];
+    }
     if (std::isspace(current)) return " ";
+    if (std::isdigit(current)) return "";
     // Verifica si es una letra acentuada en mayúsculas
+    unsigned char current2 = static_cast<unsigned char>(*c);
     if (current2 == 0xC3) {
         c++; // Avanza al siguiente byte
         unsigned char next = static_cast<unsigned char>(*c);
@@ -28,22 +38,5 @@ std::string isSpecialCharacter(const char* c) {
             case 0x9C: return "Ü";
         }
     }
-    const char* letrasMayusculas[] = {
-        "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
-        "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"
-    };
-
-    const char* letrasMinusculas[] = {
-        "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",
-        "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"
-    };
-
-    std::string d(1, current); // Convierte el carácter actual en std::string
-
-    for (int i = 0; i < 26; i++) {
-        if (d == letrasMayusculas[i]) return letrasMayusculas[i];
-        if(d == letrasMinusculas[i]) return letrasMinusculas[i];
-    }
-
     return ""; // Si no coincide con nada, se considera un carácter especial
 }

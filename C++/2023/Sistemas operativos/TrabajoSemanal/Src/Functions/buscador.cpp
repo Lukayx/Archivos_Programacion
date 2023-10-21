@@ -39,7 +39,7 @@ void interfaz(wordCount_files mapa, std::string TOPK){
       std::cout << i+1 << ") " << vectorTOP[i].first << ", " << vectorTOP[i].second << std::endl;
     }
   } else {
-    std::cout << "\nNo se encontraron coicidencias en ningún archivo" << std::endl;
+    std::cout << "No se encontraron coicidencias en ningún archivo" << std::endl;
   }
 }
 
@@ -77,11 +77,9 @@ vector creaVector(wordCount_files mapa, std::string frase){
   for (size_t i = 0; i < palabras.size(); i++) {
     hilos.emplace_back(buscadorPalabras, std::ref(coincidenciasArchivos), palabras[i], mapa, i);
   }
-
   for(std::thread& hilo : hilos){
     hilo.join();
   }
-
   for(auto& value : coincidenciasArchivos){
     std::pair<std::string, int> par = std::make_pair(value.first, value.second);
     vectorTOP.push_back(par);
@@ -96,7 +94,7 @@ vector creaVector(wordCount_files mapa, std::string frase){
 
 void buscadorPalabras(archivos& mapaConteo, std::string palabra, wordCount_files mapa, int i) {
   if (i == 0) {
-    mapaConteo = mapa.at(palabra);
+    mapaConteo = mapa[palabra];
   } else {
     if (mapa.find(palabra) != mapa.end()) {
       for (auto it = mapaConteo.begin(); it != mapaConteo.end(); ) {

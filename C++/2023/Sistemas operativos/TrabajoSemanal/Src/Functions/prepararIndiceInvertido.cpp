@@ -42,21 +42,24 @@ void procesarArchivos(vector& archivos, std::mutex& mtx, std::string output, int
 }
 
 void countWords(std::string input, std::string output) {
-  std::string namefile = input.substr(input.find_last_of("/") + 1,input.length());
+  std::string namefile = input.substr(input.find_last_of("/") + 1,input.length()); //Recorta el nombre del archivo
   std::ifstream file(input);
-  std::string linea;
-  std::unordered_map<std::string, int> resultado;
+  std::string linea,cleanedLine,key;
+  std::unordered_map<std::string, int> resultado; //Se guardarán <PALABRA/CANTIDAD>
   while (getline(file, linea)) {
-    std::string cleanedLine = "";
+    cleanedLine = "";
     const char* lineaEspecial = linea.c_str();
     for(const char* c = lineaEspecial; *c; c++) {
       cleanedLine += isSpecialCharacter(c);
     }    
-    std::istringstream ss(cleanedLine);
-    std::string key;
-    while (ss >> key) {
-      if (key.length() == 0) continue;
+    while(true){
+      size_t first = cleanedLine.find_first_not_of(" ");
+      if(first == std::string::npos) break; //No hay mas que recorrer
+      size_t second = cleanedLine.find_first_of(" ", first); 
+      if(second == std::string::npos) second = cleanedLine.length(); //Llega a final de linea y se le asigna el largo total
+      key = cleanedLine.substr(first, second - first);
       resultado[key]++;
+      cleanedLine = cleanedLine.substr(second); //Avanza al proximo segmento 
     }
   }
   file.close();
