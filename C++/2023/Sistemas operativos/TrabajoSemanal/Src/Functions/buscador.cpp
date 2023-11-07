@@ -7,7 +7,6 @@ int main(int argc, char **argv){
   std::string TOPK = argv[2];
   wordCount_files mapa = agregaPalabrasMapa(INVERTED_INDEX_FILE);
   std::string respuesta;
-
   while (true){  
     interfaz(mapa, TOPK);
     do{
@@ -89,7 +88,7 @@ vector creaVector(wordCount_files mapa, std::string frase){
     return a.second > b.second;
   });
 
-  return vectorTOP; 
+  return vectorTOP;
 }
 
 void buscadorPalabras(archivos& mapaConteo, std::string palabra, wordCount_files mapa, int i) {
