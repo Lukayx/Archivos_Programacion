@@ -30,13 +30,12 @@ void interfaz(dbMAP env, int frontendSocket){
     std::string mensaje, txtToSearch, tiempo, origen, opcion;
     char buffer[1024];
     std::cout << "BUSCADOR BASADO EN INDICE INVERTIDO (" << pid << ")" << std::endl;
-    std::cout << "\nLos top K documentos serán " << env["TOPK"] << std::endl;
     std::cout << "\nEscriba texto a buscar: ";
     std::getline(std::cin >> std::ws, txtToSearch); //Pregunta y evita el buffer de cin 
     // Estructura mensaje:
     // mensaje={origen:”XXXX”,destino:”XXXX”,contexto:{topk:”XXXX”, txtToSerarch:”XXXX”}}
     // Formatea y luego envia el mensaje al servidor de cache
-    mensaje = formateoMensaje(env, txtToSearch); 
+    mensaje = formateoMensaje(env, txtToSearch);
     ssize_t bytesSent = send(frontendSocket, mensaje.c_str(), mensaje.length(), 0);
     if(bytesSent == -1){ // Verifica si se envió bien el mensaje
       std::cout << "\nError al enviar la mensaje al servidor de cache." << std::endl;
@@ -46,7 +45,7 @@ void interfaz(dbMAP env, int frontendSocket){
     // Recive la respuesta del cache
     ssize_t bytesReceived = recv(frontendSocket, buffer, sizeof(buffer),0);
     if(bytesReceived == -1){
-      std::cout << "\nNo fue recivida ninguna respuesta." << std::endl;
+      std::cout << "\nNo fue recivida ninguna respuesta desde el cache." << std::endl;
       exit(1);
     }
     // std::cout << "mapache" << std::endl;
@@ -70,8 +69,7 @@ std::string formateoMensaje(dbMAP env, std::string text){
   std::ostringstream ss;
   ss<< "{origen:" << env["FROM"]
     << ",destino:" << env["TO"]
-    << ",contexto:{topk:" << env["TOPK"]
-    << ",txtToSearch:" << text 
+    << ",contexto:{txtToSearch:" << text 
     << "}}";
   return ss.str();
 }

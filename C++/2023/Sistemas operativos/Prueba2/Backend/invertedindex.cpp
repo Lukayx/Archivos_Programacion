@@ -8,32 +8,32 @@ int main(int argc, char **argv){
   // Se crea y configura el socket del backend
   backendSocket = socket(AF_INET, SOCK_STREAM, 0);
   // Conecta el socket del backend con el cache
-  struct sockaddr_in frontendAddress;
-  frontendAddress.sin_family = AF_INET;
-  frontendAddress.sin_port = htons(std::stoi(env["PORT"]));
-  frontendAddress.sin_addr.s_addr = inet_addr(env["IP"].c_str());
-  socklen_t frontendAddressLength = sizeof(frontendAddress);
+  struct sockaddr_in cacheAddress;
+  cacheAddress.sin_family = AF_INET;
+  cacheAddress.sin_port = htons(std::stoi(env["PORT"]));
+  cacheAddress.sin_addr.s_addr = inet_addr(env["IP"].c_str());
+  socklen_t cacheAddressLength = sizeof(cacheAddress);
   // std::cout << "perro" << std::endl;
   // Verifica si se pudo conectar el backend y el cache
-  if(bind(backendSocket, (struct sockaddr*)&frontendAddress, frontendAddressLength) == -1) {
+  if(bind(backendSocket, (struct sockaddr*)&cacheAddress, cacheAddressLength) == -1) {
     std::cout << "Error al tratar de conectar el backend con el cache." << std::endl;
     close(backendSocket);
     return 1;
   }
   // Verifica si el socket pudo ponerse en modo de escucha (Permite solo una consulta a la vez)
   if(listen(backendSocket, 1) == -1){
-    std::cout << "Error al intentar poner el socket en modo de escucha." << std::endl;
+    std::cout << "Error al intentar poner el socket del backend en modo de escucha." << std::endl;
     return 1;
   }
   // Se crea un nuevo socket para mejorar la comunicacion
   // Luego verifica si se pudo aceptar la conexion entrante 
-  clientSocket = accept(backendSocket, (struct sockaddr*)&frontendAddress, &frontendAddressLength);
+  clientSocket = accept(backendSocket, (struct sockaddr*)&cacheAddress, &cacheAddressLength);
   if(clientSocket == -1){
-    std::cout << "Error al aceptar la conexion entrante." << std::endl;
+    std::cout << "Error al aceptar la conexion entrante del cliente en el backend." << std::endl;
     return 1;
   }
   while(true){
-    std::string topk, txtToSearch, respuesta;
+    std::string txtToSearch, respuesta;
     std::ostringstream contenido;
     ssize_t bytesRead = recv(clientSocket, buffer, sizeof(buffer),0); // Cantidad de Bytes que se leyeron
     if(bytesRead == 0){
@@ -51,9 +51,7 @@ int main(int argc, char **argv){
     std::cout << mensaje << std::endl;
     memset(buffer, 0, sizeof(buffer)); // Llena el búfer con ceros
     // Recortando informacion
-    size_t pos = mensaje.find("topk:")+5;
-    topk = mensaje.substr(pos, (mensaje.find_first_of(',', pos) - pos));
-    pos = mensaje.find("txtToSearch:")+12;
+    size_t pos = mensaje.find("txtToSearch:")+12;
     txtToSearch = mensaje.substr(pos,(mensaje.length()-2) - pos);
     // Almacena datos del archivo de indice invertido
     // Calcula tiempo que demoró en encontrar todas las coincidencias
@@ -69,7 +67,7 @@ int main(int argc, char **argv){
     else isFound = "false";
     contenido << "tiempo:" << duration_milliseconds.count() << ",ori=BACKEND,isFound=" << isFound << ",resultados:[";
     if(vectorTOP.size() != 0){
-      size_t indice = std::stoi(topk);
+      size_t indice = std::stoi(env["TOPK"]);
       if(vectorTOP.size() < indice) indice = vectorTOP.size();
       for(size_t i = 0; i < indice; i++){
         if(i == 0){
@@ -80,8 +78,16 @@ int main(int argc, char **argv){
       }
     }
     contenido << "]}}";
-    respuesta = mensaje.substr(0,mensaje.find("topk:")) + contenido.str();
-    ssize_t bytesSent = send(clientSocket, respuesta.c_str(), respuesta.length(), 0);
+
+    std::ostringstream respuesta;
+    
+    respuesta << "{origen=" << env["FROM"]
+          << ",destino=" << env["TO"]
+          << ",contexto:{" << contenido;
+
+    std::string respuestaFinal = respuesta.str();
+    //respuesta = mensaje.substr(0,mensaje.find("txtToSearch:")) + contenido.str();
+    ssize_t bytesSent = send(clientSocket, respuestaFinal.c_str(), respuestaFinal.length(), 0);
     // Verifica si se envió bien la respuesta
     if(bytesSent == -1){
       std::cout << "\nError al enviar la mensaje al servidor de cache." << std::endl;
