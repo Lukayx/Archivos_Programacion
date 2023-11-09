@@ -7,16 +7,13 @@ int main(int argc, char **argv){
   char buffer[1024];
   // Se crea y configura el socket del backend
   backendSocket = socket(AF_INET, SOCK_STREAM, 0);
-  struct sockaddr_in backendAddress;
-  backendAddress.sin_family = AF_INET;
-  backendAddress.sin_port = htons(std::stoi(env["PORT_FROM"]));
-  backendAddress.sin_addr.s_addr = inet_addr(env["IP"].c_str());
   // Conecta el socket del backend con el cache
   struct sockaddr_in frontendAddress;
   frontendAddress.sin_family = AF_INET;
-  frontendAddress.sin_port = htons(std::stoi(env["PORT_TO"]));
+  frontendAddress.sin_port = htons(std::stoi(env["PORT"]));
   frontendAddress.sin_addr.s_addr = inet_addr(env["IP"].c_str());
   socklen_t frontendAddressLength = sizeof(frontendAddress);
+  // std::cout << "perro" << std::endl;
   // Verifica si se pudo conectar el backend y el cache
   if(bind(backendSocket, (struct sockaddr*)&frontendAddress, frontendAddressLength) == -1) {
     std::cout << "Error al tratar de conectar el backend con el cache." << std::endl;
@@ -30,19 +27,25 @@ int main(int argc, char **argv){
   }
   // Se crea un nuevo socket para mejorar la comunicacion
   // Luego verifica si se pudo aceptar la conexion entrante 
+  clientSocket = accept(backendSocket, (struct sockaddr*)&frontendAddress, &frontendAddressLength);
+  if(clientSocket == -1){
+    std::cout << "Error al aceptar la conexion entrante." << std::endl;
+    return 1;
+  }
   while(true){
-    clientSocket = accept(backendSocket, (struct sockaddr*)&frontendAddress, &frontendAddressLength);
-    if(clientSocket == -1){
-      std::cout << "Error al aceptar la conexion entrante." << std::endl;
-      continue;
-    }
     std::string topk, txtToSearch, respuesta;
     std::ostringstream contenido;
     ssize_t bytesRead = recv(clientSocket, buffer, sizeof(buffer),0); // Cantidad de Bytes que se leyeron
-    if (bytesRead <= 0) {
-        // Si bytesRead es menor o igual a cero, el cliente cortó la conexión
-        std::cout << "Cliente desconectado. Finalizando el servidor." << std::endl;
-        break;  // Sale del bucle si el cliente corta la conexión
+    if(bytesRead == 0){
+      // Cliente ha cerrado la conexión de forma ordenada.
+      std::cout << "El cliente ha cerrado la conexión de forma ordenada." << std::endl;
+      break; // Sale del bucle
+    }
+    if (bytesRead == -1) {
+      // Si bytesRead es menor o igual a cero, el cliente cortó la conexión
+      std::cout << "Error al recibir datos o el cliente ha cerrado la conexión de forma inesperada." << std::endl;
+      close(clientSocket);
+      break;  // Sale del bucle si el cliente corta la conexión
     }
     std::string mensaje(buffer, bytesRead); // transforma el buffer a string
     std::cout << mensaje << std::endl;
@@ -82,10 +85,10 @@ int main(int argc, char **argv){
     // Verifica si se envió bien la respuesta
     if(bytesSent == -1){
       std::cout << "\nError al enviar la mensaje al servidor de cache." << std::endl;
-      exit(1);
+      break;
     }
-    close(clientSocket);
   }
+  close(clientSocket);
   close(backendSocket);
   return 0;
 }

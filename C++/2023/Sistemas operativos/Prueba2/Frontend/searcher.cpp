@@ -10,7 +10,7 @@ int main(int argc, char **argv){
   // Configura la direccion del cache
   struct sockaddr_in cacheAddress;
   cacheAddress.sin_family = AF_INET;
-  cacheAddress.sin_port = htons(std::stoi(env["PORT_TO"]));
+  cacheAddress.sin_port = htons(std::stoi(env["PORT"]));
   cacheAddress.sin_addr.s_addr = inet_addr(env["IP"].c_str());
   socklen_t cacheAddressLength = sizeof(cacheAddress);
   // Conecta el socket del frontend con el cache
@@ -18,52 +18,51 @@ int main(int argc, char **argv){
     std::cout << "Error al tratar de conectar el frontend con el cache" << std::endl;
     return 1;
   }
-
-  while (true){  
-    interfaz(env, frontendSocket);
-    do{
-      std::cout << "\nDesea salir? (Si/No): ";
-      std::cin >> respuesta;
-    }while(respuesta != "Si" && respuesta != "No");
-    if(respuesta == "Si") break;
-  }
+  interfaz(env, frontendSocket);
   close(frontendSocket);
   std::system("clear");
   return 0;
 }
 
 void interfaz(dbMAP env, int frontendSocket){
-  std::system("clear");
-  std::string mensaje, txtToSearch, tiempo, origen;;
-  char buffer[1024];
-  std::cout << "BUSCADOR BASADO EN INDICE INVERTIDO (" << pid << ")" << std::endl;
-  std::cout << "\nLos top K documentos serán " << env["TOPK"] << std::endl;
-  std::cout << "\nEscriba texto a buscar: ";
-  std::getline(std::cin >> std::ws, txtToSearch); //Pregunta y evita el buffer de cin 
-  // Estructura mensaje:
-  // mensaje={origen:”XXXX”,destino:”XXXX”,contexto:{topk:”XXXX”, txtToSerarch:”XXXX”}}
-  // Formatea y luego envia el mensaje al servidor de cache
-  mensaje = formateoMensaje(env, txtToSearch); 
-  ssize_t bytesSent = send(frontendSocket, mensaje.c_str(), mensaje.length(), 0);
-  if(bytesSent == -1){ // Verifica si se envió bien el mensaje
-    std::cout << "\nError al enviar la mensaje al servidor de cache." << std::endl;
-    exit(1);
-  }
-  std::cout << "perro" << std::endl;
-  // Recive la respuesta del cache
-  ssize_t bytesReceived = recv(frontendSocket, buffer, sizeof(buffer),0);
-  if(bytesReceived == -1){
-    std::cout << "\nNo fue recivida ninguna respuesta." << std::endl;
-    exit(1);
-  }
-  std::cout << "mapache" << std::endl;
-  std::string respuesta(buffer, bytesReceived); // transforma el buffer a string
-  std::cout << "mapache" << std::endl;
-  memset(buffer, 0, sizeof(buffer)); // Llena el búfer con ceros
-  vector info = quitaFormatoMensaje(respuesta, tiempo, origen);
-  std::cout << "\nRespuesta  ( Tiempo = " << tiempo << ", origen = " << origen << " )\n" << std::endl;
-  for(size_t i = 0; i < info.size(); i++){
-    std::cout << i+1 << ") " << info[i].first << ", " << info[i].second << std::endl;
+  while (true){
+    std::system("clear");
+    std::string mensaje, txtToSearch, tiempo, origen, opcion;
+    char buffer[1024];
+    std::cout << "BUSCADOR BASADO EN INDICE INVERTIDO (" << pid << ")" << std::endl;
+    std::cout << "\nLos top K documentos serán " << env["TOPK"] << std::endl;
+    std::cout << "\nEscriba texto a buscar: ";
+    std::getline(std::cin >> std::ws, txtToSearch); //Pregunta y evita el buffer de cin 
+    // Estructura mensaje:
+    // mensaje={origen:”XXXX”,destino:”XXXX”,contexto:{topk:”XXXX”, txtToSerarch:”XXXX”}}
+    // Formatea y luego envia el mensaje al servidor de cache
+    mensaje = formateoMensaje(env, txtToSearch); 
+    ssize_t bytesSent = send(frontendSocket, mensaje.c_str(), mensaje.length(), 0);
+    if(bytesSent == -1){ // Verifica si se envió bien el mensaje
+      std::cout << "\nError al enviar la mensaje al servidor de cache." << std::endl;
+      exit(1);
+    }
+    // std::cout << "perro" << std::endl;
+    // Recive la respuesta del cache
+    ssize_t bytesReceived = recv(frontendSocket, buffer, sizeof(buffer),0);
+    if(bytesReceived == -1){
+      std::cout << "\nNo fue recivida ninguna respuesta." << std::endl;
+      exit(1);
+    }
+    // std::cout << "mapache" << std::endl;
+    std::string respuesta(buffer, bytesReceived); // transforma el buffer a string
+    // std::cout << "mapache" << std::endl;
+    memset(buffer, 0, sizeof(buffer)); // Llena el búfer con ceros
+    vector info = quitaFormatoMensaje(respuesta, tiempo, origen);
+    std::cout << "\nRespuesta  ( Tiempo = " << tiempo << ", origen = " << origen << " )\n" << std::endl;
+    for(size_t i = 0; i < info.size(); i++){
+      std::cout << i+1 << ") " << info[i].first << ", " << info[i].second << std::endl;
+    }
+    do{
+      std::cout << "\nDesea salir? (Si/No): ";
+      std::cin >> opcion;
+    }while(opcion != "Si" && opcion != "No");
+    if(opcion == "Si") break;
   }
 }
 
@@ -90,7 +89,6 @@ vector quitaFormatoMensaje(std::string mensaje, std::string& tiempo, std::string
     first = mensaje.find("archivo:", 0);
     int a = 0;
     while(first != std::string::npos){mensaje.find(',', pos);
-      std::cout << ++a << std::endl;
       first += 8;
       size_t coma = mensaje.find_first_of(',', first);
       val1 = mensaje.substr(first, coma - first);
