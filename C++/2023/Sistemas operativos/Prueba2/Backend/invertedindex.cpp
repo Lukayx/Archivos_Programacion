@@ -33,7 +33,7 @@ int main(int argc, char **argv){
     return 1;
   }
   while(true){
-    std::string txtToSearch, respuesta;
+    std::string txtToSearch;
     std::ostringstream contenido;
     ssize_t bytesRead = recv(clientSocket, buffer, sizeof(buffer),0); // Cantidad de Bytes que se leyeron
     if(bytesRead == 0){
@@ -58,14 +58,17 @@ int main(int argc, char **argv){
     auto start = std::chrono::high_resolution_clock::now();
     vector vectorTOP = creaVector(mapa, txtToSearch);
     auto end = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double> duration_milliseconds = end - start;  
+    std::chrono::duration<double> seconds = end - start;  
     // Escribiendo mensaje de vuelta
     // mensaje={origen:”XXXX”,destino:”XXXX”,contexto:{tiempo:”XXXX”, ori=”CACHE”,
     // isFound=true, resultados:[{archivo:”XXXX”, puntaje:”XXXX”}] }}
-    std::string isFound;
-    if(vectorTOP.size() != 0) isFound = "true";
-    else isFound = "false";
-    contenido << "tiempo:" << duration_milliseconds.count() << ",ori=BACKEND,isFound=" << isFound << ",resultados:[";
+    std::string isFound = (vectorTOP.size() != 0) ? "true" : "false";
+    contenido << "{origen:" << env["FROM"]
+              << ",destino:" << env["TO"]
+              << ",contexto:{"
+              << "tiempo:" << seconds.count() << "s"
+              << ",ori=BACKEND,isFound=" << isFound 
+              << ",resultados:[";
     if(vectorTOP.size() != 0){
       size_t indice = std::stoi(env["TOPK"]);
       if(vectorTOP.size() < indice) indice = vectorTOP.size();
@@ -78,16 +81,9 @@ int main(int argc, char **argv){
       }
     }
     contenido << "]}}";
-
-    std::ostringstream respuesta;
-    
-    respuesta << "{origen=" << env["FROM"]
-          << ",destino=" << env["TO"]
-          << ",contexto:{" << contenido;
-
-    std::string respuestaFinal = respuesta.str();
+    std::string respuesta = contenido.str();
     //respuesta = mensaje.substr(0,mensaje.find("txtToSearch:")) + contenido.str();
-    ssize_t bytesSent = send(clientSocket, respuestaFinal.c_str(), respuestaFinal.length(), 0);
+    ssize_t bytesSent = send(clientSocket, respuesta.c_str(), respuesta.length(), 0);
     // Verifica si se envió bien la respuesta
     if(bytesSent == -1){
       std::cout << "\nError al enviar la mensaje al servidor de cache." << std::endl;

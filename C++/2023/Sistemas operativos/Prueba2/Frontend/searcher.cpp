@@ -41,16 +41,14 @@ void interfaz(dbMAP env, int frontendSocket){
       std::cout << "\nError al enviar la mensaje al servidor de cache." << std::endl;
       exit(1);
     }
-    // std::cout << "perro" << std::endl;
     // Recive la respuesta del cache
     ssize_t bytesReceived = recv(frontendSocket, buffer, sizeof(buffer),0);
     if(bytesReceived == -1){
       std::cout << "\nNo fue recivida ninguna respuesta desde el cache." << std::endl;
       exit(1);
     }
-    // std::cout << "mapache" << std::endl;
     std::string respuesta(buffer, bytesReceived); // transforma el buffer a string
-    // std::cout << "mapache" << std::endl;
+    // std::cout << respuesta << std::endl;
     memset(buffer, 0, sizeof(buffer)); // Llena el búfer con ceros
     vector info = quitaFormatoMensaje(respuesta, tiempo, origen);
     std::cout << "\nRespuesta  ( Tiempo = " << tiempo << ", origen = " << origen << " )\n" << std::endl;
@@ -77,16 +75,17 @@ std::string formateoMensaje(dbMAP env, std::string text){
 vector quitaFormatoMensaje(std::string mensaje, std::string& tiempo, std::string& origen){
   size_t pos = mensaje.find("tiempo:")+7;
   tiempo = mensaje.substr(pos, mensaje.find_first_of(',', pos) - pos);
+  // std::cout << tiempo << std::endl;
   pos = mensaje.find("ori=")+4;
   origen = mensaje.substr(pos, mensaje.find_first_of(',', pos) - pos);
+  // std::cout << origen << std::endl;
   vector archivos;
   if(mensaje.find("isFound=true") != std::string::npos){
-    int first, second; 
+    size_t first, second; 
     std::string val1, val2;
     std::pair<std::string, std::string> par;
     first = mensaje.find("archivo:", 0);
-    int a = 0;
-    while(first != std::string::npos){mensaje.find(',', pos);
+    while(first != std::string::npos){
       first += 8;
       size_t coma = mensaje.find_first_of(',', first);
       val1 = mensaje.substr(first, coma - first);
