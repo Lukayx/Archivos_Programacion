@@ -1,6 +1,10 @@
 #include <vector>
 #include <string>
 
+// En el archivo user.h
+#ifndef USER_H
+#define USER_H
+
 struct Usuario {
   std::string u;
   std::string path;
@@ -11,3 +15,5 @@ struct Usuario {
   std::vector<int> options;
   std::vector<int> v;
 };
+
+#endif // USER_H

@@ -1,19 +1,6 @@
 #include "../../Include/menuOptions.h"
 #include "utilidades.cpp"
 
-void salir();
-void sumatoria(Usuario& usuario);
-void promedio(Usuario& usuario);
-void moda(Usuario& usuario);
-void contar(Usuario& usuario);
-void crearArchivo(Usuario& usuario);
-void agregarTexto(Usuario& usuario);
-void conteoPalabras(Usuario& usuario);
-void prepararIndiceInvertido(dbMAP database);
-void crearIndiceInvertido(dbMAP database);
-void llamarBuscador(dbMAP database);
-void opcionIndefinida();
-
 void salir(){
   std::cout << "Que tenga un buen dia" << std::endl;
   std::cout << "===============================================================================" << std::endl;
@@ -150,4 +137,16 @@ void llamarBuscador(dbMAP database){
 
 void opcionIndefinida(){
   std::cout << "La opción que elegiste aún no ha sido implementada." << std::endl;
+}
+
+void directorioArbol(){
+  
+}
+
+void directorioListaCircular (){
+
+}
+
+void procesamientoGrafico(){
+
 }

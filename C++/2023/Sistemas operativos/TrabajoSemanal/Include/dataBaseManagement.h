@@ -2,6 +2,7 @@
 #include <string>
 #include <map>
 #include <filesystem>
+#include "menuOptions.h"
 
 namespace fs = std::filesystem;
 

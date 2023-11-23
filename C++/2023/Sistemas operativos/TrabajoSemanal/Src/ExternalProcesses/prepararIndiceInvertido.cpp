@@ -1,5 +1,5 @@
 #include "../../Include/prepararIndiceInvertido.h"
-#include "utilidades.cpp"
+#include "../Functions/utilidades.cpp"
 
 int pid = getpid();
 

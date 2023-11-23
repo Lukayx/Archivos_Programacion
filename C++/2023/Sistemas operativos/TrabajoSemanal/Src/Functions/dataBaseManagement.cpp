@@ -61,7 +61,7 @@ std::vector<int> userProfileAssignment(std::string userProfile, std::string data
 
 dbMAP leerEnv(){
   dbMAP database;
-  std::ifstream archivo("../.env");
+  std::ifstream archivo(".env");
   std::string key;
   std::string linea;
   std::string valor;
@@ -199,6 +199,12 @@ menuMAP crearMapa(Usuario& usuario, dbMAP database){
       funcion = [database](Usuario&) { crearIndiceInvertido(database); }; 
     } else if (valor == "buscador") {
       funcion = [database](Usuario&) { llamarBuscador(database); }; 
+    } else if (valor == "directorioArbol") {
+      funcion = [](Usuario&) { directorioArbol(); }; 
+    } else if (valor == "directorioListaCircular") {
+      funcion = [](Usuario&) { directorioListaCircular(); }; 
+    } else if (valor == "grafico") {
+      funcion = [](Usuario&) { procesamientoGrafico(); }; 
     } else {
       funcion = [](Usuario&) { opcionIndefinida(); };
     } 

@@ -9,4 +9,7 @@
 8,Preparar datos para indice invertido,prepararIndiceInvertido
 9,Crear indice invertido,crearIndiceInvertido
 10,Llamar buscador,buscador
-11,Nueva Opcion,indefinido
+11,Crear sistema de directorio basado en árbol,directorioArbol
+12,Crear sistema de directorio basado en lista circular,directorioListaCircular
+13,Procesamiento Gráfico,grafico
+14,Nueva Opcion,indefinido

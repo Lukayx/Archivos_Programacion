@@ -26,7 +26,7 @@ Para ejecutar el archivo "main" generado tras compilar se debe escribir siguiend
   output: ruta de donde se creara el archivo con las frecuencias del conteo de palabras
 
 EJEMPLO:
-      ./main -u "Fernando Inzulza" -v "13;7;-4;7;25" -f "perro.txt" -t "soy un perrito" -i "../Files/IN/largeFile/large_file.txt" -o "../Files/outCuentaPalabras/large_file.txt"
+      ./Src/Out/main -u "Fernando Inzulza" -v "13;7;-4;7;25" -f "perro.txt" -t "soy un perrito" -i "./Files/IN/file007.txt" -o "./Files/file007.txt"
 =============================================================================================================================================
 
 
