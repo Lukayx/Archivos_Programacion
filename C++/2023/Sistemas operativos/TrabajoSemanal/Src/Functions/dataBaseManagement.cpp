@@ -200,11 +200,11 @@ menuMAP crearMapa(Usuario& usuario, dbMAP database){
     } else if (valor == "buscador") {
       funcion = [database](Usuario&) { llamarBuscador(database); }; 
     } else if (valor == "directorioArbol") {
-      funcion = [](Usuario&) { directorioArbol(); }; 
+      funcion = [database](Usuario&) { directorioArbol(database); }; 
     } else if (valor == "directorioListaCircular") {
-      funcion = [](Usuario&) { directorioListaCircular(); }; 
+      funcion = [database](Usuario&) { directorioListaCircular(database); }; 
     } else if (valor == "grafico") {
-      funcion = [](Usuario&) { procesamientoGrafico(); }; 
+      funcion = [database](Usuario&) { procesamientoGrafico(database); }; 
     } else {
       funcion = [](Usuario&) { opcionIndefinida(); };
     } 

@@ -139,14 +139,29 @@ void opcionIndefinida(){
   std::cout << "La opción que elegiste aún no ha sido implementada." << std::endl;
 }
 
-void directorioArbol(){
-  
+void directorioArbol(dbMAP database){
+  std::string command,path;
+  command = database["PATH_DIRECTORIO_ARBOL"];
+  std::cout << "Ingrese archivo a procesar: ";
+  cin >> path;
+  command += " " + path;
+  std::system(path);
 }
 
-void directorioListaCircular (){
-
+void directorioListaCircular (dbMAP database){
+  std::string command,path;
+  command = database["PATH_DIRECTORIO_LISTA_CIRCULAR"];
+  std::cout << "Ingrese archivo a procesar: ";
+  cin >> path;
+  command += " " + path;
+  std::system(path);
 }
 
-void procesamientoGrafico(){
-
+void procesamientoGrafico(dbMAP database){
+  std::string command,path;
+  command = database["PATH_DIRECTORIO_PROCESAMIENTO_GRAFICO"];
+  std::cout << "Ingrese archivo a procesar: ";
+  cin >> path;
+  command += " " + path;
+  std::system(path);
 }

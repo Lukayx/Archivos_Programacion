@@ -43,7 +43,7 @@ int main(int argc, char **argv) {
       }
       case 'i': {
         usuario.input = optarg;
-        std::ifstream archivo(usuario.input, std::ios::ate);
+        std::ifstream archivo(usuario.input, std::ios::in);
         if (!archivo.is_open()) {
           std::cout << "La ruta dada en el parametro '-i' no se pudo encontrar, revise bien la ruta ingresada." << std::endl;
           std::cout << "Se cerrara el programa." << std::endl;
