@@ -103,7 +103,7 @@ dbMAP leerEnv(){
   return database;
 }
 
-void signIn(std::string username, menuMAP menuOptions, dbMAP database) {
+void signIn(std::string username, dbMAP database) {
   std::string respuesta;
   int opcion;
   do {

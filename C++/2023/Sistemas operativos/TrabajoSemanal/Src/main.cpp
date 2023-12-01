@@ -97,18 +97,22 @@ void getout(Usuario& usuario) {
           }
         }
       } while (!respuestaValida);
-      system("clear");
-      std::cout << "===============================================================================" << std::endl;
       int opcion = std::stoi(respuesta);
+      if (!(opcion>10 && opcion<14)) system("clear");
       if (confirmPermiss(usuario, opcion) || opcion == 0 || opcion > 7) {
         if (menuOptions.find(opcion) != menuOptions.end()) {
-          if(opcion != 8 && opcion != 9 && opcion != 10){
+          if(opcion < 8 || opcion > 10){
+            if(!(opcion > 10 && opcion < 14)){
+              std::cout << "===============================================================================" << std::endl;
+            } 
             menuOptions[opcion].second(usuario);
           } else {
             if(opcion == 8){
+              std::cout << "===============================================================================" << std::endl;
               opcion_8 = true;
               menuOptions[opcion].second(usuario);
             } else if(opcion == 9){
+              std::cout << "===============================================================================" << std::endl;
               if(opcion_8){
                 opcion_9 = true;
                 menuOptions[opcion].second(usuario);
@@ -121,20 +125,23 @@ void getout(Usuario& usuario) {
                 std::cout << "===============================================================================" << std::endl;
                 std::cout << "Opcion 10 ejecutada exitosamente." << std::endl;
               } else {
+                std::cout << "===============================================================================" << std::endl;
                 std::cout << "Tiene que haber usado la opcion 9 al menos una vez." << std::endl;
               }
             }
           }
         } else {
+          std::cout << "===============================================================================" << std::endl;
           std::cout << "Opcion invalida." << std::endl;
         }
       } else {
+        std::cout << "===============================================================================" << std::endl;
         std::cout << "No tiene permiso para acceder a esta operacion." << std::endl;
       }
       std::cout << "===============================================================================" << std::endl;
     }
   } else {
-    signIn(usuario.u, menuOptions, database);
+    signIn(usuario.u, database);
   }
   std::cout << "===============================================================================" << std::endl;
   std::cout << "Que tenga un buen dia" << std::endl;

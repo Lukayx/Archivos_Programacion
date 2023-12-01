@@ -1,15 +1,19 @@
-# Compilador
-CC = g++
-
-# Opciones de compilación
-CFLAGS = -std=c++17 -pthread -Wall
-
 # Rutas a los archivos fuente
 SRCDIR = Src
 FUNCIONESDIR = $(SRCDIR)/ExternalProcesses
 
 # Directorios de destino para los ejecutables
 OUTPUT = $(SRCDIR)/Out
+
+# Rutas de SFML para WSL (ajusta según tu instalación en WSL)
+SFML_LIBS = -lsfml-graphics -lsfml-window -lsfml-system 
+JSON_LIBS = -ljsoncpp
+
+# Compilador
+CC = g++
+
+# Opciones de compilación
+CFLAGS = -Wall -Wextra -std=c++17
 
 # Fuentes
 SOURCES_FUNCIONES = $(wildcard $(FUNCIONESDIR)/*.cpp)
@@ -29,17 +33,15 @@ all: $(EXECUTABLES_WITH_PATH_FUNCIONES) $(EXECUTABLE_MAIN_WITH_PATH)
 
 # Regla para construir ejecutables en FUNCIONESDIR
 $(EXECUTABLES_WITH_PATH_FUNCIONES): $(OUTPUT)/%: $(FUNCIONESDIR)/%.cpp
-	$(CC) $(CFLAGS) $< -o $@ -lstdc++fs
+	$(CC) $(CFLAGS) $< -o $@ $(SFML_LIBS) $(JSON_LIBS) -lstdc++fs -lstdc++
 
 # Regla para construir el ejecutable main
 $(EXECUTABLE_MAIN_WITH_PATH): $(SOURCES_MAIN)
-	$(CC) $(CFLAGS) $< -o $@ -lstdc++fs
+	$(CC) $(CFLAGS) $< -o $@ $(SFML_LIBS) $(JSON_LIBS) -lstdc++fs -lstdc++
 
 # Regla para construir y ejecutar
 run_%: $(OUTPUT)/%
 	./$<
-
-all: $(EXECUTABLES_WITH_PATH_FUNCIONES) $(EXECUTABLE_MAIN_WITH_PATH)
 
 clean:
 	rm -f $(EXECUTABLES_WITH_PATH_FUNCIONES) $(EXECUTABLE_MAIN_WITH_PATH)

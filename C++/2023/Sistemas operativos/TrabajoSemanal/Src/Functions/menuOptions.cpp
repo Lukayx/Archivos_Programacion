@@ -135,33 +135,41 @@ void llamarBuscador(dbMAP database){
   std::system(comando);
 }
 
-void opcionIndefinida(){
-  std::cout << "La opción que elegiste aún no ha sido implementada." << std::endl;
-}
-
 void directorioArbol(dbMAP database){
   std::string command,path;
   command = database["PATH_DIRECTORIO_ARBOL"];
-  std::cout << "Ingrese archivo a procesar: ";
-  cin >> path;
-  command += " " + path;
-  std::system(path);
+  std::cout << "\nIngrese archivo a procesar: ";
+  std::getline(std::cin >> std::ws, path);
+  command += " \"" + path + "\""; //En caso de que la ruta contenga espacios en blanco encierro el texto con " "
+  std::system("clear");
+  std::cout << "===============================================================================" << std::endl;
+  std::system(command.c_str());
+
 }
 
 void directorioListaCircular (dbMAP database){
   std::string command,path;
   command = database["PATH_DIRECTORIO_LISTA_CIRCULAR"];
-  std::cout << "Ingrese archivo a procesar: ";
-  cin >> path;
-  command += " " + path;
-  std::system(path);
+  std::cout << "\nIngrese archivo a procesar: ";
+  std::getline(std::cin >> std::ws, path);
+  command += " \"" + path + "\""; //En caso de que la ruta contenga espacios en blanco encierro el texto con " "
+  std::system("clear");
+  std::cout << "===============================================================================" << std::endl;
+  std::system(command.c_str()); //Files/Directory Files/directorio.dre
+
 }
 
 void procesamientoGrafico(dbMAP database){
   std::string command,path;
   command = database["PATH_DIRECTORIO_PROCESAMIENTO_GRAFICO"];
-  std::cout << "Ingrese archivo a procesar: ";
-  cin >> path;
-  command += " " + path;
-  std::system(path);
+  std::cout << "\nIngrese archivo a procesar: ";
+  std::getline(std::cin >> std::ws, path);
+  command += " \"" + path + "\""; //En caso de que la ruta contenga espacios en blanco encierro el texto con " "
+  std::system("clear");
+  std::cout << "===============================================================================" << std::endl;
+  std::system(command.c_str()); //Files/Directory Files/grafico.gra
+}
+
+void opcionIndefinida(){
+  std::cout << "La opción que elegiste aún no ha sido implementada." << std::endl;
 }

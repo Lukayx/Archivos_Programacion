@@ -4,7 +4,7 @@
     {
       "type": "cppbuild",
       "label": "C/C++: g++.exe compilar archivo activo",
-      "command": "C:\\TDM-GCC-32\\bin\\g++.exe",
+      "command": "C:\\MinGW\\bin\\g++.exe",
       "args": [
         "-fdiagnostics-color=always",
         "-g",
@@ -26,7 +26,7 @@
         "$gcc"
       ],
       "group": "build",
-      "detail": "compilador: C:\\TDM-GCC-32\\bin\\g++.exe"
+      "detail": "compilador: C:\\MinGW\\bin\\g++.exe"
     }
   ]
 }

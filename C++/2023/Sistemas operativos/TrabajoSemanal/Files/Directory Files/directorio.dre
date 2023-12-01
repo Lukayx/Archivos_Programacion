@@ -1,0 +1,5 @@
+dirbase=/mnt/c/Users/Fernando Inzulza/OneDrive - Universidad Austral de Chile/Documentos/PruebaListaCircular
+dirs=dir1;dir2;dir3;dir4;dir5
+dir1=file1;file2
+dir3=file3;file4;file5
+dir4=file6;file7
