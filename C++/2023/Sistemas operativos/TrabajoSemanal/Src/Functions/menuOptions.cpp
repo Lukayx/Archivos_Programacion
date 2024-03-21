@@ -156,7 +156,6 @@ void directorioListaCircular (dbMAP database){
   std::system("clear");
   std::cout << "===============================================================================" << std::endl;
   std::system(command.c_str()); //Files/Directory Files/directorio.dre
-
 }
 
 void procesamientoGrafico(dbMAP database){
@@ -167,7 +166,7 @@ void procesamientoGrafico(dbMAP database){
   command += " \"" + path + "\""; //En caso de que la ruta contenga espacios en blanco encierro el texto con " "
   std::system("clear");
   std::cout << "===============================================================================" << std::endl;
-  std::system(command.c_str()); //Files/Directory Files/grafico.gra
+  std::system(command.c_str()); //Files/Directory Files/navidad.gra
 }
 
 void opcionIndefinida(){
