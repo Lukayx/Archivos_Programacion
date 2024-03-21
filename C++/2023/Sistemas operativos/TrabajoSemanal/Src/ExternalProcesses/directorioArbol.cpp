@@ -1,6 +1,5 @@
 #include "../../Include/directorioArbol.h"
 // Ruta prueba: //ruta: Files/Directory Files/dirarbol.dit
-// compilar: g++ -std=c++17 listar2.cpp -o listar2 -ljsoncpp
 // Función para validar la extensión del archivo
 bool verificaRuta(std::string path){
   if (path.find_last_of('/') != std::string::npos) {

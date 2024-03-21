@@ -13,7 +13,7 @@ JSON_LIBS = -ljsoncpp
 CC = g++
 
 # Opciones de compilación
-CFLAGS = -Wall -Wextra -std=c++17
+CFLAGS = -Wall -Werror -pedantic -std=c++17
 
 # Fuentes
 SOURCES_FUNCIONES = $(wildcard $(FUNCIONESDIR)/*.cpp)
