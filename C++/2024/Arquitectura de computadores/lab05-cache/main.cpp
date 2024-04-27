@@ -1,19 +1,13 @@
-#include <iostream>
-#include <omp.h>
-#include <cstdlib>
-#include <string>
-#include <ctime>
-void gap_sum(int array[], int n , int gap);
-void imprime_array (int *array, int n);
+#include "main.h"
 
 int main(int argc, char **argv){
   if (argc < 3){
     std::cout << "solo hay 1 argumento, por favor ingrese 2" << std::endl;
     exit(EXIT_FAILURE);
   }
-  double t1 = omp_get_wtime();
-  srand(time(0));
-  int n = stoi(std::string(argv[1]));
+  double t1 = omp_get_wtime(); //comienza el conteo de tiempo
+  srand(time(0)); // para asegurar los numeros aleatorios
+  int n = stoi(std::string(argv[1])); 
   int gap = stoi(std::string(argv[2]));
   n = n + (n-1)*gap;
   int *array = new int[n];
@@ -31,11 +25,11 @@ int main(int argc, char **argv){
     }
     i += gap;
   }
-  imprime_array(array, n);
+  // imprime_array(array, n);
   gap_sum(array, n, gap);
   double t2 = omp_get_wtime();
   double tiempo = t2 - t1;
-  std::cout << "El tiempo es: " << tiempo << std::endl;
+  std::cout << "El tiempo es: " << tiempo << "" << std::endl;
 }
 
 void gap_sum(int *array, int n , int gap){
