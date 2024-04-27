@@ -144,7 +144,6 @@ void directorioArbol(dbMAP database){
   std::system("clear");
   std::cout << "===============================================================================" << std::endl;
   std::system(command.c_str());
-
 }
 
 void directorioListaCircular (dbMAP database){

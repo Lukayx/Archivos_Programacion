@@ -1,13 +1,11 @@
 from dotenv import load_dotenv
+from crontab import CronTab
+import os
 
 load_dotenv()
 
-import os
-
 TIEMPO_ENV = os.getenv("TIEMPO")
 MENSAJE_ENV = os.getenv("MENSAJE")
-
-from crontab import CronTab
 
 cron = CronTab(user=True)
 

@@ -1,5 +1,6 @@
 {
-    "C_Cpp.errorSquiggles": "Disabled",
+    "C_Cpp.errorSquiggles": "disabled",
+    "python.languageServer": "Pylance",
     "files.associations": {
         "new": "cpp",
         "ostream": "cpp",
