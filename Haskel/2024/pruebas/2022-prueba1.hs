@@ -1,0 +1,40 @@
+-- PRUEBA 1 INFO188
+-- 25 Octubre 2022
+-- Tiempo: 90mins
+-- Entrega: Subir archivo <nombre-apellido>.hs en SiveducMD
+--
+-- ***************************************************************************************
+-- INSTRUCCIONES:
+--      - Toda funcion debe ir con contrato y una explicacion breve y clara de lo que hace.
+--      - Puede escribir funciones auxiliares para ayudar a organizar su codigo
+-- ***************************************************************************************
+--
+-- 1) (2pts) Procesamiento de Lista
+--    Escriba una funcion llamada 'tup', que dada una lista de valores de clase `Num`, retorne una tupla con:
+--              - la suma de los elementos en posiciones pares
+--              - la suma de los elementos en posiciones impares
+--              - la lista de elementos que son potencia de `2`.
+--
+--
+-- 2) (2pts) 'El compositor'
+-- Dada una lista de funciones [f1, f2, f3, ..., fn] del tipo (a -> a), y una lista de valores [x1, x2, ..., xm] del tipo `a`, 
+-- crear la funcion `compositor` que genera el resultado [f1(x1), f2(f1(x2)), f3(f2(f1(x3))), ..., fk(fk-1(..(f2(f1(xk)))))]
+-- donde `k` es el menor entre `n` y `m`.
+--
+--
+-- 3) (2pts) Ordenamiento juntando mitades ordenadas
+--    Una forma de ordenar elementos es unir sus mitades que garantizan estar ordenadas, de forma recursiva.
+--    Se construye con `sort188` que es el la logica global, y `juntar` que fusiona dos listas ordenadas en otra ordenada.
+--      a) (1.4pts) Implemente ambas funciones `sort188` y `juntar`.
+--      b) (0.6pts) ¿Es posible mejorar el algoritmo en alguna parte con recursion por la cola? Explique y Justifique
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
