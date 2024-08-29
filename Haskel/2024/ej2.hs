@@ -34,7 +34,3 @@ sumL (x:xs) = x + (sumL xs)
 sumTR :: (Num a) => [al] -> a -> a
 sumTR [] acc = acc
 SumTR (x:xs) acc = sumTR xs (acc + x)
-
--- Wrapper (opcional)
-sumWrap :: (Num a) => [a] -> a
-sumWrap xs = sumTR Xs 0

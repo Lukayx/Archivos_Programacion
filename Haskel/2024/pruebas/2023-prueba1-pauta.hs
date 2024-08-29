@@ -41,13 +41,12 @@ findPos v (x:xs)
 --    escriba las funciones "serieInicio val L" y "serieFinal val L", que aplican las funciones
 --    en serie a partir del Inicio o del Final, respectivamente.
 --    Ejemplos:
-<<<<<<< HEAD
 --          serieInicio 5 [(\x -> 50+x), (\x -> x*2), (+10)]
 --          --> 120
 --          serieFinal 5 [(\x -> 50+x), (\x -> x*2), (+10)]
 --          --> 80
 serieInicio :: a -> [(a -> a)] -> a
-serieInicio val l = foldl (\acc x -> x acc) val l
+serieInicio val l = foldl (\ acc x -> x acc) val l
 
 serieFinal :: a -> [(a -> a)] -> a
 serieFinal val l = foldr (\x acc -> x acc) val l
@@ -80,20 +79,3 @@ instance (Enum a) => Quantum (Maybe a) where
     superPos Nothing = [Nothing, Nothing, Nothing]
     medir [Just a, Just b, Just c] = Just c 
     medir [Nothing, Nothing, Nothing] = Nothing
-
-=======
---          serieInicio 5 [(\x -> 50+x), (\x -> x*2, (+10)]
---          --> 120
---          serieFinal 5 [(\x -> 50+x), (\x -> x*2, (+10)]
---          --> 80
---
--- 3) (2pts) Typeclass Quantum
---    Crear el typeclass "Quantum", el cual tiene las funciones 'superPos' y 'medir'. 
---    Dado un 'x' de tipo concreto:
---      'superPos x'   -> crea la lista [predecesor de x, x, sucesor de x]
---      'medir [x]'    -> obtiene una instancia del elemento (usted puede decidir cual)
---          
---    a) Crear el Typeclass 'Quantum'
---    b) Hacer que Int y Char Instancien 'Quantum'
---    c) Hacer que (Maybe m) instancie 'Quantum', explique bien el comportamiento que propone.
->>>>>>> origin
