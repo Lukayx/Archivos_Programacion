@@ -36,3 +36,4 @@ motorEfi ccl kmpL
   | (val <= 0.8) = "Pesado"
   | otherwise        = "Muy pesado"
   where val = ccl/kmpL
+

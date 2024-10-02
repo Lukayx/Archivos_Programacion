@@ -1,0 +1,75 @@
+-- PRUEBA 2: INFO188
+-- Fecha: 27 de Octubre 2020
+--
+-- LEER, INSTRUCCIONES:
+-- a) Cada solucion debe incluir contrato y explicar con comentarios el algoritmo.
+-- b) Puede implementar funciones auxiliares para apoyarse.
+-- c) Todas las preguntas (I II y III) tienen el mismo puntaje (2pts cada una).
+-- d) Subir los modulos con su nombre "p2-modulo-nombre.hs" a siveducMD, hasta las 23:59.
+-- e) Entregas atrasadas tendran un descuento de 1pt por cada hora atrasada.
+--
+--
+--
+-- En esta prueba usted implementara una serie de modulos de forma jerarquica para
+-- calcular la estabilidad de un templo en relacion a los pilares y bloques que utiliza.
+--
+--
+--
+-- Ejercicios:
+-- I) Crear un modulo llamado Bloque que implementa las funciones
+--  a) mLadrillo (x,y,z)
+--  b) mConcreto (x,y,z)
+--  c) mMadera (x,y,z)
+--
+--  las cuales reciben como argumento una 3-tupla que representa las dimensiones 
+--  en metros de un bloque 3D (largo, ancho, alto). 
+--  Cada funcion retorna el peso en kg del bloque.
+--  La densidad del ladrillo es 2000 kg/m^3.
+--  La densidad del concreto es 2400 kg/m^3
+--  La densidad de la madera es  500 kg/m^3.
+--
+--
+--
+--
+--
+--
+--
+-- II) Crear un modulo llamado Pilar que implementa las funciones
+--
+--  a) checkPilar [mat, (x,y,z), mat, (x,y,z), ..., mat, (x,y,z)]
+--
+--  Que recibe una lista de material seguido por un bloque (3-tupla), asi indicando una 
+--  lista de bloques cada uno con su material indicado (mat). El primer elemento es el 
+--  bloque de mas arriba, el ultimo es el de mas abajo. Represente mat segun su conveniencia.
+--  La funcion debe verificar si el pilar soporta su propio peso (True) o no (False). 
+--  Un pilar se rompe (deja de soportar su propio peso) si existe un bloque que debe soportar 
+--  un peso mayor al de 1 m^3 de su material.
+--
+--
+--  b) alturaPilar [mat, (x,y,z), mat, (x,y,z), ..., mat, (x,y,z)]
+--  La funcion debe calcular la altura del pilar.
+--
+--
+--  c) cantidadMaterial mymat [mat, (x,y,z), mat, (x,y,z), ..., mat, (x,y,z)]
+--  La funcion debe calcular la cantidad de volumen de material de tipo M en un pilar.
+--
+-- 
+--
+--
+--
+--
+--
+--
+--
+-- III) Crear un modulo llamado Templo, que implementa las funciones
+-- a) temploTerremoto R [pilares]
+-- Se debe testear si el templo resistira un terremoto de magnitud 'R'. Un templo resiste 
+-- un terremoto si es que todos los pilares soportan su propio peso y ademas si todos tienen una altura <= 10*R.
+--
+-- b) temploAcustica [pilares] 
+-- Se debe testear la calidad acustica del templo. Para ello, al menos el 40% del material 
+-- usado en los pilares debe estar compuesto de madera.
+--
+-- 
+--
+--

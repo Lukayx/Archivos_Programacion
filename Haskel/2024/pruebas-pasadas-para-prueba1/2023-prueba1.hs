@@ -31,6 +31,7 @@ findPos min [] = error "Lista vacia"
 findPos min (x:xs) 
   | (min /= x) = 1 + (findPos min xs)
   | otherwise = 0
+
 -- 2) (2pts) Funciones en Serie
 --    Dada una lista de funciones L = [f1, f2, f3, ..., fn] donde cada una es del tipo (a -> a),
 --    escriba las funciones "serieInicio val L" y "serieFinal val L", que aplican las funciones
@@ -41,6 +42,8 @@ findPos min (x:xs)
 --          serieFinal 5 [(\x -> 50+x), (\x -> x*2, (+10)]
 --          --> 80
 --
+
+
 -- 3) (2pts) Typeclass Quantum
 --    Crear el typeclass "Quantum", el cual tiene las funciones 'superPos' y 'medir'. 
 --    Dado un 'x' de tipo concreto:

@@ -22,7 +22,7 @@
 
 minRangeBatch :: (Ord a) => [a] -> [(Int,Int)] -> [(Int,Int)]
 minRangeBatch z [] = []
-minRangeBatch z (x:xs) = let val = minimum (drop (fst x) $ take ((snd x)+1) z)
+minRangeBatch z (x:xs) = let val = minimum (drop (fst x) (take ((snd x)+1) z))
                         pos = findPos val z
                         in (val, pos) : (minRangeBatch z xs)
 
@@ -32,6 +32,8 @@ findPos v [] = error "not found"
 findPos v (x:xs) 
     | (v /= x) = 1 + (findPos v xs)
     | otherwise = 0
+
+
 
 
 
@@ -46,7 +48,7 @@ findPos v (x:xs)
 --          serieFinal 5 [(\x -> 50+x), (\x -> x*2), (+10)]
 --          --> 80
 serieInicio :: a -> [(a -> a)] -> a
-serieInicio val l = foldl (\ acc x -> x acc) val l
+serieInicio val l = foldl (\acc x -> x acc) val l
 
 serieFinal :: a -> [(a -> a)] -> a
 serieFinal val l = foldr (\x acc -> x acc) val l
@@ -79,3 +81,4 @@ instance (Enum a) => Quantum (Maybe a) where
     superPos Nothing = [Nothing, Nothing, Nothing]
     medir [Just a, Just b, Just c] = Just c 
     medir [Nothing, Nothing, Nothing] = Nothing
+

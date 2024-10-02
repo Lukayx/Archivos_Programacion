@@ -45,6 +45,8 @@ ciclo = take 12 (cycle "CHI")  -- "CHICHICHICHI"
 repetir = take 4 (repeat 5)    -- [5,5,5,5]
 replicar = replicate 3 10      -- [10,10,10]
 
+funRepl :: (Num i)
+
 -- Comprensión de listas
 comprension1 = [x*3 | x <- [1..5]]  -- [3,6,9,12,15]
 comprension2 = [2*x | x <- [1..10], x > 3, x < 5]  -- [8]

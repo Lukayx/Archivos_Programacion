@@ -33,4 +33,9 @@ sumL (x:xs) = x + (sumL xs)
 -- CON TAIL RECURSION
 sumTR :: (Num a) => [al] -> a -> a
 sumTR [] acc = acc
-SumTR (x:xs) acc = sumTR xs (acc + x)
+sumTR (x:xs) acc = sumTR xs (acc + x)
+
+-- Data.List
+-- Data.Char
+-- Data.Map
+-- Data.Set
