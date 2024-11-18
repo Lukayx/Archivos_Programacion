@@ -60,7 +60,7 @@ funcionContiene14 :: String -> Resultado String -- la funcion busca el 14 dentro
 funcionContiene14 x 
   | "14" `isInfixOf` x = Contiene "14"
   | otherwise = Vacio
-
+-- Esto lo que hace es   
 -- Ejemplo de uso de la función
 -- λ> funcionContiene14 "hola14"    Contiene "14"
 
