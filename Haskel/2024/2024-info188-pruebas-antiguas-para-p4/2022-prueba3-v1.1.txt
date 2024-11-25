@@ -1,0 +1,43 @@
+-- PRUEBA 3 INFO188 (ACTUALIZADA A 31 DICIEMBRE 2022)
+-- 28 Noviembre 2022
+-- Plazo: Miercoles 04 Enero 2023 23:59 hrs
+-- Entrega: Subir archivo <nombre-apellido>.zip en SiveducMD
+-- ***************************************************************************************
+
+ENUNCIADO:
+En esta prueba usted implementara una simulacion de automata celular (AC) 2D, en donde se simulan n x n celdas con el juego de la vida por una cierta cantidad de pasos. Una implementacion basica de automata celular se puede encontrar aqui:
+https://www.geeksforgeeks.org/program-for-conways-game-of-life/
+
+La idea es paralelizar la simulacion y obtener metricas de rendimiento de la simulacion tanto en CPU como GPU.
+El programa debe ejecutarse como
+./prog <gpu-id> <n> <seed> <pasos> <nt> <nb> <cpu-o-gpu>
+
+donde:
+<gpu-id>    : ID numerico de la GPU (ver IDs con nvidia-smi)
+<n>         : Tamano de 'n' para el dominio de n x n celdas.
+<seed>      : semilla para inicializar las celdas con estados aleatorios
+<nt>        : numero de CPU threads (la solucion CPU tomara en cuenta este valor)
+<nb>        : numero de bloques de threads CUDA (solo se usara para la pregunta 4 d) )
+<cpu-o-gpu> : flag para decidir entre CPU=0 o GPU=1.
+
+Ejemplo:  ./prog 0 4096 13 1000 8 1
+(ejecuta en la GPU 0, n=4096, seed=13, 1000 pasos de tiempo, 8 CPU threads, modo GPU)
+-> Output -> prints de las fases importantes + tiempo de ejecucion al final (solo el tiempo de la simulacion).
+
+1) (1pt) Implementar una funcion cpu_sim(...) que simula el AC usando CPU en paralelo (se usara en modo CPU).
+2) (1pt) Implementar una funcion gpu_sim(...) que simula el AC usando GPU en paralelo (se usara en modo GPU).
+3) (1pt) Debe ser posible ver la simulacion en el terminal para n <= 128, avanzando cada paso con 'enter'.
+            NOTA: Cuando se escoja un n > 128, solo se simula y se entrega el tiempo que demoro.
+4) (2pts) Obtener graficos (con suficientes puntos para entender una tendencia y bien construidos):
+    a) Sepa bien que CPU y GPU uso en sus experimentos, para indicarlo en la leyenda de sus graficos.
+    b) Speedup de la solucion CPU con respecto a CPU corriendo con 1 thread (eje X numero de threads).
+    c) Speedup de la solucion GPU con respecto de la mejor de CPU (eje X es n).
+    d) Speedup de la solucion GPU con respecto a GPU corriendo con 1 bloque (eje X numero de bloques).
+        NOTA: Para esta ultima pregunta (d) tiene que programar otro kernel CUDA donde independiente de la cantidad
+        de bloques seleccionados, se puede simular un AC de cualquier n x n.
+5) (1pt) Analizar los resultados y comentar sobre que comportamientos le parecieron interesantes de resaltar.
+
+
+Si necesita una GPU Nvidia, puede crearse una carpeta de trabajo en el servidor INFO188:
+ssh -p 22337 info188@146.83.216.139
+password miraflores

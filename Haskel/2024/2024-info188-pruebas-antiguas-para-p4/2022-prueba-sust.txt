@@ -1,0 +1,32 @@
+-- PRUEBA SUSTITUTIVA INFO188 2023
+-- Plazo: Sabado 14 de Enero 2023 23:59hrs
+-- Entrega: Subir archivo <nombre>.zip en SiveducMD
+
+ENUNCIADO:
+En esta prueba usted contestara algunas preguntas de programacion de Haskell, OpenMP y CUDA.
+Puede entregar un archivo fuente para cada pregunta. Agregar un Makefile que compile todos los codigos y genere sus binarios.
+
+PREGUNTAS:
+1) (2pt) Cree una estructura de datos `Mat` que representa una matriz cuadrada almacenada de forma plana.
+    - Implemente el producto de matrices de tipo `Mat`
+    - Haga que `Mat` sea un Functor y un Aplicativo.
+
+2) (2pt) Implemente un programa que genere un arreglo ordenado aleatorio de tamano `n`, y un `x` a buscar en el con busqueda binaria.
+    - Paralelizar la busqueda binaria usando paralelismo CPU con OpenMP. Explique con comentarios la forma que abordo el diseno paralelo.
+    - Medir tiempo de ejecucion y reportarlo al final.
+    - ejecutar programa como ./p2 <n> <x> <nt>
+    n = tamano del arreglo
+    x = elemento a buscar
+    nt = numero de threads
+
+3) (2pt) Escriba un programa en GPU con CUDA que dado un cubo de enteros de `n x n x n` (matriz 3D), calcule el siguiente patron `stencil`.
+    - Ejecutar como ./p3 <GPU-id> <n>
+    - Generar el cubo con enteros aleatorios entre 1 y 100.
+    - Para cada celda i,j,k -> su valor final sera la suma de la vecindad formada por los 26 elementos que la rodean.
+    - Condiciones de borde periodicas, es decir una celda del borde tendra algunos vecinos de la cara contraria del cubo.
+    - Explique (no es necesario implementar) como la memoria compartida (shared memory) de CUDA puede ayudar al rendimiento.
+    - Medir tiempo de ejecucion y reportarlo al final.
+
+Si necesita una o mas GPUs Nvidia, puede crearse trabajar en el servidor 'carbon' de INFO188 (crear carpeta para trabajar):
+ssh -p 22337 info188@146.83.216.139
+password miraflores

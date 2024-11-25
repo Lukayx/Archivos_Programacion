@@ -1,0 +1,31 @@
+PRUEBA 3 INFO188
+7 de Diciembre 2023
+Tiempo: 90mins
+Entrega: Subir archivo <nombre-apellido>.hs a la tarea 'sustitutiva' de SiveducMD
+
+***************************************************************************************
+INSTRUCCIONES:
+     - Toda funcion debe ir con contrato (para Haskell) y una explicacion breve y clara de lo que hace.
+     - Puede escribir funciones auxiliares para ayudar a organizar su codigo
+***************************************************************************************
+
+1) [2.0 pts] Haskell:
+    Dado un heap como lista, donde los hijos de un nodo estan en las posiciones 2i+1 and 2i+2, escriba una funcion "esMinHeap" que recibe un heap y retorna verdadero si cumple con la regla de min heap (padre siempre menor o igual a sus hijos), sino falso.
+
+    ejemplo:  esMinHeap [0,1,10,2,5,20,30]
+              True
+
+              esMinHeap [0,1,10,2,5,8,30]
+              False
+
+
+2) [2.0 pts] OpenMP:
+    Busque el codigo de SAXPY visto en clases, y entregue dos versiones paralelas de el
+        - Una que mapea los threads eficientemente a los datos
+        - Una que mapea los threads de forma ineficiente a los datos
+    Luego, explique la razo por la que la segunda forma termina siendo ineficiente
+
+
+3) [2.0 pts] CUDA:
+    Escriba un programa en CUDA que dado un arreglo de `n` numeros float, encuentre el minimo en paralelo.
+    - Comente la complejidad teorica del algoritmo usando analisis asintotico y asumiendo que podrian haber tantos nucleos como 'n'.

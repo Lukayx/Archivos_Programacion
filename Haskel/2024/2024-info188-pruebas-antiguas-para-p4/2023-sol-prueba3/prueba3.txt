@@ -1,0 +1,16 @@
+PRUEBA 3 INFO188
+29 de Noviembre 2023
+Tiempo: 90mins
+Entrega: Subir archivo <nombre-apellido>.hs a la tarea 'prueba 3' de SiveducMD
+
+***************************************************************************************
+INSTRUCCIONES:
+     - Toda funcion debe ir con contrato (para Haskell) y una explicacion breve y clara de lo que hace.
+     - Puede escribir funciones auxiliares para ayudar a organizar su codigo
+***************************************************************************************
+
+1) [2pts] Haskell: Implemente ZipWith en paralelo. Explique bien la razon de cual monada escogio (Eval o Par) y ejemplifique el uso y muestre evidencia de aceleracion. Escriba su solucion en un main, similar a como desarrollamos ParMap.
+
+2) [2pts] OpenMP: En el archivo p2p3.cu, hay un molde de codigo que esta listo para realizar un filtro Gaussiano sobre una Matriz 3D. El Filtro Gaussiano consiste en que para cada celda, se suma su vecindad de 27 celdas (incluida la celda misma). Nota: las celdas de la superficie tendran menos celdas vecinas.
+
+3) [2pts] CUDA: En el mismo archivo p2p3.cu, implementar la variante CUDA de la misma solucion. Comparar rendimiento entre la solucion CUDA y la OpenMP, y comentar las diferencias que observa. Tambien, comente sobre el tamano de bloque ideal que encontro y tambien sobre como mejoraria el algoritmo paralelo de CUDA.

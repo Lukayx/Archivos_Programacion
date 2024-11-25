@@ -1,0 +1,31 @@
+-- PRUEBA 6: INFO188
+-- Fecha: 11 de Enero 2021
+--
+-- LEER, INSTRUCCIONES:
+-- a) Cada funcion debe incluir contrato y explicar con comentarios el algoritmo.
+-- b) Puede implementar funciones auxiliares para apoyarse.
+-- c) Todos los ejercicios tienen el mismo puntaje.
+-- d) Subir su(s) archivo(s) como un archivo comprimido llamado info188-p6-nombre.zip.
+--
+-- En esta prueba usted calculara la matriz de distancia euclideana en paralelo.
+-- M = m_ij --> distancia entre xi y xj (m_ij = m_ji)
+-- 
+-- Ejempo:
+-- X = {x1(x,y) x2(x,y) x3(x,y)}
+--     | d(x1,x1)  d(x1,x2)   d(x1,x3) |
+-- M = | d(x2,x1)  d(x2,x2)   d(x2,x3) |
+--     | d(x3,x1)  d(x3,x2)   d(x3,x3) |
+--
+-- I) Escriba un programa paralelo imperativo, usando OpenMP o CUDA, que haga lo siguiente:
+--      1) sea ejecutado como ./prog n
+--      2) se crea una arreglo de n coordenadas aleatorias en el plano 2D entre [0,1] x [0,1].
+--          - x1, x2, x3, ..., xn
+--      3) se crea una matriz vacia de n x n. Hagan su matriz plana en memoria (new float[n*n]).
+--      4) **se calcula en paralelo la matriz de distancia euclideana.**
+--          M_ij = distancia entre xi y xj
+--          - Explicar como funciona su paralelismo, como escogio subdividir el problema. Explicar
+--          claramente.
+--      5) Imprimir la matriz euclideana cuando n <= 32.
+--      6) Encontrar en paralelo el par de elementos (indices i,j y sus valores) que estan mas cerca
+--      entre si. HINT: Busque como se hacen las reducciones (OpenMP o CUDA).
+--          - Explicar claramente como subdividio el problema.
