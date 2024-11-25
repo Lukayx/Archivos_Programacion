@@ -20,9 +20,9 @@ take' n (x:xs)
 
 quicksort :: (Ord a) => [a] -> [a]
 quicksort [] = []
-quicksort (x:xs) = let right = quicksort [a | a <- xs, a > x]
-                       left = quicksort [a | a <- xs, a <= x]
-                   in left ++ [x] ++ right
+quicksort (x:xs) =  let right = quicksort [a | a <- xs, a > x]
+                        left = quicksort [a | a <- xs, a <= x]
+                    in left ++ [x] ++ right
 
 
 -- SIN TAIL RECURSION
